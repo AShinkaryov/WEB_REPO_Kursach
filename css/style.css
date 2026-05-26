@@ -269,8 +269,8 @@ body {
     grid-column: 3 / 5;
     grid-row: 1;
     height: 326px;
-    width: 620px;
-    margin-left: -149px;
+    width: 623px;
+    margin-left: -197px;
 }
 
 /* 2 ряд - маленькие слева */
@@ -328,21 +328,29 @@ body {
     text-align: center;
     padding: 36px 0 28px;
     background: #fff;
-    transform: translate(-56px, 146px);
+    /* transform: translate(-56px, 146px); */
+    margin-top: -10px;
+    margin-left: -115px;
 }
+.yeseva-one-regular {
+  font-family: "Yeseva One", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 .tagline h2 {
-  font-family: 'Raleway', sans-serif;
+  font-family: "yeseva-one-regular", serif;
   font-size: 38px;
-  font-weight: 700;
+  font-weight: 800;
   color: #222;
 }
 
 /* ========== FEATURES ========== */
-.features { width: 100%; 
+.features {
+    width: 100%;
     transform: translate(31px, 126px);
-        margin-top: -124px;
-  }
-
+    margin-top: -140px;
+}
 .feat {
     display: grid;
     grid-template-columns: 743px 743.23px;
@@ -427,9 +435,10 @@ body {
 
 /* ========== TRUST TITLE ========== */
 .trust-title {
-  text-align: center;
-  padding: 40px 0 24px;
-  transform: translate(-73px, 152px);
+    text-align: center;
+    padding: 40px 0 24px;
+    transform: translate(-79px, 148px);
+    /* margin-top: 105px; */
 }
 .trust-title h2 {
   font-family: 'Raleway', sans-serif;
