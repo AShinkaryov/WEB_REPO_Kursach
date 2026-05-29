@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8"/>
+  <title>AMI — Новость</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/article.css">
+  
+</head>
+<body>
+
+  <!-- FIXED SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar__logo-wrap">
+      <img class="sidebar__logo" src="img/ami-logo-3-1.png" alt="AMI Logo"/>
+    </div>
+    <nav class="sidebar__nav">
+      <div class="sidebar__nav-item">КАТАЛОГ</div>
+      <div class="sidebar__nav-item">ПАРТНЕРАМ</div>
+      <div class="sidebar__nav-item">FOR KIDS</div>
+    </nav>
+    <div class="sidebar__contacts">
+      <div class="sidebar__phone">+373 00000000</div>
+      <div class="sidebar__email">ami@mail.ru</div>
+    </div>
+    <div class="sidebar__langs">
+      <span class="sidebar__lang sidebar__lang--inactive">En</span>
+      <span class="sidebar__lang sidebar__lang--active">Ru</span>
+      <span class="sidebar__lang sidebar__lang--inactive">Ro</span>
+    </div>
+    <div class="sidebar__social">
+      <img src="img/instagram-ic.svg" alt="Instagram" width="24" height="24"/>
+      <img src="img/youtube-ic.svg" alt="YouTube" width="24" height="24"/>
+      <img src="img/facebook-ic.svg" alt="Facebook" width="24" height="24"/>
+      <img src="img/vk-logo.svg" alt="VK" width="24" height="24"/>
+    </div>
+    <img class="sidebar__copy" src="img/ia2-copy-3.png" alt=""/>
+    <img class="sidebar__border" src="img/line-4.svg" alt=""/>
+  </aside>
+
+  <!-- FIXED TOP NAV — "БЛОГ" pill -->
+  <div class="top-nav">
+    <div class="top-nav__partners">
+      <div class="top-nav__partners-hover"></div>
+      <span class="top-nav__partners-label">БЛОГ</span>
+    </div>
+  </div>
+
+  <!-- ARTICLE PAGE -->
+  <div class="article-page">
+
+    <!-- back button -->
+    <a href="blog.html" class="article-back">
+      <img src="img/arrow-ic.svg" alt="←" style="transform:rotate(180deg);width:16px;"/>
+      <span>Назад к блогу</span>
+    </a>
+
+    <!-- article content loaded by JS -->
+    <article class="article-body" id="article-body">
+      <div class="article-loading">Загрузка...</div>
+    </article>
+
+  </div>
+
+  <script src="js/article.js"></script>
+</body>
+</html>
