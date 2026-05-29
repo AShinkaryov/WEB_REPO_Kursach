@@ -517,7 +517,7 @@ button {
     flex-direction: column;
     align-items: center;
     gap: 24px;
-    height: 226px;
+    height: 205px;
 }
 .why-us__card-icon-wrap {
     width: 159px;
@@ -531,7 +531,7 @@ button {
 }
 .why-us__card-icon-wrap1 {
     width: 159px;
-    height: 171px;
+    height: 159px;
     border-radius: 30px;
     border: 2px solid #f5e3d9;
     display: flex;
@@ -571,6 +571,7 @@ button {
     align-items: center;
     justify-content: center;
     margin-top: -1px;
+    margin-right: -37px;
 }
 .why-us__card-icon {
     width: 119px;
@@ -601,11 +602,20 @@ margin-left: 3px;
 }
 
 .why-us__cards .why-us__card:nth-child(5) .why-us__card-icon {
-  width: 105px;
-  height: 111px;
+    width: 133px;
+    height: 136px;
 }
-
 .why-us__card-label {
+  font-family: "Manrope-SemiBold", "Manrope", Helvetica, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--gray-2);
+  line-height: 22px;
+  text-align: center;
+  letter-spacing: 0;
+  width: 254px;
+}
+.why-us__card-label1 {
   font-family: "Manrope-SemiBold", "Manrope", Helvetica, sans-serif;
   font-weight: 600;
   font-size: 16px;
