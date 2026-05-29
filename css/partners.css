@@ -674,11 +674,11 @@ margin-left: 3px;
 
 /* cert logos row  (top:2047, four boxes 254×136px) */
 .quality__certs {
-  position: absolute;
-  top: 158px;       /* 2047-1889 */
-  left: -180px;     /* 410-590 */
-  display: flex;
-  gap: 0;
+    position: absolute;
+    top: 158px;
+    left: -180px;
+    display: flex;
+    gap: 39px;
 }
 .quality__cert {
   width: 254px;
@@ -721,12 +721,14 @@ margin-left: 3px;
   display: flex;
 }
 .trust__logos--row1 {
-  top: 127px;     /* 2459-2332 */
-  left: 389px;
+    top: 126px;
+    left: 396px;
+    gap: 36px;
 }
 .trust__logos--row2 {
-  top: 305px;     /* 2637-2332 */
-  left: 389px;
+    top: 305px;
+    left: 389px;
+    gap: 38px;
 }
 .trust__logo {
   width: 259px;
