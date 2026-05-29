@@ -50,35 +50,26 @@ body {
 /* Logo */
 .sidebar__logo { margin-bottom: 48px; }
 .logo-circle {
-    width: 142px;
-    height: 138px;
-    background: var(--orange);
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 12px;
-    transform: translate(-4px, 31px);
+  width: 142px;
+  height: 138px;
+  background: var(--orange);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  transform: translate(-4px, 31px);
+  overflow: hidden; /* Обрезаем всё, что выходит за круг */
 }
-.logo-ami {
-  font-family: 'Raleway', sans-serif;
-  font-size: 38px;
-  font-weight: 800;
-  color: white;
-  line-height: 1;
-  letter-spacing: -1px;
+
+.logo-circle__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Сохраняет пропорции изображения */
+  display: block;
+  border-radius: 50%;
 }
-.logo-tagline {
-  font-family: 'Raleway', sans-serif;
-  font-size: 9px;
-  font-style: italic;
-  color: rgba(255,255,255,0.92);
-  line-height: 1.3;
-  margin-top: 4px;
-  text-align: center;
-}
+
 
 /* Nav */
 .sidebar__nav {
@@ -502,7 +493,7 @@ body {
     grid-template-rows: repeat(2, 324px);
     gap: 10px;
     margin: 12px 0 0;
-    transform: translate(195px, -1px);
+    transform: translate(195px, -5px);
 }
 .igrid__cell {
   overflow: hidden;
