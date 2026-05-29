@@ -9,6 +9,10 @@ body {
   /* ✅ УБРАТЬ min-width: 1920px */
   overflow-x: hidden; /* ✅ Запретить горизонтальную прокрутку */
 }
+html, body {
+  overflow-x: hidden; /* Запрещает горизонтальную прокрутку */
+  width: 100%;        /* Фиксирует ширину страницы */
+}
 
 /* ========== PAGE WRAPPER ========== */
 .page-wrapper {

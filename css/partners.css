@@ -16,6 +16,10 @@ html, body {
   padding: 0;
   height: 100%;
 }
+html, body {
+  overflow-x: hidden; /* Запрещает горизонтальную прокрутку */
+  width: 100%;        /* Фиксирует ширину страницы */
+}
 a { text-decoration: none; }
 button {
   cursor: pointer;
