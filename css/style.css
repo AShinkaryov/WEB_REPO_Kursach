@@ -71,12 +71,12 @@ body {
 }
 /* cookie / corner image */
 .sidebar__copy {
-  position: absolute;
-  top: 500px;
-  left: 119px;
-  width: 43px;
-  height: 40px;
-  object-fit: cover;
+    position: absolute;
+    top: 507px;
+    left: 132px;
+    width: 43px;
+    height: 40px;
+    object-fit: cover;
 }
 
 /* nav items */

@@ -54,27 +54,47 @@
 
     <!-- HERO SECTION -->
     <section class="hero">
-      <img class="hero__bg" src="img/rectangle-73.png" alt=""/>
-      <img class="hero__overlay" src="img/rectangle-74.png" alt=""/>
-      <img class="hero__overlay2" src="img/rectangle-75.png" alt=""/>
+  <div class="hero__slides">
+    <!-- Слайд 1 -->
+    <div class="hero__slide hero__slide--active">
+      <img class="hero__bg" src="img/Partners/sl1.jpg" alt="Слайд 1: фон"/>
+      
+    </div>
+    <!-- Слайд 2 -->
+    <div class="hero__slide">
+      <img class="hero__bg" src="img/Partners/sl2.jpg" alt="Слайд 2: фон"/>
+      
+    </div>
+    <!-- Слайд 3 -->
+    <div class="hero__slide">
+      <img class="hero__bg" src="img/Partners/sl3.png" alt="Слайд 3: фон"/>
+      
+    </div>
+    <!-- Слайд 4 -->
+    <div class="hero__slide">
+      <img class="hero__bg" src="img/Partners/sl4.jpg" alt="Слайд 4: фон"/>
+      
+    </div>
+    <!-- Слайд 5 -->
+    <div class="hero__slide">
+      <img class="hero__bg" src="img/Partners/sl5.png" alt="Слайд 5: фон"/>
+      
+    </div>
+  </div>
 
-      <!-- Arrow buttons -->
-      <button class="hero__arrow hero__arrow--left">
-        <img src="img/image.svg" alt="prev"/>
-      </button>
-      <button class="hero__arrow hero__arrow--right">
-        <img src="img/arrow-ic.svg" alt="next"/>
-      </button>
+  <!-- Arrow buttons -->
+  <button class="hero__arrow hero__arrow--left" id="prev" aria-label="Предыдущий слайд">&#8249;</button>
+  <button class="hero__arrow hero__arrow--right" id="next" aria-label="Следующий слайд">&#8250;</button>
 
-      <!-- Slider dots -->
-      <div class="hero__dots">
-        <span class="hero__dot hero__dot--active"></span>
-        <span class="hero__dot"></span>
-        <span class="hero__dot"></span>
-        <span class="hero__dot"></span>
-        <span class="hero__dot"></span>
-      </div>
-    </section>
+  <!-- Slider dots -->
+  <div class="hero__dots">
+    <span class="hero__dot hero__dot--active" data-index="0"></span>
+    <span class="hero__dot" data-index="1"></span>
+    <span class="hero__dot" data-index="2"></span>
+    <span class="hero__dot" data-index="3"></span>
+    <span class="hero__dot" data-index="4"></span>
+  </div>
+</section>
 
     <!-- ABOUT TEXT -->
     <section class="about">
@@ -82,19 +102,19 @@
         <strong class="about__bold">Кондитерская фабрика «AMI»</strong>
         <span> — это крупный производитель печенья в Молдове.</span>
       </p>
-      <p class="about__text">
-        <strong class="about__bold">Наша главная цель</strong>
+      <p class="about__text1">
+        <strong class="about__bold1">Наша главная цель</strong>
       </p>
-      <p class="about__text">
+      <p class="about__text2">
         "Выпускать вкусное печенье, чтобы дарить радость и удовольствие каждому."
       </p>
-      <p class="about__text">
-        <strong class="about__bold">«AMI»</strong>
+      <p class="about__text3">
+        <strong class="about__bold2">«AMI»</strong>
         <span> – это широкий ассортимент, оперативные оптовые поставки кондитерских изделий, современное оборудование и возможность существенно расширить спектр предлагаемых кондитерских изделий.&nbsp; Мы являемся сторонниками новаторства и постоянной работы над собой, постоянно внедряя новые технологии в производство.&nbsp; Мы ценим и учитываем мнение наших сотрудников, партнеров и потребителей на всех этапах работы. Для нас важно получать обратную связь и стараться совершенствовать наш продукт.</span>
       </p>
-      <p class="about__text">
+      <p class="about__text4">
         <span>Обеспечение более </span>
-        <strong class="about__bold">высокого качества продукции и обслуживания</strong>
+        <strong class="about__bold3">высокого качества продукции и обслуживания</strong>
         <span> является приоритетным направлением нашей работы.</span>
       </p>
     </section>
@@ -110,35 +130,35 @@
         <!-- Card 1 -->
         <div class="why-us__card">
           <div class="why-us__card-icon-wrap">
-            <img src="img/3-4px.svg" alt="" class="why-us__card-icon"/>
+            <img src="img/Partners/whyUs1.png" alt="" class="why-us__card-icon"/>
           </div>
           <p class="why-us__card-label">Возможности<br/>&nbsp;&nbsp;производства</p>
         </div>
         <!-- Card 2 -->
         <div class="why-us__card">
-          <div class="why-us__card-icon-wrap">
-            <img src="img/3-px.svg" alt="" class="why-us__card-icon"/>
+          <div class="why-us__card-icon-wrap1">
+            <img src="img/Partners/WhyUs2.png" alt="" class="why-us__card-icon"/>
           </div>
           <p class="why-us__card-label">Быстрая<br/>доставка</p>
         </div>
         <!-- Card 3 -->
         <div class="why-us__card">
-          <div class="why-us__card-icon-wrap">
-            <img src="img/3px.svg" alt="" class="why-us__card-icon"/>
+          <div class="why-us__card-icon-wrap2">
+            <img src="img/Partners/WhyUs3.png" alt="" class="why-us__card-icon1"/>
           </div>
           <p class="why-us__card-label">Высокое<br/>качество</p>
         </div>
         <!-- Card 4 -->
         <div class="why-us__card">
-          <div class="why-us__card-icon-wrap">
-            <img src="img/3-2px.svg" alt="" class="why-us__card-icon"/>
+          <div class="why-us__card-icon-wrap3">
+            <img src="img/Partners/WhyUs4.png" alt="" class="why-us__card-icon"/>
           </div>
           <p class="why-us__card-label">Широкий<br/>&nbsp;&nbsp;ассортимент</p>
         </div>
         <!-- Card 5 -->
         <div class="why-us__card">
-          <div class="why-us__card-icon-wrap">
-            <img src="img/3-3px.svg" alt="" class="why-us__card-icon"/>
+          <div class="why-us__card-icon-wrap4">
+            <img src="img/Partners/WhyUs5.png" alt="" class="why-us__card-icon"/>
           </div>
           <p class="why-us__card-label">Маркетинговая<br/>поддержка</p>
         </div>
@@ -272,5 +292,7 @@
     </footer>
 
   </div><!-- /.screen -->
+
+  <script src="js/partners.js"></script>
 </body>
 </html>

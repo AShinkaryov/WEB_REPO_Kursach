@@ -88,7 +88,7 @@ button {
    ════════════════════════════════════════════════════════════ */
 .sidebar {
   position: fixed;
-  top: 0;
+  top: 0px;
   left: 0;
   width: 280px;
   height: 800px;
@@ -256,31 +256,36 @@ button {
 /* arrow buttons */
 .hero__arrow {
   position: absolute;
-  top: 342px;      /* ~(730-55)/2 = 337, original: 366-30=336 */
-  width: 55px;
-  height: 55px;
-  border-radius: 27.5px;
-  background-color: rgba(255,255,255,0.3);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 50%; 
+  width: 53px; height: 53px;
+  background: rgba(255,255,255,.45);
+  border: none; border-radius: 50%;
+  font-size: 26px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: #555;
+  z-index: 10;
+  transition: background .2s;
 }
-.hero__arrow--left  { left: 45px; }   /* 355-310=45 */
+.hero__arrow:hover { background: rgba(255,255,255,.75); }
+.hero__arrow--left {
+    transform: translate(46px, -23px);
+}
 .hero__arrow--right {
-  right: 0;        /* 1726-310=1416 but arrow is at far right */
-  transform: rotate(180deg);
+    right: 10px;
+    
+        transform: translate(-45px, -30px);
 }
-.hero__arrow img { width: 18px; }
+
 
 /* slider dots */
 .hero__dots {
-  position: absolute;
-  bottom: 10px;    /* 730-(720)=10; original: top 720-30=690 */
-  left: 514px;     /* 824-310=514 */
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    position: absolute;
+    bottom: 53px;
+    left: 728px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 .hero__dot {
   display: block;
@@ -294,30 +299,130 @@ button {
   background-color: rgba(99,97,95,0.5);
   backdrop-filter: blur(2px);
 }
+/* Контейнер слайдов */
+.hero__slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
 
+/* Сами слайды */
+.hero__slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none; /* Скрывает неактивные слайды от кликов */
+}
+
+/* Активный слайд */
+.hero__slide--active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+/* Исправление позиционирования стрелок и точек (z-index выше слайдов) */
+.hero__arrow {
+  z-index: 10;
+}
+.hero__dots {
+  z-index: 10;
+}
+.hero__dot {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.hero__dot:hover {
+  background-color: rgba(255,255,255,0.8);
+}
+
+/* Чтобы оверлеи не вылезали за границы */
+.hero__bg,
+.hero__overlay,
+.hero__overlay2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
 /* ════════════════════════════════════════════════════════════
    ABOUT TEXT  (top: 824px, left: 625px, 767 × 452px)
    ════════════════════════════════════════════════════════════ */
 .about {
-  position: absolute;
-  top: 824px;
-  left: 625px;
-  width: 767px;
-  height: 452px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 20px;
+    position: absolute;
+    top: 828px;
+    left: 625px;
+    width: 767px;
+    height: 452px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
 }
 .about__text {
-  font-family: "Manrope", Helvetica, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  color: var(--black);
-  text-align: center;
-  letter-spacing: 0;
-  line-height: 25.6px;
-  align-self: stretch;
+    font-family: "Manrope", Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 19px;
+    color: var(--black);
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 25.6px;
+    align-self: stretch;
+    margin-left: 12px;
+}
+.about__text1 {
+    font-family: "Manrope", Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 19px;
+    color: var(--black);
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 25.6px;
+    align-self: stretch;
+}
+.about__text2 {
+    font-family: "Manrope", Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 19px;
+    color: var(--black);
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 25.6px;
+    align-self: stretch;
+    margin-top: 4px;
+    margin-left: 23px;
+}
+.about__text3 {
+    font-family: "Manrope", Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 19px;
+    color: var(--black);
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 25.6px;
+    align-self: stretch;
+    margin-top: 0px;
+    margin-left: 12px;
+}
+.about__text3 span {
+  line-height: 1.57;
+}
+.about__text4 {
+    font-family: "Manrope", Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 19px;
+    color: var(--black);
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 25.6px;
+    align-self: stretch;
 }
 .about__bold {
   font-weight: 600;
@@ -325,7 +430,26 @@ button {
   font-size: 16px;
   line-height: 25.6px;
 }
-
+.about__bold1 {
+    font-weight: 600;
+    color: #423f3e;
+    font-size: 16px;
+    line-height: 25.6px;
+    margin-left: -2px;
+}
+.about__bold2 {
+    font-weight: 600;
+    color: #423f3e;
+    font-size: 16px;
+    line-height: 25.6px;
+    margin-top: -3px;
+}
+.about__bold3 {
+  font-weight: 600;
+  color: #423f3e;
+  font-size: 16px;
+  line-height: 25.6px;
+}
 /* group-2 image overlay (top: 744px, left: 320px) */
 .about__group-img {
   position: absolute;
@@ -380,40 +504,102 @@ button {
 
 /* 5 feature cards row */
 .why-us__cards {
-  position: absolute;
-  top: 196px;       /* icons start at 1515..1534 → avg 1522-1319=203, labels at 1620-1319=301 */
-  left: 487px;
-  display: flex;
-  align-items: flex-start;
-  gap: 0;
+    position: absolute;
+    top: 201px;
+    left: 482px;
+    display: flex;
+    align-items: flex-start;
+    gap: -9px;
 }
 .why-us__card {
-  width: 237px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
+    width: 184px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    height: 226px;
 }
 .why-us__card-icon-wrap {
-  width: 159px;
-  height: 159px;
-  border-radius: 30px;
-  border: 2px solid #f5e3d9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    width: 159px;
+    height: 201px;
+    border-radius: 30px;
+    border: 2px solid #f5e3d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -1px;
+}
+.why-us__card-icon-wrap1 {
+    width: 159px;
+    height: 171px;
+    border-radius: 30px;
+    border: 2px solid #f5e3d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0px;
+    margin-left: 3px;
+}
+.why-us__card-icon-wrap2 {
+    width: 159px;
+    height: 201px;
+    border-radius: 30px;
+    border: 2px solid #f5e3d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -1px;
+    margin-left: 16px;
+}
+.why-us__card-icon-wrap3 {
+    width: 158px;
+    height: 201px;
+    border-radius: 30px;
+    border: 2px solid #f5e3d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -1px;
+    margin-left: 24px;
+}
+.why-us__card-icon-wrap4 {
+    width: 159px;
+    height: 201px;
+    border-radius: 30px;
+    border: 2px solid #f5e3d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -1px;
 }
 .why-us__card-icon {
-  width: 84px;
-  height: 88px;
-  object-fit: cover;
+    width: 119px;
+    height: 136px;
+    object-fit: cover;
+    /* left: 10px; */
+    margin-left: -1px;
+    margin-top: 6px;
+}
+.why-us__card-icon1 {
+    width: 89px;
+    height: 126px;
+    object-fit: cover;
+    /* left: 10px; */
+    margin-left: -1px;
+    margin-top: 10px;
 }
 /* larger icons for cards 2 & 3 */
-.why-us__cards .why-us__card:nth-child(2) .why-us__card-icon,
-.why-us__cards .why-us__card:nth-child(3) .why-us__card-icon {
-  width: 97px;
-  height: 102px;
+.why-us__cards .why-us__card:nth-child(2) .why-us__card-icon{
+    width: 96px;
+    height: 102px;
+    margin-left: 3px;
+    margin-top: 19px;
 }
+.why-us__cards .why-us__card:nth-child(3) .why-us__card-icon{
+margin-left: 3px;
+    margin-top: 19px;
+}
+
 .why-us__cards .why-us__card:nth-child(5) .why-us__card-icon {
   width: 105px;
   height: 111px;
