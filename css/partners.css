@@ -925,24 +925,25 @@ margin-left: 3px;
 
 /* AMI frame logo (top:408 left:1406 inside inner) */
 .footer__logo {
-  position: absolute;
-  top: 417px;        /* 408+9 */
-  left: 1406px;
-  width: 144px;
-  height: 24px;
+    position: absolute;
+    top: 417px;
+    left: 1406px;
+    width: 0PX;
+    height: 0PX;
 }
 
 /* year text (bottom-right area, left:52 from logo) */
 .footer__copy-year {
-  position: absolute;
-  bottom: 38px;
-  left: 1458px;
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 14px;
-  color: #ffffff;
-  line-height: 21px;
-  width: 88px;
+    position: absolute;
+    bottom: 38px;
+    left: 1458px;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 14px;
+    color: #ffffff;
+    line-height: 21px;
+    width: 88px;
+    margin-left: -1407px;
 }
 
 /* nav columns */
@@ -953,8 +954,17 @@ margin-left: 3px;
   display: flex;
   gap: 347px;         /* 675-328=347 */
 }
-.footer__nav-section { display: flex; flex-direction: column; gap: 0; }
-
+.footer__nav-section { 
+  display: flex;
+   flex-direction: column; 
+  gap: 0; 
+}
+.footer__nav-section1 {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-left: -159px;
+}
 .footer__nav-heading {
   font-family: var(--font-body);
   font-weight: 700;
@@ -971,12 +981,15 @@ margin-left: 3px;
   margin-bottom: 8px;
 }
 .footer__nav-list {
-  list-style: none;
-  padding: 0; margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 18px;
 }
+
 .footer__nav-item {
   font-family: var(--font-body);
   font-weight: 600;
@@ -990,11 +1003,14 @@ margin-left: 3px;
 
 /* contacts list */
 .footer__contacts-list {
-  list-style: none;
-  padding: 0; margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-left: 1px;
+    margin-top: 18px;
 }
 .footer__contact {
   display: flex;
@@ -1032,24 +1048,64 @@ margin-left: 3px;
 
 /* "Created by" text */
 .footer__created {
-  position: absolute;
-  bottom: 14px;
-  left: 894px;
-  width: 324px;
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 14px;
-  color: #ffffff;
-  text-align: center;
-  line-height: 21px;
+    position: absolute;
+    bottom: 14px;
+    left: 894px;
+    width: 324px;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: center;
+    line-height: 21px;
+    margin-left: -49px;
 }
-
+.footer__confidance {
+    position: absolute;
+    bottom: 14px;
+    left: 894px;
+    width: 324px;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: center;
+    line-height: 21px;
+    margin-left: -389px;
+}
 /* corner decorative image */
 .footer__corner-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 230px;
+    height: 200px;
+    object-fit: cover;
+    margin-top: 10px;
+}
+
+/* ✅ КОНТЕЙНЕР КАРТЫ - координаты точно под макет */
+.footer__map-col {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 230px;
-  height: 200px;
-  object-fit: cover;
+  top: 22px;
+  left: 991px;
+  width: 560px;
+  height: 325px;
+  z-index: 1;
+}
+
+.footer__map {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #e8e5dc; /* фоллбэк, пока карта грузится */
+}
+
+.footer__map iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  pointer-events: auto; /* позволяет взаимодействовать с картой */
 }
