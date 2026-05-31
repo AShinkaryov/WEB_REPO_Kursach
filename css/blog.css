@@ -151,11 +151,11 @@
    HERO BANNER  top:21 left:498  1203×400
    ════════════════════════════════════════════════════════════ */
 .blog-hero {
-  position: absolute;
-  top: 21px;
-  left: 498px;
-  width: 1203px;
-  height: 400px;
+    position: absolute;
+    top: -6px;
+    left: 490px;
+    width: 1202px;
+    height: 401px;
 }
 .blog-hero__img {
   width: 100%;
@@ -198,15 +198,15 @@
    SECTION HEADER  top:465 left:802  645×126
    ════════════════════════════════════════════════════════════ */
 .blog-header {
-  position: absolute;
-  top: 465px;
-  left: 802px;
-  width: 645px;
-  height: 126px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
+    position: absolute;
+    top: 407px;
+    left: 795px;
+    width: 645px;
+    height: 126px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
 }
 .blog-header__title {
   width: 600px;
@@ -234,14 +234,14 @@
    FILTER BAR  top:614 left:519  710×38
    ════════════════════════════════════════════════════════════ */
 .blog-filters {
-  position: absolute;
-  top: 614px;
-  left: 519px;
-  width: 710px;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    position: absolute;
+    top: 588px;
+    left: 518px;
+    width: 710px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 /* Filter button — inactive (translucent orange bg) */
@@ -279,11 +279,11 @@
 
 /* ── Row 1: 3 equal cards  top:684  374×332 each ─────────── */
 .news-row1 {
-  position: absolute;
-  top: 684px;
-  left: 519px;
-  display: flex;
-  gap: 0;
+    position: absolute;
+    top: 659px;
+    left: 519px;
+    display: flex;
+    gap: 15px;
 }
 .news-card--r1 {
   width: 374px;
@@ -292,22 +292,24 @@
 
 /* ── Row 2: 475×332 + 677×332  top:1045 ─────────────────── */
 .news-row2 {
-  position: absolute;
-  top: 1045px;
-  left: 519px;
-  display: flex;
-  gap: 0;
+    position: absolute;
+    top: 1019px;
+    left: 519px;
+    display: flex;
+    gap: 15px;
 }
 .news-card--r2-left  { width: 475px; height: 332px; }
-.news-card--r2-right { width: 677px; height: 332px; }
-
+.news-card--r2-right {
+    width: 660px;
+    height: 332px;
+}
 /* ── Row 3: 677×332 + 475×332  top:1405 ─────────────────── */
 .news-row3 {
-  position: absolute;
-  top: 1405px;
-  left: 519px;
-  display: flex;
-  gap: 0;
+    position: absolute;
+    top: 1381px;
+    left: 519px;
+    display: flex;
+    gap: 0;
 }
 .news-card--r3-left  { width: 677px; height: 332px; }
 .news-card--r3-right { width: 475px; height: 332px; }
@@ -401,48 +403,49 @@
 
 /* header  top:92 left:361 473×124 */
 .partner-form__header {
-  position: absolute;
-  top: 92px;
-  left: 361px;
-  width: 473px;
-  height: 124px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
+    position: absolute;
+    top: 34px;
+    left: 354px;
+    width: 473px;
+    height: 124px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
 }
 .partner-form__title {
   font-family: "Yeseva One", Helvetica, serif;
   font-weight: 400;
   font-size: 38px;
-  color: var(--main-red);
+  color:#E94200;
   text-align: center;
   letter-spacing: 0;
   line-height: 150%;
   white-space: nowrap;
 }
 .partner-form__subtitle {
-  width: 427px;
-  font-family: "Manrope", Helvetica, sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  color: #333333;
-  text-align: center;
-  letter-spacing: 0;
-  line-height: 150%;
-  opacity: 0.8;
+    width: 427px;
+    font-family: "Manrope", Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #333333;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 150%;
+    opacity: 0.8;
+    margin-top: -32px;
 }
 
 /* fields grid — 375×49 each */
 .partner-form__fields {
-  position: absolute;
-  top: 270px;
-  left: 201px;
-  display: grid;
-  grid-template-columns: 375px 375px;
-  grid-template-rows: 49px 49px;
-  column-gap: 29px;  /* 605-201-375=29 */
-  row-gap: 30px;     /* 349-270=79; 79-49=30 */
+    position: absolute;
+    top: 245px;
+    left: 192px;
+    display: grid;
+    grid-template-columns: 375px 375px;
+    grid-template-rows: 49px 49px;
+    column-gap: 29px;
+    row-gap: 30px;
 }
 .partner-form__field {
   position: relative;
@@ -486,25 +489,25 @@
 
 /* submit button  top:476 left:455  273×74 */
 .partner-form__btn {
-  position: absolute;
-  top: 476px;
-  left: 455px;
-  width: 273px;
-  height: 74px;
-  background-color: #c74f07;
-  border-radius: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Manrope", Helvetica, sans-serif;
-  font-weight: 600;
-  font-size: 18px;
-  color: #ffffff;
-  text-align: center;
-  letter-spacing: 0;
-  line-height: 150%;
-  border: none;
-  cursor: pointer;
+    position: absolute;
+    top: 450px;
+    left: 447px;
+    width: 273px;
+    height: 74px;
+    background-color: #c74f07;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Manrope", Helvetica, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #ffffff;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 150%;
+    border: none;
+    cursor: pointer;
 }
 .partner-form__btn:hover { opacity: 0.9; }
 
@@ -512,15 +515,15 @@
    SOCIAL SECTION  top:2512 left:860  500×257
    ════════════════════════════════════════════════════════════ */
 .social-section {
-  position: absolute;
-  top: 2512px;
-  left: 860px;
-  width: 500px;
-  height: 257px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30.4px;
+    position: absolute;
+    top: 2453px;
+    left: 852px;
+    width: 500px;
+    height: 257px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30.4px;
 }
 
 .social-section__title {
@@ -542,37 +545,40 @@
   flex-shrink: 0;
 }
 .social-btn {
-  position: absolute;
-  top: 0;
-  width: 55px;
-  height: 55px;
-  background-color: var(--main-red);
-  border-radius: 27.5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity .2s, transform .2s;
-  text-decoration: none;
+    position: absolute;
+    top: 0;
+    width: 55px;
+    height: 55px;
+    background-color: var(--main-red);
+    border-radius: 27.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .2s, transform .2s;
+    text-decoration: none;
+    margin-top: -28px;
 }
 .social-btn:hover { opacity: 0.85; transform: translateY(-3px); }
 .social-btn:nth-child(1) { left: 0; }
 .social-btn:nth-child(2) { left: 94px; }
 .social-btn:nth-child(3) { left: 188px; }
 .social-btn img {
-  width: 30px;
-  height: 30px;
+    width: 60px;
+    height: 60px;
 }
 
 .social-section__hashtag {
-  margin-left: 108.8px;
-  width: 272.5px;
-  font-family: "Manrope", Helvetica, sans-serif;
-  font-weight: 500;
-  font-size: 28px;
-  color: var(--main-red);
-  letter-spacing: 0;
-  line-height: 180%;
-  white-space: nowrap;
+    margin-left: 108.8px;
+    width: 272.5px;
+    font-family: "Manrope", Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 28px;
+    color:#E94200;
+    letter-spacing: 0;
+    line-height: 180%;
+    white-space: nowrap;
+    margin-top: -4px;
+    margin-left: -7px;
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -589,13 +595,31 @@
   object-fit: cover;
 }
 /* row 1 */
-.insta-grid__img--r1-1 { top: 2797px; left: 519px; }
-.insta-grid__img--r1-2 { top: 2798px; left: 917px; }
-.insta-grid__img--r1-3 { top: 2797px; left: 1314px; }
+.insta-grid__img--r1-1 {
+    top: 2772px;
+    left: 511px;
+}
+.insta-grid__img--r1-2 {
+    top: 2773px;
+    left: 908px;
+}
+.insta-grid__img--r1-3 {
+    top: 2771px;
+    left: 1305px;
+}
 /* row 2 */
-.insta-grid__img--r2-1 { top: 3142px; left: 519px; }
-.insta-grid__img--r2-2 { top: 3142px; left: 917px; }
-.insta-grid__img--r2-3 { top: 3143px; left: 1314px; }
+.insta-grid__img--r2-1 {
+    top: 3118px;
+    left: 511px;
+}
+.insta-grid__img--r2-2 {
+    top: 3117px;
+    left: 907px;
+}
+.insta-grid__img--r2-3 {
+    top: 3119px;
+    left: 1307px;
+}
 
 /* ════════════════════════════════════════════════════════════
    FOOTER  top:3556 left:309  1611×456

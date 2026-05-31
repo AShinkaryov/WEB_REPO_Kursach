@@ -119,7 +119,7 @@ const NewsApp = (() => {
         <p class="news-card__title">${item.title}</p>
         <div class="news-card__read" onclick="NewsApp.openArticle(${item.id})">
           <span>Читать</span>
-          <img src="img/arrow-ic-3.svg" alt="→" width="20" height="20" />
+          <img src="img/Blog/arrow.png" alt="→" width="20" height="20" />
         </div>
       </div>
     `;
