@@ -627,27 +627,21 @@
     re-declared here with blog-screen context)
    ════════════════════════════════════════════════════════════ */
 .blog-screen .footer {
-  position: absolute;
-  top: 3556px;
-  left: 309px;
-  width: 1611px;
-  height: 456px;
+    position: absolute;
+    top: 3531px;
+    left: 302px;
+    width: 1611px;
+    height: 456px;
 }
 .blog-screen .footer__inner {
   width: 100%;
   height: 100%;
-  background-color: var(--main-green);
+  
   border-radius: 6px;
   position: relative;
   padding-top: 9px;
 }
-.blog-screen .footer__logo {
-  position: absolute;
-  top: 417px;
-  left: 1406px;
-  width: 144px;
-  height: 24px;
-}
+
 .blog-screen .footer__copy-year {
   position: absolute;
   bottom: 38px;
@@ -666,7 +660,12 @@
   display: flex;
   gap: 347px;
 }
-.blog-screen .footer__nav-section { display: flex; flex-direction: column; gap: 0; }
+.blog-screen .footer__nav-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: -19px;
+}
 .blog-screen .footer__nav-heading {
   font-family: "Manrope", Helvetica, sans-serif;
   font-weight: 700;
@@ -677,13 +676,239 @@
   height: 37px;
   margin-bottom: 10.8px;
 }
-.blog-screen .footer__nav-line  { width: 158px; height: 2px; margin-bottom: 8px; }
-.blog-screen .footer__nav-list  { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
-.blog-screen .footer__nav-item  { font-family: "Manrope", Helvetica, sans-serif; font-weight: 600; font-size: 15px; color: #fff; letter-spacing: 0; line-height: 24px; white-space: nowrap; }
-.blog-screen .footer__contacts-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
-.blog-screen .footer__contact   { display: flex; align-items: center; gap: 12px; }
-.blog-screen .footer__contact span { font-family: "Manrope", Helvetica, sans-serif; font-weight: 600; font-size: 15px; color: #fff; letter-spacing: 0; line-height: 24px; max-width: 254px; }
-.blog-screen .footer__promo-img { position: absolute; top: 22px; left: 991px; width: 560px; height: 325px; object-fit: cover; }
-.blog-screen .footer__divider   { position: absolute; top: 383px; left: 27px; width: 1544px; height: 2px; }
-.blog-screen .footer__created   { position: absolute; bottom: 14px; left: 894px; width: 324px; font-family: "Manrope", Helvetica, sans-serif; font-weight: 400; font-size: 14px; color: #fff; text-align: center; line-height: 21px; }
-.blog-screen .footer__corner-img { position: absolute; top: 0; left: 0; width: 230px; height: 200px; object-fit: cover; }
+/* ════════════════════════════════════════════════════════════
+   FOOTER  (top:4620, left:309, 1611×456px, green bg)
+   ════════════════════════════════════════════════════════════ */
+.footer {
+    position: absolute;
+    top: 5049px;
+    left: 309px;
+    width: 1611px;
+    height: 456px;
+}
+.footer__inner {
+  width: 100%;
+  height: 100%;
+   background-color: #a7bb60;
+  border-radius: 6px;
+  position: relative;
+  /* inner content has 9px top margin per original */
+  padding-top: 9px;
+}
+
+/* AMI frame logo (top:408 left:1406 inside inner) */
+.footer__logo {
+    position: absolute;
+    top: 417px;
+    left: 1406px;
+    width: 0PX;
+    height: 0PX;
+}
+
+/* year text (bottom-right area, left:52 from logo) */
+.footer__copy-year {
+    position: absolute;
+    bottom: 38px;
+    left: 1458px;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 14px;
+    color: #ffffff;
+    line-height: 21px;
+    width: 88px;
+    margin-left: -1407px;
+}
+
+/* nav columns */
+.footer__nav {
+  position: absolute;
+  top: 23px;          /* 14+9 */
+  left: 328px;
+  display: flex;
+  gap: 347px;         /* 675-328=347 */
+}
+.footer__nav-section { 
+  display: flex;
+   flex-direction: column; 
+  gap: 0; 
+}
+.footer__nav-section1 {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-left: -159px;
+    margin-top: -18px;
+}
+.footer__nav-heading {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 18px;
+  color: white;
+  letter-spacing: 0;
+  line-height: 28.8px;
+  height: 37px;
+  margin-bottom: 10.8px;
+}
+.footer__nav-line {
+  width: 158px;
+  height: 2px;
+  margin-bottom: 8px;
+}
+.footer__nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 11px;
+}
+
+
+.footer__nav-item {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  color: #ffffff;
+  letter-spacing: 0;
+  line-height: 24px;
+  white-space: nowrap;
+}
+.footer__nav-item--active { font-weight: 600; }
+
+/* contacts list */
+.footer__contacts-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-left: 1px;
+    margin-top: 18px;
+}
+.footer__contact {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.footer__contact span {
+  font-family: 'Raleway', sans-serif;
+
+  font-weight: 600;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0;
+  line-height: 24px;
+  max-width: 254px;
+}
+
+/* promo image (top:13 left:991 — relative to inner) */
+.footer__promo-img {
+  position: absolute;
+  top: 22px;
+  left: 991px;
+  width: 560px;
+  height: 325px;
+  object-fit: cover;
+}
+
+/* horizontal divider line */
+.footer__divider {
+  position: absolute;
+  top: 383px;         /* 374+9 */
+  left: 27px;
+  width: 1544px;
+  height: 2px;
+}
+
+/* "Created by" text */
+.footer__created {
+    position: absolute;
+    bottom: 14px;
+    left: 894px;
+    width: 324px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: center;
+    line-height: 21px;
+    margin-left: -49px;
+}
+.footer__confidance {
+    position: absolute;
+    bottom: 14px;
+    left: 894px;
+    width: 324px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: center;
+    line-height: 21px;
+    margin-left: -389px;
+}
+/* corner decorative image */
+.footer__corner-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 230px;
+    height: 200px;
+    object-fit: cover;
+    margin-top: 10px;
+}
+
+/* ✅ КОНТЕЙНЕР КАРТЫ - координаты точно под макет */
+.footer__map-col {
+  position: absolute;
+  top: 22px;
+  left: 991px;
+  width: 560px;
+  height: 325px;
+  z-index: 1;
+}
+
+.footer__map {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #e8e5dc; /* фоллбэк, пока карта грузится */
+}
+
+.footer__map iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  pointer-events: auto; /* позволяет взаимодействовать с картой */
+}
+.footer__nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 11px;
+}
+
+.footer__nav-link {
+  font-family: 'Raleway', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer__nav-link:hover {
+  color: #fff;
+}
+
+/* Активная ссылка в футере */
+.footer__nav-link--active {
+  color: #fff;
+  font-weight: 700;
+}
