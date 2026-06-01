@@ -722,7 +722,7 @@
     position: absolute;
     bottom: 38px;
     left: 1458px;
-    font-family: var(--font-body);
+    font-family: "Manrope", Helvetica, sans-serif;
     font-weight: 400;
     font-size: 14px;
     color: #ffffff;
@@ -752,7 +752,7 @@
     margin-top: -18px;
 }
 .footer__nav-heading {
-  font-family: var(--font-body);
+  font-family: "Manrope", Helvetica, sans-serif;
   font-weight: 700;
   font-size: 18px;
   color: white;
@@ -778,7 +778,7 @@
 
 
 .footer__nav-item {
-  font-family: var(--font-body);
+  font-family: "Manrope", Helvetica, sans-serif;
   font-weight: 600;
   font-size: 15px;
   color: #ffffff;
@@ -805,7 +805,7 @@
   gap: 12px;
 }
 .footer__contact span {
-  font-family: 'Raleway', sans-serif;
+ font-family: "Manrope", Helvetica, sans-serif;
 
   font-weight: 600;
   font-size: 15px;
@@ -840,7 +840,7 @@
     bottom: 14px;
     left: 894px;
     width: 324px;
-    font-family: 'Raleway', sans-serif;
+    font-family: "Manrope", Helvetica, sans-serif;
     font-weight: 400;
     font-size: 14px;
     color: #ffffff;
@@ -853,7 +853,7 @@
     bottom: 14px;
     left: 894px;
     width: 324px;
-    font-family: 'Raleway', sans-serif;
+    font-family: "Manrope", Helvetica, sans-serif;
     font-weight: 400;
     font-size: 14px;
     color: #ffffff;
