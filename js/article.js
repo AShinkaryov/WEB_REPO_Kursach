@@ -8,23 +8,43 @@ document.addEventListener('DOMContentLoaded', async () => {
   const articleId = parseInt(urlParams.get('id'), 10);
   const articleBody = document.getElementById('article-body');
 
+  console.log('🔍 Article ID:', articleId);
+  console.log('📍 URL:', window.location.href);
+
   if (!articleId || isNaN(articleId)) {
+    console.error('❌ Invalid article ID');
     articleBody.innerHTML = '<p class="article-error">Новость не найдена</p>';
     return;
   }
 
   try {
+    console.log('📡 Fetching from http://localhost:3000/news...');
     const response = await fetch('http://localhost:3000/news');
-    if (!response.ok) throw new Error('Failed to fetch');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
     
     const news = await response.json();
-    const article = news.find(item => item.id === articleId);
-
+    console.log('✅ Loaded news:', news.length, 'items');
+    console.log('📰 Looking for ID:', articleId);
+    
+    const article = news.find(item => {
+        // Сравниваем как числа или как строки
+        return parseInt(item.id) === articleId || item.id.toString() === articleId.toString();
+      });
     if (!article) {
-      articleBody.innerHTML = '<p class="article-error">Новость не найдена</p>';
+      console.error('❌ Article not found. Available IDs:', news.map(n => n.id));
+      articleBody.innerHTML = `
+        <p class="article-error">Новость не найдена</p>
+        <p style="font-size: 14px; color: #999; margin-top: 10px;">
+          Доступные ID: ${news.map(n => n.id).join(', ')}
+        </p>
+      `;
       return;
     }
 
+    console.log('✅ Article found:', article.title);
     document.title = `${article.title} — AMI`;
 
     const tagsHTML = article.tags
@@ -75,11 +95,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
   } catch (error) {
-    console.error('Error loading article:', error);
+    console.error('❌ Error loading article:', error);
     articleBody.innerHTML = `
       <p class="article-error">Ошибка загрузки новости</p>
       <p style="font-size: 14px; color: #999; margin-top: 10px;">
-        Убедитесь, что json-server запущен (порт 3000)
+        ${error.message}<br><br>
+        💡 Убедитесь, что:<br>
+        1. json-server запущен (порт 3000)<br>
+        2. В News.json есть новость с id=${articleId}<br>
+        3. Откройте http://localhost:3000/news в браузере
       </p>
     `;
   }
