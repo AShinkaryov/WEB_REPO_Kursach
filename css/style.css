@@ -100,7 +100,7 @@ html, body {
     gap: 10px;
 }
 .sidebar__nav-item {
-  font-family: var(--font-body, 'Raleway', sans-serif);
+  font-family: var(--font-body,"Manrope", sans-serif);
   font-weight: var(--tab-weight, 500);
   font-size: var(--tab-size, 16px);
   letter-spacing: var(--tab-spacing, 0.32px);
@@ -137,7 +137,7 @@ html, body {
   white-space: nowrap;
 }
 .sidebar__email {
-  font-family: var(--font-body);
+  font-family: "Manrope", sans-serif;
   font-weight: 400;
   font-size: 16px;
   letter-spacing: 1.6px;
@@ -157,7 +157,7 @@ html, body {
     gap: 8px;
 }
 .sidebar__lang {
-  font-family: var(--font-body);
+  font-family: "Manrope", sans-serif;
   font-size: var(--small-size);
   line-height: var(--small-lh);
   letter-spacing: 0;
@@ -239,17 +239,18 @@ html, body {
     z-index: 10;
 }
 .btn-orange {
+  text-decoration: none !important;
   display: inline-block;
-  background: var(--orange);
+  background: #c74f07;;
   color: white;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 18px;
   font-weight: 700;
   padding: 23px 91px;
   border-radius: 40px;
   transition: background .2s, transform .2s;
 }
-.btn-orange:hover { background: #d44c2e; transform: scale(1.03); }
+.btn-orange:hover { background: #c74f07; transform: scale(1.03); }
 
 /* Dots */
 .hero__dots {
