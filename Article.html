@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8"/>
+  <title>AMI — Новость</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/blog.css">
+  
+  <!-- Встроенные стили для статьи -->
+  
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar__logo-wrap">
+      <img class="sidebar__logo" src="img/logo-sidebar.png" alt="AMI Logo"/>
+    </div>
+    <nav class="sidebar__nav">
+      <a href="Main.html" class="sidebar__nav-item">КАТАЛОГ</a>
+      <a href="partners.html" class="sidebar__nav-item">ПАРТНЕРАМ</a>
+      <a href="blog.html" class="sidebar__nav-item sidebar__nav-item--active">БЛОГ</a>
+      <a href="#" class="sidebar__nav-item">FOR KIDS</a>
+    </nav>
+    <div class="sidebar__contacts">
+      <div class="sidebar__phone">+373 00000000</div>
+      <div class="sidebar__email">ami@mail.ru</div>
+    </div>
+    <div class="sidebar__langs">
+      <span class="sidebar__lang sidebar__lang--inactive">En</span>
+      <span class="sidebar__lang sidebar__lang--active">Ru</span>
+      <span class="sidebar__lang sidebar__lang--inactive">Ro</span>
+    </div>
+    <div class="sidebar__social">
+      <img src="img/Partners/inst.png" alt="Instagram" width="24" height="24"/>
+      <img src="img/Partners/YT.png" alt="YouTube" width="24" height="24"/>
+      <img src="img/Partners/FB.png" alt="Facebook" width="24" height="24"/>
+      <img src="img/Partners/VK.png" alt="VK" width="24" height="24"/>
+    </div>
+    <img class="sidebar__copy" src="img/bag.png" alt="copy"/>
+    <img class="sidebar__border" src="img/line-4.svg" alt=""/>
+  </aside>
+
+  <!-- TOP NAV -->
+  <div class="top-nav">
+    <div class="top-nav__partners">
+      <div class="top-nav__partners-hover"></div>
+      <span class="top-nav__partners-label">БЛОГ</span>
+    </div>
+  </div>
+
+  <!-- ARTICLE CONTENT -->
+  <div class="article-page">
+    <a href="blog.html" class="article-back">
+      <img src="img/arrow-ic.svg" alt="←" style="transform:rotate(180deg);width:16px;"/>
+      <span>Назад к блогу</span>
+    </a>
+    <article class="article-body" id="article-body">
+      <div class="article-loading">Загрузка...</div>
+    </article>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer__inner">
+        <img class="footer__logo" src="img/logo-sidebar.png" alt="AMI"/>
+        <p class="footer__copy-year">AMI 2020</p>
+
+        <div class="footer__nav">
+          <div class="footer__nav-section">
+            <p class="footer__nav-heading">Карта сайта</p>
+            <img src="img/line-18.svg" alt="" class="footer__nav-line"/>
+            <ul class="footer__nav-list">
+              <li><a href="Main.html" class="footer__nav-link">Каталог</a></li>
+              <li><a href="partners.html" class="footer__nav-link">Партнерам</a></li>
+              <li><a href="blog.html" class="footer__nav-link">Блог</a></li>
+              <li><a href="kids.html" class="footer__nav-link">For kids</a></li>
+              <li><a href="docs/catalog.pdf" class="footer__nav-link">Скачать каталог .pdf</a></li>
+            </ul>
+          </div>
+          <div class="footer__nav-section">
+            <p class="footer__nav-heading">Контакты</p>
+            <img src="img/line-19.svg" alt="" class="footer__nav-line"/>
+            <ul class="footer__contacts-list">
+              <li class="footer__contact">
+                <img src="img/phone-ic.svg" alt="" width="16" height="16"/>
+                <span>+373 00000000</span>
+              </li>
+              <li class="footer__contact">
+                <img src="img/mail-ic.svg" alt="" width="16" height="16"/>
+                <span>ami@mail.ru</span>
+              </li>
+              <li class="footer__contact">
+                <img src="img/location-ic.svg" alt="" width="16" height="16"/>
+                <span>Могилёв, Габровская ул., 43</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer__map-col">
+          <div class="footer__map">
+            <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A6757509e11c89f72b929f1887470bc56819d056937c31c8a47f025aea712c852&amp;source=constructor" width="100%" height="100%" frameborder="0" allowfullscreen="true"></iframe>
+          </div>
+        </div>
+
+        <img src="img/line-11.svg" alt="" class="footer__divider"/>
+        <p class="footer__created">Created by be-adv.com</p>
+        <p class="footer__confidance">Политика конфиденциальности</p>
+        <img src="img/logo-sidebar.png" alt="" class="footer__corner-img"/>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/article.js"></script>
+</body>
+</html>

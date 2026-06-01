@@ -72,18 +72,22 @@
     gap: 10px;
 }
 .sidebar__nav-item {
-  font-family: var(--font-body);
-  font-weight: var(--tab-weight);
-  font-size: var(--tab-size);
-  letter-spacing: var(--tab-spacing);
-  line-height: var(--tab-lh);
-  color: var(--main-red);
+  font-family: var(--font-body, 'Raleway', sans-serif);
+  font-weight: var(--tab-weight, 500);
+  font-size: var(--tab-size, 16px);
+  letter-spacing: var(--tab-spacing, 0.32px);
+  line-height: var(--tab-lh, 150%);
+  color: var(--main-red, #E8593A); /* Оранжево-красный как на макете */
   white-space: nowrap;
   padding: 10px 0 10px 30px;
-  /* row heights reproduce group-6/7/8 proportions */
   height: 6.87%;
   display: flex;
   align-items: center;
+  
+  /* ✅ Убираем подчёркивание и добавляем переход */
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease, color 0.2s ease;
 }
 
 /* contacts block */
@@ -147,6 +151,7 @@
   width: 24px;
   height: 24px;
 }
+
 /* ════════════════════════════════════════════════════════════
    HERO BANNER  top:21 left:498  1203×400
    ════════════════════════════════════════════════════════════ */
@@ -219,15 +224,16 @@
   line-height: 150%;
 }
 .blog-header__subtitle {
-  width: 600px;
-  font-family: "Manrope", Helvetica, sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  color: #333333;
-  text-align: center;
-  letter-spacing: 0;
-  line-height: 20px;
-  opacity: 0.8;
+    width: 600px;
+    font-family: "Manrope", Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #333333;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 20px;
+    opacity: 0.8;
+    margin-top: -51px;
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -266,8 +272,14 @@
 
 /* Active filter button — solid red */
 .filter-btn--active {
-  background-color: var(--main-red);
-  color: #ffffff;
+ color: var(--main-red, #E8593A); /* Оранжево-красный как на макете */
+  color: #000000; /* Черный текст для контраста */
+  font-weight: 700;
+  box-shadow: 0 2px 5px rgba(232, 89, 58, 0.3); /* Легкая тень для красоты */
+}
+
+.filter-btn:hover {
+  opacity: 0.85;
 }
 .filter-btn:hover:not(.filter-btn--active) {
   background-color: rgba(202, 82, 10, 0.2);

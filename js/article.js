@@ -1,51 +1,49 @@
 /**
  * AMI Article Page
- * Reads ?id=N from URL, fetches news.json, renders the matching article.
+ * Reads ?id=N from URL, fetches from json-server, renders the matching article.
  */
 
-async function loadArticle() {
-  const params = new URLSearchParams(window.location.search);
-  const id = parseInt(params.get('id'), 10);
-  const body = document.getElementById('article-body');
+document.addEventListener('DOMContentLoaded', async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const articleId = parseInt(urlParams.get('id'), 10);
+  const articleBody = document.getElementById('article-body');
 
-  if (!id || isNaN(id)) {
-    body.innerHTML = '<p class="article-error">Новость не найдена.</p>';
+  if (!articleId || isNaN(articleId)) {
+    articleBody.innerHTML = '<p class="article-error">Новость не найдена</p>';
     return;
   }
 
   try {
-    const res = await fetch('data/news.json');
-    if (!res.ok) throw new Error('fetch failed');
-    const data = await res.json();
+    const response = await fetch('http://localhost:3000/news');
+    if (!response.ok) throw new Error('Failed to fetch');
+    
+    const news = await response.json();
+    const article = news.find(item => item.id === articleId);
 
-    const item = data.news.find(n => n.id === id);
-    if (!item) {
-      body.innerHTML = '<p class="article-error">Новость не найдена.</p>';
+    if (!article) {
+      articleBody.innerHTML = '<p class="article-error">Новость не найдена</p>';
       return;
     }
 
-    // Update page title
-    document.title = `AMI — ${item.title}`;
+    document.title = `${article.title} — AMI`;
 
-    // Render tags
-    const tagsHTML = item.tags
-      .map(t => `<span class="article-tag">#${t}</span>`)
+    const tagsHTML = article.tags
+      .map(tag => `<span class="article-tag">#${tag}</span>`)
       .join('');
 
-    // Render paragraphs
-    const paragraphs = item.content
+    const paragraphs = article.content
       .split('\n\n')
-      .filter(Boolean)
-      .map(p => `<p class="article-paragraph">${p.replace(/\n/g, '<br/>')}</p>`)
+      .filter(p => p.trim())
+      .map(p => `<p class="article-paragraph">${p.replace(/\n/g, '<br>')}</p>`)
       .join('');
 
-    body.innerHTML = `
+    articleBody.innerHTML = `
       <div class="article-meta">
-        <span class="article-date">${item.date}</span>
+        <span class="article-date">${article.date}</span>
         <div class="article-tags">${tagsHTML}</div>
       </div>
-      <h1 class="article-title">${item.title}</h1>
-      <img class="article-hero-img" src="${item.image}" alt="${item.title}" />
+      <h1 class="article-title">${article.title}</h1>
+      <img src="${article.image}" alt="${article.title}" class="article-hero-img" />
       <div class="article-content">
         ${paragraphs}
       </div>
@@ -56,29 +54,33 @@ async function loadArticle() {
       </div>
     `;
 
-    // Render other news cards
-    const others = data.news.filter(n => n.id !== id).slice(0, 3);
+    // Другие новости
+    const otherNews = news.filter(n => n.id !== articleId).slice(0, 3);
     const grid = document.getElementById('other-news-grid');
-    if (grid) {
-      others.forEach(n => {
+    
+    if (grid && otherNews.length > 0) {
+      otherNews.forEach(newsItem => {
         const card = document.createElement('a');
         card.className = 'article-other-card';
-        card.href = `article.html?id=${n.id}`;
+        card.href = `article.html?id=${newsItem.id}`;
         card.innerHTML = `
-          <img src="${n.image}" alt="${n.title}" />
+          <img src="${newsItem.image}" alt="${newsItem.title}" />
           <div class="article-other-card__body">
-            <span class="article-other-card__date">${n.date}</span>
-            <p class="article-other-card__title">${n.title}</p>
+            <span class="article-other-card__date">${newsItem.date}</span>
+            <p class="article-other-card__title">${newsItem.title}</p>
           </div>
         `;
         grid.appendChild(card);
       });
     }
 
-  } catch (e) {
-    console.error(e);
-    body.innerHTML = '<p class="article-error">Ошибка загрузки новости.</p>';
+  } catch (error) {
+    console.error('Error loading article:', error);
+    articleBody.innerHTML = `
+      <p class="article-error">Ошибка загрузки новости</p>
+      <p style="font-size: 14px; color: #999; margin-top: 10px;">
+        Убедитесь, что json-server запущен (порт 3000)
+      </p>
+    `;
   }
-}
-
-document.addEventListener('DOMContentLoaded', loadArticle);
+});
