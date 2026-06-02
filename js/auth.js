@@ -172,86 +172,99 @@ function checkAuth() {
 
 /* ── Update UI Based on Auth ─────────────────────────────── */
 /* ── Update UI Based on Auth ─────────────────────────────── */
-/* ── Update UI Based on Auth ─────────────────────────────── */
 function updateUserInterface() {
   console.log('🔄 updateUserInterface вызвана');
   
   const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
-  console.log('📋 Session:', session);
+  if (!session) return;
   
-  if (!session) {
-    console.log('⚠️ Нет сессии, пропускаем');
-    return;
-  }
+  console.log(' Session:', session);
   
-  // Ждем загрузки DOM
   setTimeout(() => {
-    console.log('🔍 Ищу sidebar...');
     let authDiv = document.querySelector('.sidebar__auth');
     const sidebar = document.querySelector('.sidebar');
     
-    console.log('Sidebar найден:', !!sidebar);
-    console.log('Auth div существует:', !!authDiv);
+    // Удаляем старую версию, если есть
+    if (authDiv) authDiv.remove();
     
-    if (sidebar && !authDiv) {
-      console.log('➕ Создаю sidebar__auth');
-      authDiv = document.createElement('div');
-      authDiv.className = 'sidebar__auth';
-      authDiv.style.cssText = 'margin-top: 20px; padding: 0 20px;';
-      
-      const langs = sidebar.querySelector('.sidebar__langs');
-      if (langs) {
-        console.log('📍 Вставляю после языков');
-        langs.after(authDiv);
-      } else {
-        console.log('📍 Вставляю в конец sidebar');
-        const social = sidebar.querySelector('.sidebar__social');
-        if (social) {
-          social.before(authDiv);
-        } else {
-          sidebar.appendChild(authDiv);
-        }
-      }
-    }
+    if (!sidebar) return;
     
-    if (authDiv) {
-      console.log('✅ authDiv готов, заполняю...');
-      console.log('Роль пользователя:', session.role);
-      
-      if (session.role === 'admin') {
-        console.log('👤 Показываю АДМИН интерфейс');
-        authDiv.innerHTML = `
-          <div style="background: #A7BB61; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
-            <a href="admin.html" style="display: block; text-align: center; color: #fff; text-decoration: none; font-weight: 700; font-size: 14px; margin-bottom: 8px;">
-              ⚙️ АДМИН ПАНЕЛЬ
-            </a>
-          </div>
-          <div style="background: #f8f8f8; padding: 12px; border-radius: 8px;">
-            <div style="font-size: 13px; color: #423F3E; margin-bottom: 4px; font-weight: 600;">${session.name}</div>
-            <div style="font-size: 11px; color: #E8593A; margin-bottom: 10px;">⚙️ Администратор</div>
-            <button onclick="auth.logout()" style="width: 100%; padding: 8px; background: #E8593A; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: opacity 0.2s;">
-              Выйти
-            </button>
-          </div>
-        `;
-      } else if (session.role === 'user') {
-        console.log('👤 Показываю ПОЛЬЗОВАТЕЛЬ интерфейс');
-        authDiv.innerHTML = `
-          <div style="background: #f8f8f8; padding: 12px; border-radius: 8px;">
-            <div style="font-size: 13px; color: #423F3E; margin-bottom: 4px; font-weight: 600;">👤 ${session.name}</div>
-            <div style="font-size: 11px; color: #7B7B7B; margin-bottom: 10px;">Покупатель</div>
-            <button onclick="auth.logout()" style="width: 100%; padding: 8px; background: #E8593A; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: opacity 0.2s;">
-              Выйти
-            </button>
-          </div>
-        `;
-      }
-      
-      console.log('✅ UI обновлен!');
+    // Создаем новый контейнер
+    authDiv = document.createElement('div');
+    authDiv.className = 'sidebar__auth';
+    
+    // 🔥 Вставляем ПОСЛЕ навигации (между меню и иконками)
+    const nav = sidebar.querySelector('.sidebar__nav');
+    if (nav) {
+      nav.after(authDiv);
     } else {
-      console.error('❌ Не удалось создать authDiv');
+      const icons = sidebar.querySelector('.sidebar__icons');
+      if (icons) icons.before(authDiv);
+      else sidebar.appendChild(authDiv);
     }
-  }, 500);
+    
+    // Управление видимостью иконок корзины/избранного
+    const iconsContainer = sidebar.querySelector('.sidebar__icons');
+    if (iconsContainer) {
+      if (session.role === 'admin') {
+        iconsContainer.style.display = 'none'; // Скрываем для админа
+      } else {
+        iconsContainer.style.display = 'flex';
+      }
+    }
+    
+    // Стилизация в зависимости от роли
+    if (session.role === 'admin') {
+      authDiv.innerHTML = `
+        <div class="admin-panel-card">
+          <a href="admin.html" class="admin-panel-btn">
+            <span class="admin-panel-btn__icon">⚙️</span>
+            <span>АДМИН ПАНЕЛЬ</span>
+          </a>
+        </div>
+        <div class="user-info-card">
+          <div class="user-info__avatar">👑</div>
+          <div class="user-info__body">
+            <div class="user-info__name">${session.name}</div>
+            <div class="user-info__role">Администратор</div>
+            <div class="user-info__email">${session.email}</div>
+          </div>
+        </div>
+        <button class="logout-btn" id="logout-btn">
+          <span>🚪</span>
+          <span>Выйти</span>
+        </button>
+      `;
+    } else if (session.role === 'user') {
+      authDiv.innerHTML = `
+        <div class="user-info-card">
+          <div class="user-info__avatar">👤</div>
+          <div class="user-info__body">
+            <div class="user-info__name">${session.name}</div>
+            <div class="user-info__role">Покупатель</div>
+            <div class="user-info__email">${session.email}</div>
+          </div>
+        </div>
+        <button class="logout-btn" id="logout-btn">
+          <span></span>
+          <span>Выйти</span>
+        </button>
+      `;
+    }
+    
+    // Обработчик выхода
+    const logoutBtn = authDiv.querySelector('#logout-btn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log(' Выход из системы');
+        localStorage.removeItem('ami-session');
+        window.location.href = 'login.html';
+      });
+    }
+    
+    console.log('✅ UI обновлен!');
+  }, 300);
 }
 
 /* ── Logout ──────────────────────────────────────────────── */
