@@ -1578,3 +1578,22 @@ button { cursor: pointer; border: none; background: none; padding: 0; font-famil
 .recommended-card__add--admin:hover {
   background: #8fa84a !important;
 }
+
+/* ========== СКРЫТИЕ ИКОНОК ДЛЯ АДМИНА ========== */
+body.admin-mode .sidebar__icons,
+body.admin-mode .sidebar__cart,
+body.admin-mode #cart-badge,
+body.admin-mode #favorites-badge {
+  display: none !important;
+}
+
+/* Скрываем блок избранного в каталоге для админа */
+body.admin-mode #favorites-section {
+  display: none !important;
+}
+
+/* Скрываем корзину в сайдбаре (если она отдельно) */
+body.admin-mode a[href="cart.html"],
+body.admin-mode a[href="favorites.html"] {
+  display: none !important;
+}

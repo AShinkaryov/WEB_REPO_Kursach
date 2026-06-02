@@ -178,22 +178,27 @@ function updateUserInterface() {
   const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
   if (!session) return;
   
-  console.log(' Session:', session);
+  console.log('📋 Session:', session);
+  
+  // 🔥 ДОБАВЛЯЕМ КЛАСС НА BODY ДЛЯ АДМИНА
+  if (session.role === 'admin') {
+    document.body.classList.add('admin-mode');
+    console.log('✅ Добавлен класс admin-mode на body');
+  } else {
+    document.body.classList.remove('admin-mode');
+  }
   
   setTimeout(() => {
     let authDiv = document.querySelector('.sidebar__auth');
     const sidebar = document.querySelector('.sidebar');
     
-    // Удаляем старую версию, если есть
     if (authDiv) authDiv.remove();
     
     if (!sidebar) return;
     
-    // Создаем новый контейнер
     authDiv = document.createElement('div');
     authDiv.className = 'sidebar__auth';
     
-    // 🔥 Вставляем ПОСЛЕ навигации (между меню и иконками)
     const nav = sidebar.querySelector('.sidebar__nav');
     if (nav) {
       nav.after(authDiv);
@@ -207,13 +212,12 @@ function updateUserInterface() {
     const iconsContainer = sidebar.querySelector('.sidebar__icons');
     if (iconsContainer) {
       if (session.role === 'admin') {
-        iconsContainer.style.display = 'none'; // Скрываем для админа
+        iconsContainer.style.display = 'none';
       } else {
         iconsContainer.style.display = 'flex';
       }
     }
     
-    // Стилизация в зависимости от роли
     if (session.role === 'admin') {
       authDiv.innerHTML = `
         <div class="admin-panel-card">
@@ -238,7 +242,7 @@ function updateUserInterface() {
     } else if (session.role === 'user') {
       authDiv.innerHTML = `
         <div class="user-info-card">
-          <div class="user-info__avatar">👤</div>
+          <div class="user-info__avatar"></div>
           <div class="user-info__body">
             <div class="user-info__name">${session.name}</div>
             <div class="user-info__role">Покупатель</div>
@@ -246,19 +250,19 @@ function updateUserInterface() {
           </div>
         </div>
         <button class="logout-btn" id="logout-btn">
-          <span></span>
+          <span>🚪</span>
           <span>Выйти</span>
         </button>
       `;
     }
     
-    // Обработчик выхода
     const logoutBtn = authDiv.querySelector('#logout-btn');
     if (logoutBtn) {
       logoutBtn.addEventListener('click', (e) => {
         e.preventDefault();
         console.log(' Выход из системы');
         localStorage.removeItem('ami-session');
+        document.body.classList.remove('admin-mode');
         window.location.href = 'login.html';
       });
     }

@@ -88,7 +88,10 @@ function isGuest() {
   /* ── Init ───────────────────────────────────────────────── */
   function init() {
   console.log('🚀 Catalog initialized');
-  
+  if (isAdmin()) {
+    document.body.classList.add('admin-mode');
+    console.log('✅ admin-mode добавлен в init()');
+  }
   showCurrentUserDebug();
   
   renderCategories();
