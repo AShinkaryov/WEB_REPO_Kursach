@@ -79,7 +79,16 @@ button { cursor: pointer; border: none; background: none; padding: 0; font-famil
   padding-left: 30px;
 }
 .sidebar__nav-item:hover:not(.sidebar__nav-item--active) { opacity: .7; }
+/* Sidebar auth section */
+.sidebar__auth {
+  margin-top: 449px;
+  padding: 0 20px;
+}
 
+.sidebar__auth button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
 /* cart icon below nav */
 .sidebar__cart {
     position: absolute;

@@ -8,6 +8,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/catalog.css">
+  <script>
+    // 🔥 ПРОВЕРКА: если гость - перенаправляем на вход
+    const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
+    if (!session) {
+      window.location.href = 'login.html?redirect=favorites';
+    }
+  </script>
   <style>
     .favorites-page { margin-left: 310px; padding: 40px 60px; min-height: 100vh; }
     .favorites-title { font-family: "Yeseva One", serif; font-size: 32px; color: #222; margin-bottom: 40px; }

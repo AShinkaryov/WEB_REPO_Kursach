@@ -11,6 +11,9 @@ const ROLES = {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('🔐 Auth module loaded');
+  console.log('Current session:', localStorage.getItem('ami-session'));
+  
   const loginForm = document.getElementById('login-form');
   const registerForm = document.getElementById('register-form');
 
@@ -22,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     registerForm.addEventListener('submit', handleRegister);
   }
 
-  // Check if already logged in
   checkAuth();
 });
 
@@ -34,10 +36,7 @@ function handleLogin(e) {
   const password = document.getElementById('login-password').value;
   const role = document.getElementById('login-role').value;
 
-  // Get users from localStorage
   const users = JSON.parse(localStorage.getItem('ami-users') || '[]');
-  
-  // Find user
   const user = users.find(u => u.email === email && u.password === password);
 
   if (!user) {
@@ -45,13 +44,11 @@ function handleLogin(e) {
     return;
   }
 
-  // Check role match
   if (user.role !== role) {
     showError('Неверная роль пользователя');
     return;
   }
 
-  // Save session
   const session = {
     id: user.id,
     name: user.name,
@@ -62,10 +59,8 @@ function handleLogin(e) {
   };
 
   localStorage.setItem('ami-session', JSON.stringify(session));
-  
   showSuccess('Вход выполнен успешно!');
   
-  // Redirect based on role
   setTimeout(() => {
     if (role === ROLES.ADMIN) {
       window.location.href = 'admin.html';
@@ -86,7 +81,6 @@ function handleRegister(e) {
   const confirm = document.getElementById('register-confirm').value;
   const role = document.getElementById('register-role').value;
 
-  // Validation
   if (password !== confirm) {
     showError('Пароли не совпадают');
     return;
@@ -97,22 +91,19 @@ function handleRegister(e) {
     return;
   }
 
-  // Get existing users
   const users = JSON.parse(localStorage.getItem('ami-users') || '[]');
   
-  // Check if email exists
   if (users.find(u => u.email === email)) {
     showError('Пользователь с таким email уже существует');
     return;
   }
 
-  // Create new user
   const newUser = {
     id: Date.now().toString(),
     name,
     email,
     phone,
-    password, // In production, hash this!
+    password,
     role,
     createdAt: new Date().toISOString()
   };
@@ -122,7 +113,6 @@ function handleRegister(e) {
 
   showSuccess('Регистрация успешна! Выполняется вход...');
   
-  // Auto login
   setTimeout(() => {
     const session = {
       id: newUser.id,
@@ -141,90 +131,127 @@ function handleRegister(e) {
 /* ── Helper Functions ────────────────────────────────────── */
 function showError(message) {
   const form = document.querySelector('.auth-form');
-  let errorEl = form.querySelector('.form-error');
+  let errorEl = form?.querySelector('.form-error');
   
   if (!errorEl) {
     errorEl = document.createElement('div');
     errorEl.className = 'form-error';
-    form.insertBefore(errorEl, form.firstChild);
+    form?.insertBefore(errorEl, form.firstChild);
   }
   
-  errorEl.textContent = message;
-  errorEl.classList.add('show');
-  
-  setTimeout(() => errorEl.classList.remove('show'), 5000);
+  if (errorEl) {
+    errorEl.textContent = message;
+    errorEl.classList.add('show');
+    setTimeout(() => errorEl.classList.remove('show'), 5000);
+  }
 }
 
 function showSuccess(message) {
   const form = document.querySelector('.auth-form');
-  let successEl = form.querySelector('.form-success');
+  let successEl = form?.querySelector('.form-success');
   
   if (!successEl) {
     successEl = document.createElement('div');
     successEl.className = 'form-success';
-    form.insertBefore(successEl, form.firstChild);
+    form?.insertBefore(successEl, form.firstChild);
   }
   
-  successEl.textContent = message;
-  successEl.classList.add('show');
+  if (successEl) {
+    successEl.textContent = message;
+    successEl.classList.add('show');
+  }
 }
 
 /* ── Check Auth Status ───────────────────────────────────── */
 function checkAuth() {
   const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
-  
   if (session) {
-    // User is logged in
-    updateUserInterface(session);
+    updateUserInterface();
   }
 }
 
 /* ── Update UI Based on Auth ─────────────────────────────── */
-function updateUserInterface(session) {
-  if (!session) return;
+/* ── Update UI Based on Auth ─────────────────────────────── */
+/* ── Update UI Based on Auth ─────────────────────────────── */
+function updateUserInterface() {
+  console.log('🔄 updateUserInterface вызвана');
   
-  // Ищем или создаем контейнер для авторизации
-  let authDiv = document.querySelector('.sidebar__auth');
+  const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
+  console.log('📋 Session:', session);
   
-  if (!authDiv) {
-    // Создаем, если не существует
-    authDiv = document.createElement('div');
-    authDiv.className = 'sidebar__auth';
-    
-    // Вставляем после языков или перед соцсетями
+  if (!session) {
+    console.log('⚠️ Нет сессии, пропускаем');
+    return;
+  }
+  
+  // Ждем загрузки DOM
+  setTimeout(() => {
+    console.log('🔍 Ищу sidebar...');
+    let authDiv = document.querySelector('.sidebar__auth');
     const sidebar = document.querySelector('.sidebar');
-    if (sidebar) {
+    
+    console.log('Sidebar найден:', !!sidebar);
+    console.log('Auth div существует:', !!authDiv);
+    
+    if (sidebar && !authDiv) {
+      console.log('➕ Создаю sidebar__auth');
+      authDiv = document.createElement('div');
+      authDiv.className = 'sidebar__auth';
+      authDiv.style.cssText = 'margin-top: 20px; padding: 0 20px;';
+      
       const langs = sidebar.querySelector('.sidebar__langs');
       if (langs) {
+        console.log('📍 Вставляю после языков');
         langs.after(authDiv);
       } else {
-        sidebar.appendChild(authDiv);
+        console.log('📍 Вставляю в конец sidebar');
+        const social = sidebar.querySelector('.sidebar__social');
+        if (social) {
+          social.before(authDiv);
+        } else {
+          sidebar.appendChild(authDiv);
+        }
       }
     }
-  }
-
-  // Проверяем роль и показываем соответствующий интерфейс
-  if (session.role === ROLES.ADMIN) {
-    authDiv.innerHTML = `
-      <a href="admin.html" class="sidebar__nav-item sidebar__nav-item--admin" style="background: #A7BB61; color: #fff; margin-bottom: 10px;">
-        ⚙️ АДМИН ПАНЕЛЬ
-      </a>
-      <div class="sidebar__user-info" style="padding: 10px; background: #f8f8f8; border-radius: 6px; margin-top: 10px;">
-        <div style="font-size: 13px; color: #7B7B7B; margin-bottom: 4px;">${session.name}</div>
-        <div style="font-size: 11px; color: #E8593A; font-weight: 600;">Администратор</div>
-        <button class="sidebar__logout" onclick="auth.logout()" style="margin-top: 8px; padding: 6px 12px; background: #E8593A; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; width: 100%;">Выйти</button>
-      </div>
-    `;
-  } else if (session.role === ROLES.USER) {
-    authDiv.innerHTML = `
-      <div class="sidebar__user-info" style="padding: 10px; background: #f8f8f8; border-radius: 6px;">
-        <div style="font-size: 13px; color: #423F3E; margin-bottom: 4px;">👤 ${session.name}</div>
-        <button class="sidebar__logout" onclick="auth.logout()" style="margin-top: 8px; padding: 6px 12px; background: #E8593A; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; width: 100%;">Выйти</button>
-      </div>
-    `;
-  }
-  
-  console.log('✅ UI обновлен для пользователя:', session);
+    
+    if (authDiv) {
+      console.log('✅ authDiv готов, заполняю...');
+      console.log('Роль пользователя:', session.role);
+      
+      if (session.role === 'admin') {
+        console.log('👤 Показываю АДМИН интерфейс');
+        authDiv.innerHTML = `
+          <div style="background: #A7BB61; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+            <a href="admin.html" style="display: block; text-align: center; color: #fff; text-decoration: none; font-weight: 700; font-size: 14px; margin-bottom: 8px;">
+              ⚙️ АДМИН ПАНЕЛЬ
+            </a>
+          </div>
+          <div style="background: #f8f8f8; padding: 12px; border-radius: 8px;">
+            <div style="font-size: 13px; color: #423F3E; margin-bottom: 4px; font-weight: 600;">${session.name}</div>
+            <div style="font-size: 11px; color: #E8593A; margin-bottom: 10px;">⚙️ Администратор</div>
+            <button onclick="auth.logout()" style="width: 100%; padding: 8px; background: #E8593A; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: opacity 0.2s;">
+              Выйти
+            </button>
+          </div>
+        `;
+      } else if (session.role === 'user') {
+        console.log('👤 Показываю ПОЛЬЗОВАТЕЛЬ интерфейс');
+        authDiv.innerHTML = `
+          <div style="background: #f8f8f8; padding: 12px; border-radius: 8px;">
+            <div style="font-size: 13px; color: #423F3E; margin-bottom: 4px; font-weight: 600;">👤 ${session.name}</div>
+            <div style="font-size: 11px; color: #7B7B7B; margin-bottom: 10px;">Покупатель</div>
+            <button onclick="auth.logout()" style="width: 100%; padding: 8px; background: #E8593A; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: opacity 0.2s;">
+              Выйти
+            </button>
+          </div>
+        `;
+      }
+      
+      console.log('✅ UI обновлен!');
+    } else {
+      console.error('❌ Не удалось создать authDiv');
+    }
+  }, 500);
 }
 
 /* ── Logout ──────────────────────────────────────────────── */
@@ -262,9 +289,19 @@ function requireAuth(requiredRole = null) {
 }
 
 // Export functions
+// Export functions
 window.auth = {
   getCurrentUser,
   hasRole,
   requireAuth,
-  logout
+  logout,
+  updateUserInterface  // 🔥 ДОБАВИЛ ЭТУ СТРОКУ
 };
+
+
+/* ── Login as Guest ──────────────────────────────────────── */
+function loginAsGuest() {
+  console.log('👤 Вход как ГОСТЬ');
+  localStorage.removeItem('ami-session');
+  window.location.href = 'catalog.html';
+}
