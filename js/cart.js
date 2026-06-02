@@ -1,38 +1,71 @@
 /**
  * AMI Cart Page
- * Reads cart from localStorage, renders items, handles qty +/-, remove, order submit
  */
 
-let cart = JSON.parse(localStorage.getItem('ami_cart') || '[]');
+const CART_KEY = 'ami-cart';
+let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
 
+console.log('🛒 Cart loaded from localStorage:', cart);
+
+/* ── Fetch Products ────────────────────────────────────── */
+async function fetchProducts() {
+  try {
+    const res = await fetch('http://localhost:3001/products');
+    if (res.ok) {
+      const products = await res.json();
+      console.log('✅ Products loaded for cart:', products.length, 'items');
+      return products;
+    }
+  } catch (e) {
+    console.error('❌ Error loading products:', e);
+  }
+  return [];
+}
+
+/* ── Save cart ─────────────────────────────────────────── */
 function saveCart() {
-  localStorage.setItem('ami_cart', JSON.stringify(cart));
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
   updateCartBadge();
+  window.dispatchEvent(new Event('storage'));
 }
 
+/* ── Update badge ──────────────────────────────────────── */
 function updateCartBadge() {
-  const total = cart.reduce((s, i) => s + i.qty, 0);
+  const total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
   const badge = document.getElementById('cart-badge');
-  if (badge) badge.textContent = total > 0 ? total : '';
+  if (badge) {
+    badge.textContent = total > 0 ? total : '';
+    badge.style.display = total > 0 ? 'flex' : 'none';
+    console.log('🔢 Badge updated:', total);
+  }
 }
 
-/* ── Change qty ──────────────────────────────────────────────── */
+/* ── Change qty ────────────────────────────────────────── */
 function changeQty(id, delta) {
-  const item = cart.find(i => i.id === id);
-  if (!item) return;
-  item.qty = Math.max(1, item.qty + delta);
-  saveCart();
-  renderCart();
+  const item = cart.find(i => {
+    const itemId = typeof i.id === 'string' ? parseInt(i.id) : i.id;
+    const searchId = typeof id === 'string' ? parseInt(id) : id;
+    return itemId === searchId;
+  });
+  
+  if (item) {
+    item.quantity = Math.max(1, (item.quantity || 1) + delta);
+    saveCart();
+    renderCart();
+  }
 }
 
-/* ── Remove item ─────────────────────────────────────────────── */
 function removeItem(id) {
-  cart = cart.filter(i => i.id !== id);
+  cart = cart.filter(i => {
+    const itemId = typeof i.id === 'string' ? parseInt(i.id) : i.id;
+    const searchId = typeof id === 'string' ? parseInt(id) : id;
+    return itemId !== searchId;
+  });
   saveCart();
   renderCart();
 }
 
-/* ── Render rows ─────────────────────────────────────────────── */
+/* ── Render cart ───────────────────────────────────────── */
 function renderCart() {
   const list = document.getElementById('cart-list');
   if (!list) return;
@@ -46,44 +79,45 @@ function renderCart() {
     return;
   }
 
-  list.innerHTML = cart.map(item => `
+  list.innerHTML = cart.map(item => {
+    console.log('🖼️ Cart item:', item);
+    
+    return `
     <div class="cart-item" data-id="${item.id}">
-      <img class="cart-item__img" src="${item.image}" alt="${item.name}"/>
-
+      <img class="cart-item__img" src="${item.image}" alt="${item.name}"
+           onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22157%22 height=%22132%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22157%22 height=%22132%22/%3E%3Ctext fill=%22%23999%22 x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22%3ENo image%3C/text%3E%3C/svg%3E'"/>
       <div class="cart-item__info">
         <p class="cart-item__name">${item.name}</p>
-        <p class="cart-item__weight">${item.weight}</p>
+        <p class="cart-item__weight">${item.weight || ''}</p>
       </div>
-
       <div class="cart-item__qty-wrap">
-        <button class="qty-btn" onclick="changeQty(${item.id}, -1)" aria-label="Уменьшить">−</button>
-        <span class="qty-val">${item.qty}</span>
-        <button class="qty-btn" onclick="changeQty(${item.id},  1)" aria-label="Увеличить">+</button>
+        <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+        <span class="qty-val">${item.quantity || 1}</span>
+        <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
       </div>
-
-      <button class="cart-item__remove" onclick="removeItem(${item.id})" aria-label="Удалить">
+      <button class="cart-item__remove" onclick="removeItem(${item.id})">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
           <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
           <path d="M10 11v6"/><path d="M14 11v6"/>
           <path d="M9 6V4h6v2"/>
         </svg>
       </button>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
-/* ── Order form submit ───────────────────────────────────────── */
+/* ── Order form ────────────────────────────────────────── */
 function initOrderForm() {
   const form = document.getElementById('order-form');
   if (!form) return;
+  
   form.addEventListener('submit', e => {
     e.preventDefault();
     if (cart.length === 0) {
-      alert('Корзина пуста. Добавьте товары перед оформлением заказа.');
+      alert('Корзина пуста.');
       return;
     }
-    // Here you'd send to backend; for now just confirm
-    alert('Заказ успешно оформлен! Мы свяжемся с вами в ближайшее время.');
+    alert('Заказ оформлен!');
     cart = [];
     saveCart();
     renderCart();
@@ -91,8 +125,15 @@ function initOrderForm() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+/* ── Init ──────────────────────────────────────────────── */
+async function init() {
+  console.log('🚀 Cart page initializing...');
+  await fetchProducts();
   renderCart();
   updateCartBadge();
   initOrderForm();
-});
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+window.CartApp = { changeQty, removeItem, updateCartBadge };

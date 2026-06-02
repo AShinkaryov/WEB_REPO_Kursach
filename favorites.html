@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8"/>
+  <title>AMI — Избранное</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/catalog.css">
+  <style>
+    .favorites-page { margin-left: 310px; padding: 40px 60px; min-height: 100vh; }
+    .favorites-title { font-family: "Yeseva One", serif; font-size: 32px; color: #222; margin-bottom: 40px; }
+    .favorites-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 60px; }
+    .favorites-empty { text-align: center; padding: 100px 20px; }
+    .favorites-empty p { font-family: "Manrope", sans-serif; font-size: 18px; color: #999; margin-bottom: 30px; }
+    .btn-primary { display: inline-block; padding: 12px 32px; background: var(--main-red, #E8593A); color: #fff; text-decoration: none; border-radius: 6px; font-family: "Manrope", sans-serif; font-weight: 600; transition: opacity 0.2s; }
+    .btn-primary:hover { opacity: 0.9; }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar__logo-wrap">
+    <img class="sidebar__logo" src="img/logo-sidebar.png" alt="AMI Logo"/>
+  </div>
+  <nav class="sidebar__nav">
+    <a href="catalog.html" class="sidebar__nav-item">КАТАЛОГ</a>
+    <a href="partners.html" class="sidebar__nav-item">ПАРТНЕРАМ</a>
+    <a href="blog.html" class="sidebar__nav-item">БЛОГ</a>
+    <a href="#" class="sidebar__nav-item">FOR KIDS</a>
+  </nav>
+  <a href="cart.html" class="sidebar__cart" aria-label="Корзина">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28">
+      <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+    </svg>
+    <span id="cart-badge" class="cart-badge"></span>
+  </a>
+  <a href="favorites.html" class="sidebar__cart sidebar__cart--active" aria-label="Избранное" style="margin-top: 16px;">
+    <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" width="28" height="28">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+    </svg>
+    <span id="favorites-badge" class="cart-badge"></span>
+  </a>
+  <div class="sidebar__social">
+    <img src="img/Partners/inst.png" alt="Instagram" width="24" height="24"/>
+    <img src="img/Partners/YT.png" alt="YouTube" width="24" height="24"/>
+    <img src="img/Partners/FB.png" alt="Facebook" width="24" height="24"/>
+    <img src="img/Partners/VK.png" alt="VK" width="24" height="24"/>
+  </div>
+  <div class="sidebar__contacts">
+    <div class="sidebar__phone">+373 00000000</div>
+    <div class="sidebar__email">ami@mail.ru</div>
+  </div>
+  <div class="sidebar__langs">
+    <span class="sidebar__lang sidebar__lang--inactive">En</span>
+    <span class="sidebar__lang sidebar__lang--active">Ru</span>
+    <span class="sidebar__lang sidebar__lang--inactive">Ro</span>
+  </div>
+  <img class="sidebar__copy" src="img/bag.png" alt=""/>
+  <img class="sidebar__border" src="img/line-4.svg" alt=""/>
+</aside>
+
+<!-- MAIN -->
+<main class="favorites-page">
+  <h1 class="favorites-title">Избранное</h1>
+  <div id="favorites-grid" class="favorites-grid">
+    <!-- Заполняется через JS -->
+  </div>
+</main>
+
+<div id="ami-toast" class="ami-toast"></div>
+<script src="js/favorites.js"></script>
+</body>
+</html>

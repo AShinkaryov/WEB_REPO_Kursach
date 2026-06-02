@@ -1246,3 +1246,103 @@ button { cursor: pointer; border: none; background: none; padding: 0; font-famil
 .filter-section + .filter-section {
   margin-top: 0;
 }
+
+/* Счетчики на иконках */
+.cart-badge, .favorites-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--main-red, #E8593A);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  display: none; /* Скрыт по умолчанию */
+}
+
+/* Пустое состояние избранного */
+.favorites-empty {
+  text-align: center;
+  padding: 80px 20px;
+  grid-column: 1 / -1;
+}
+
+.favorites-empty p {
+  font-family: "Manrope", sans-serif;
+  font-size: 16px;
+  color: #999;
+  margin: 20px 0 30px;
+}
+
+/* Toast notification */
+.ami-toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #333;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-family: "Manrope", sans-serif;
+  font-size: 14px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.ami-toast--show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Badges on icons */
+.cart-badge, .favorites-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--main-red, #E8593A);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+}
+
+/* Favorites section */
+.favorites-title {
+  font-family: "Yeseva One", serif;
+  font-size: 24px;
+  color: #222;
+  margin-bottom: 24px;
+}
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* Active favorite button */
+.product-card__favorite--active {
+  background: #fff;
+  color: var(--main-red, #E8593A);
+  opacity: 1;
+}
+
+.product-card__favorite--active svg {
+  fill: var(--main-red, #E8593A);
+  stroke: var(--main-red, #E8593A);
+}
