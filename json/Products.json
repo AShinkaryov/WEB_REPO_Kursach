@@ -1,0 +1,222 @@
+{
+  "categories": [
+    { "id": "pechenye",    "label": "Печенье" },
+    { "id": "marmelad",   "label": "Мармелад" },
+    { "id": "marshmellow","label": "Маршмеллоу" },
+    { "id": "shokolad",   "label": "Шоколад" },
+    { "id": "vafli",      "label": "Вафли" }
+  ],
+  "filters": {
+    "brands": [
+      { "value": "all",              "label": "Вся продукция" },
+      { "value": "dolce-dimineata", "label": "Dolce Dimineața" },
+      { "value": "power",           "label": "Power" },
+      { "value": "dino",            "label": "DINO" },
+      { "value": "champion",        "label": "Champion" },
+      { "value": "energy",          "label": "Energy" },
+      { "value": "galaxy",          "label": "Galaxy" }
+    ],
+    "types":      ["Сахарное", "Овсяное", "Шоколадное", "Крекер", "Сдобное"],
+    "weights":    ["150 г", "200 г", "300 г", "400 г", "500 г", "1 кг"],
+    "ingredients":["Изюм", "Орехи", "Шоколад", "Ваниль", "Кокос"],
+    "packQty":    ["6 шт", "12 шт", "24 шт", "48 шт"]
+  },
+  "products": [
+    {
+      "id": 1,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "pechenye",
+      "brand": "dino",
+      "type": "Сахарное",
+      "ingredient": "Изюм",
+      "packQty": "12 шт",
+      "image": "img/image.png",
+      "price": 45
+    },
+    {
+      "id": 2,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "pechenye",
+      "brand": "galaxy",
+      "type": "Сахарное",
+      "ingredient": "Орехи",
+      "packQty": "12 шт",
+      "image": "img/galaxy-1-ro-mars-6.png",
+      "price": 48
+    },
+    {
+      "id": 3,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "pechenye",
+      "brand": "galaxy",
+      "type": "Сахарное",
+      "ingredient": "Орехи",
+      "packQty": "6 шт",
+      "image": "img/galaxy-1-ro-mars-4.png",
+      "price": 52
+    },
+    {
+      "id": 4,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "pechenye",
+      "brand": "dino",
+      "type": "Овсяное",
+      "ingredient": "Изюм",
+      "packQty": "24 шт",
+      "image": "img/galaxy-1-ro-mars-10.png",
+      "price": 39
+    },
+    {
+      "id": 5,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "pechenye",
+      "brand": "galaxy",
+      "type": "Шоколадное",
+      "ingredient": "Шоколад",
+      "packQty": "12 шт",
+      "image": "img/galaxy-1-ro-mars-8.png",
+      "price": 55
+    },
+    {
+      "id": 6,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "pechenye",
+      "brand": "power",
+      "type": "Крекер",
+      "ingredient": "Ваниль",
+      "packQty": "48 шт",
+      "image": "img/galaxy-1-ro-mars-11.png",
+      "price": 33
+    },
+    {
+      "id": 7,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "pechenye",
+      "brand": "champion",
+      "type": "Сдобное",
+      "ingredient": "Кокос",
+      "packQty": "6 шт",
+      "image": "img/galaxy-1-ro-mars-2.png",
+      "price": 61
+    },
+    {
+      "id": 8,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "pechenye",
+      "brand": "galaxy",
+      "type": "Сахарное",
+      "ingredient": "Орехи",
+      "packQty": "12 шт",
+      "image": "img/galaxy-1-ro-mars.png",
+      "price": 47
+    },
+    {
+      "id": 9,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "pechenye",
+      "brand": "dino",
+      "type": "Шоколадное",
+      "ingredient": "Шоколад",
+      "packQty": "24 шт",
+      "image": "img/galaxy-1-ro-mars-3.png",
+      "price": 58
+    },
+    {
+      "id": 10,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "pechenye",
+      "brand": "energy",
+      "type": "Крекер",
+      "ingredient": "Ваниль",
+      "packQty": "12 шт",
+      "image": "img/galaxy-1-ro-mars-12.png",
+      "price": 29
+    },
+    {
+      "id": 11,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "pechenye",
+      "brand": "galaxy",
+      "type": "Овсяное",
+      "ingredient": "Изюм",
+      "packQty": "6 шт",
+      "image": "img/galaxy-1-ro-mars-14.png",
+      "price": 43
+    },
+    {
+      "id": 12,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "pechenye",
+      "brand": "champion",
+      "type": "Сдобное",
+      "ingredient": "Кокос",
+      "packQty": "48 шт",
+      "image": "img/galaxy-1-ro-mars-15.png",
+      "price": 67
+    },
+    {
+      "id": 13,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "marmelad",
+      "brand": "dino",
+      "type": "Сахарное",
+      "ingredient": "Изюм",
+      "packQty": "12 шт",
+      "image": "img/galaxy-1-ro-mars-9.png",
+      "price": 35,
+      "recommended": true
+    },
+    {
+      "id": 14,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "marmelad",
+      "brand": "galaxy",
+      "type": "Шоколадное",
+      "ingredient": "Шоколад",
+      "packQty": "12 шт",
+      "image": "img/galaxy-1-ro-mars-13.png",
+      "price": 42,
+      "recommended": true
+    },
+    {
+      "id": 15,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "marshmellow",
+      "brand": "power",
+      "type": "Сахарное",
+      "ingredient": "Ваниль",
+      "packQty": "6 шт",
+      "image": "img/galaxy-1-ro-mars-5.png",
+      "price": 38,
+      "recommended": true
+    },
+    {
+      "id": 16,
+      "name": "Сахарное печенье DINO 300 г",
+      "weight": "300 г",
+      "category": "shokolad",
+      "brand": "galaxy",
+      "type": "Шоколадное",
+      "ingredient": "Шоколад",
+      "packQty": "24 шт",
+      "image": "img/galaxy-1-ro-mars-7.png",
+      "price": 72,
+      "recommended": true
+    }
+  ]
+}

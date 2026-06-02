@@ -1,0 +1,370 @@
+/* ============================================================
+   AMI — Cart Page (cart.html)
+   Matches design Image 2 exactly. Font: Manrope throughout.
+   ============================================================ */
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+
+*, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+html, body { margin: 0; padding: 0; }
+a { text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; padding: 0; }
+
+/* ── Tokens ─────────────────────────────────────────────────── */
+:root {
+  --red:    rgba(233, 66, 0, 1);
+  --black:  rgba(66, 63, 62, 1);
+  --white:  #ffffff;
+  --lgrey:  rgba(193, 192, 191, 1);
+  --dgray:  rgba(99, 97, 95, 1);
+  --green:  rgba(167, 187, 97, 1);
+  --sidebar-w: 280px;
+  --font: "Manrope", sans-serif;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SIDEBAR  (fixed 280×800 — identical to catalog)
+   ════════════════════════════════════════════════════════════ */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 280px; height: 800px;
+  background: #fff;
+  z-index: 200; overflow: hidden;
+}
+.sidebar__border {
+  position: absolute; top: 0; left: 100%;
+  width: 0; height: 100%; object-fit: cover;
+}
+.sidebar__logo-wrap {
+  position: absolute;
+  top: 3.75%; left: 24.29%;
+  width: 75.71%; height: 96.25%;
+}
+.sidebar__logo {
+  width: 81%; height: 149%;
+  object-fit: contain; display: block;
+  border-radius: 50%;
+  margin-left: -20px; margin-top: -512px;
+}
+.sidebar__nav {
+  position: absolute;
+  top: 236px; left: 49px;
+  width: 79.29%;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.sidebar__nav-item {
+  font-family: var(--font);
+  font-weight: 500; font-size: 16px;
+  letter-spacing: 0.32px; line-height: 150%;
+  color: var(--red); white-space: nowrap;
+  padding: 6px 0 6px 30px;
+  display: flex; align-items: center;
+  text-decoration: none;
+  transition: opacity .2s;
+}
+.sidebar__nav-item--active {
+  background: var(--red); color: #fff;
+  border-radius: 100px;
+}
+
+/* cart icon */
+.sidebar__cart {
+  position: absolute;
+  top: 455px; left: 49px;
+  display: flex; align-items: center;
+  color: var(--red); text-decoration: none;
+}
+.sidebar__cart--active { color: var(--red); }
+.cart-badge {
+  position: absolute;
+  top: -6px; right: -10px;
+  min-width: 18px; height: 18px;
+  background: var(--red); color: #fff;
+  font-family: var(--font); font-size: 11px; font-weight: 700;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 4px;
+}
+.cart-badge:empty { display: none; }
+
+.sidebar__social {
+  position: absolute; top: 80.75%; left: 30.36%;
+  display: flex; align-items: center; gap: 16px;
+}
+.sidebar__social img { width: 24px; height: 24px; }
+
+.sidebar__contacts {
+  position: absolute; top: 696px; left: 89px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.sidebar__phone,
+.sidebar__email {
+  font-family: var(--font); font-weight: 400; font-size: 16px;
+  letter-spacing: 1.6px; line-height: 24px; color: var(--black); white-space: nowrap;
+}
+
+.sidebar__langs {
+  position: absolute; top: 761px; left: 123px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sidebar__lang { font-family: var(--font); font-size: 14px; line-height: 150%; }
+.sidebar__lang--active   { font-weight: 500; color: var(--black); }
+.sidebar__lang--inactive { font-weight: 400; color: var(--red); }
+
+.sidebar__copy {
+  position: absolute; top: 500px; left: 119px;
+  width: 43px; height: 40px; object-fit: cover;
+}
+
+/* ════════════════════════════════════════════════════════════
+   MAIN  (offset by sidebar)
+   ════════════════════════════════════════════════════════════ */
+.cart-main {
+  margin-left: var(--sidebar-w);
+  padding: 0 160px 60px 160px;   /* horizontal centering; mirrors design */
+  background: #fff;
+  min-height: 100vh;
+}
+
+/* ── Page title  top:71 left:884→ centered ── */
+.cart-page-title {
+  padding-top: 71px;
+  font-family: "Yeseva One", serif;
+  font-weight: 400; font-size: 38px;
+  color: var(--red);
+  text-align: center;
+  letter-spacing: 0; line-height: 150%;
+  white-space: nowrap;
+}
+
+/* separator  top:160 left:593 width:910 */
+.cart-hr--top {
+  border: none;
+  border-top: 1px solid #e8e8e8;
+  margin: 32px auto 0;
+  width: 910px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   CART ITEMS  (top:229 in original)
+   Each row: img 157×132 | name+weight | qty control | delete icon
+   ════════════════════════════════════════════════════════════ */
+.cart-list {
+  margin: 40px auto 0;
+  width: 910px;
+  display: flex; flex-direction: column; gap: 0;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 28px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* product image  157×132 */
+.cart-item__img {
+  width: 157px; height: 132px;
+  object-fit: contain; flex-shrink: 0;
+}
+
+/* name + weight */
+.cart-item__info { flex: 1; min-width: 0; }
+.cart-item__name {
+  font-family: var(--font);
+  font-weight: 400; font-size: 14px;
+  color: var(--black); line-height: 20px;
+}
+.cart-item__weight {
+  font-family: var(--font);
+  font-weight: 400; font-size: 14px;
+  color: var(--black); line-height: 20px;
+  margin-top: 4px;
+  min-width: 73px;
+}
+
+/* qty control  96×61  border rounded */
+.cart-item__qty-wrap {
+  display: flex;
+  align-items: center;
+  width: 96px; height: 61px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.qty-btn {
+  flex: 1; height: 100%;
+  font-family: "Yeseva One", serif;
+  font-size: 22px; color: #aaaaaa;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none; cursor: pointer;
+  transition: color .15s;
+}
+.qty-btn:hover { color: var(--red); }
+.qty-val {
+  min-width: 28px;
+  font-family: var(--font);
+  font-weight: 600; font-size: 18px;
+  color: #858585; text-align: center;
+}
+
+/* delete icon  icons8 style trash */
+.cart-item__remove {
+  color: var(--lgrey);
+  transition: color .15s;
+}
+.cart-item__remove:hover { color: var(--red); }
+
+/* empty state */
+.cart-empty {
+  text-align: center; padding: 60px 0;
+}
+.cart-empty p {
+  font-family: var(--font); font-size: 18px; color: var(--dgray); margin-bottom: 20px;
+}
+.cart-empty__link {
+  display: inline-block; padding: 12px 28px;
+  background: var(--red); color: #fff;
+  border-radius: 100px;
+  font-family: var(--font); font-weight: 600; font-size: 16px;
+  text-decoration: none;
+}
+
+/* ════════════════════════════════════════════════════════════
+   ORDER BLOCK  (top:590 in original  1100×595 gray card)
+   ════════════════════════════════════════════════════════════ */
+.order-block {
+  margin: 48px auto 0;
+  width: 1100px;
+  background: #f8f8f8;
+  border-radius: 6px;
+  padding: 60px 80px 60px;
+}
+
+.order-block__title {
+  font-family: "Yeseva One", serif;
+  font-weight: 400; font-size: 38px;
+  color: var(--red);
+  text-align: center;
+  letter-spacing: 0; line-height: 150%;
+  margin-bottom: 40px;
+}
+
+/* form */
+.order-form { display: flex; flex-direction: column; gap: 16px; }
+
+.order-form__row {
+  display: flex; gap: 16px;
+}
+
+/* each field  477×45 (row) or 969×135 (textarea) */
+.order-form__field {
+  flex: 1; position: relative;
+  height: 49px;
+}
+.order-form__field--full {
+  flex: none; width: 100%; height: 135px;
+}
+
+.order-form__input {
+  width: 100%; height: 100%;
+  padding: 12px 16px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  background: #fff;
+  font-family: var(--font);
+  font-weight: 500; font-size: 13px;
+  color: #7b7b7b;
+  outline: none;
+  transition: border-color .15s;
+}
+.order-form__input:focus { border-color: var(--red); }
+
+.order-form__textarea {
+  width: 100%; height: 135px;
+  padding: 12px 16px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  background: #fff;
+  font-family: var(--font);
+  font-weight: 500; font-size: 13px;
+  color: #7b7b7b;
+  outline: none; resize: vertical;
+  transition: border-color .15s;
+}
+.order-form__textarea:focus { border-color: var(--red); }
+
+/* submit button  top:476 relative to form-card center: 301×68 */
+.order-form__btn {
+  margin: 24px auto 0;
+  display: flex; align-items: center; justify-content: center;
+  width: 301px; height: 68px;
+  background: var(--red);
+  border-radius: 100px;
+  font-family: var(--font);
+  font-weight: 600; font-size: 18px;
+  color: #fff;
+  letter-spacing: 0; line-height: 150%;
+  transition: opacity .15s;
+}
+.order-form__btn:hover { opacity: .9; }
+
+/* ════════════════════════════════════════════════════════════
+   FOOTER
+   ════════════════════════════════════════════════════════════ */
+.footer {
+  margin-left: var(--sidebar-w);
+  padding: 40px 40px 0;
+}
+.footer__inner {
+  background: var(--green);
+  border-radius: 6px;
+  position: relative;
+  min-height: 456px;
+  padding: 40px 60px 20px;
+  display: flex;
+  gap: 80px;
+  align-items: flex-start;
+}
+.footer__logo {
+  position: absolute; top: 20px; left: 30px;
+  width: 130px; height: 130px;
+  object-fit: contain; border-radius: 50%;
+}
+.footer__nav {
+  display: flex; gap: 120px;
+  margin-left: 180px; padding-top: 10px;
+}
+.footer__nav-section { display: flex; flex-direction: column; gap: 0; }
+.footer__nav-heading {
+  font-family: var(--font); font-weight: 700; font-size: 18px;
+  color: #fff; line-height: 28.8px; margin-bottom: 10px;
+}
+.footer__nav-line { width: 158px; height: 2px; margin-bottom: 12px; }
+.footer__nav-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.footer__nav-link {
+  font-family: var(--font); font-weight: 600; font-size: 15px;
+  color: #fff; line-height: 24px; text-decoration: none; white-space: nowrap;
+}
+.footer__contacts-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.footer__contact { display: flex; align-items: center; gap: 12px; }
+.footer__contact span {
+  font-family: var(--font); font-weight: 600; font-size: 15px;
+  color: #fff; line-height: 24px; max-width: 254px;
+}
+.footer__map-col { flex-shrink: 0; width: 380px; }
+.footer__map { width: 380px; height: 270px; border-radius: 6px; overflow: hidden; margin-top: 10px; }
+.footer__divider {
+  position: absolute; bottom: 56px; left: 30px;
+  width: calc(100% - 60px); height: 2px;
+}
+.footer__bottom {
+  position: absolute; bottom: 18px; left: 30px; right: 30px;
+  display: flex; align-items: center;
+  font-family: var(--font); font-size: 14px; color: #fff; line-height: 21px;
+}
+.footer__year { font-weight: 400; }
+.footer__confidance { margin: 0 auto; }
+.footer__created { font-weight: 400; }
