@@ -439,3 +439,26 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   padding: 12px 24px;
   border-radius: 8px;
 }
+
+/* Стили для ошибок валидации */
+.input-error {
+  border-color: #E8593A !important;
+  background: #fff5f5 !important;
+}
+
+.order-form__input:focus.input-error {
+  border-color: #E8593A;
+  box-shadow: 0 0 0 3px rgba(232, 89, 58, 0.1);
+}
+
+.validation-error {
+  color: #E8593A;
+  font-size: 12px;
+  margin-top: 4px;
+  font-family: var(--font);
+}
+
+.order-form__btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

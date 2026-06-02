@@ -1,0 +1,81 @@
+{
+  "orders": [
+    {
+      "userId": "1780417098938",
+      "userName": "Александр Шинкарёв",
+      "userEmail": "SanyaS@gmail.com",
+      "customer": {
+        "name": "Максим Федоров",
+        "phone": "+375338667888",
+        "address": "Непокоренных 38 57",
+        "email": "rytuee@gmail.com"
+      },
+      "orderDate": "2026-06-02T17:59:41.888Z",
+      "status": "pending",
+      "totalPrice": 337,
+      "items": [
+        {
+          "productId": "1",
+          "name": "Сахарное печенье DINO 300 г",
+          "quantity": 1,
+          "price": 45,
+          "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+          "weight": "300 г"
+        },
+        {
+          "productId": "2",
+          "name": "Сахарное печенье DINO 300 г",
+          "quantity": 5,
+          "price": 48,
+          "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+          "weight": "300 г"
+        },
+        {
+          "productId": "3",
+          "name": "Сахарное печенье DINO 300 г",
+          "quantity": 1,
+          "price": 52,
+          "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+          "weight": "300 г"
+        }
+      ],
+      "notes": "Упакуйте красиво пожалуйста",
+      "id": "vAHIzNro3Dk"
+    },
+    {
+      "userId": "1780406394540",
+      "userName": "Алексей Шинкарёв",
+      "userEmail": "sh@gmail.com",
+      "customer": {
+        "name": "Дария Кучерявка",
+        "phone": "+375297511234",
+        "address": "Габровская 56 30",
+        "email": "DariyaKucha@gmail.com"
+      },
+      "orderDate": "2026-06-02T18:00:33.653Z",
+      "status": "pending",
+      "totalPrice": 130,
+      "items": [
+        {
+          "productId": "11",
+          "name": "Сахарное печенье DINO 300 г",
+          "quantity": 1,
+          "price": 43,
+          "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+          "weight": "300 г"
+        },
+        {
+          "productId": "10",
+          "name": "Сахарное печенье DINO 300 г",
+          "quantity": 3,
+          "price": 29,
+          "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+          "weight": "300 г"
+        }
+      ],
+      "notes": "ewfwefewfe",
+      "id": "BYpyq3K4aMc"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

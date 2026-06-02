@@ -1,11 +1,12 @@
 /**
- * AMI Cart Page
+ * AMI Cart Page — с оформлением заказа
  */
 
 const CART_KEY = 'ami-cart';
+const ORDERS_API = 'http://localhost:3001/orders';
 let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
 
-console.log('🛒 Cart loaded:', cart);
+console.log(' Cart loaded:', cart);
 
 /* ── Fetch Products ────────────────────────────────────── */
 async function fetchProducts() {
@@ -13,7 +14,7 @@ async function fetchProducts() {
     const res = await fetch('http://localhost:3001/products');
     if (res.ok) {
       const products = await res.json();
-      console.log('✅ Products loaded:', products.length, 'items');
+      console.log('✅ Products loaded:', products.length);
       return products;
     }
   } catch (e) {
@@ -22,7 +23,7 @@ async function fetchProducts() {
   return [];
 }
 
-/* ─ Save cart ─────────────────────────────────────────── */
+/* ── Save cart ─────────────────────────────────────────── */
 function saveCart() {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
   updateCartBadge();
@@ -36,13 +37,11 @@ function updateCartBadge() {
   if (badge) {
     badge.textContent = total > 0 ? total : '';
     badge.style.display = total > 0 ? 'flex' : 'none';
-    console.log('🔢 Badge:', total);
   }
 }
 
 /* ── Change qty ────────────────────────────────────────── */
 function changeQty(id, delta) {
-  console.log('🔢 changeQty:', id, delta);
   const item = cart.find(i => {
     const itemId = typeof i.id === 'string' ? parseInt(i.id) : i.id;
     const searchId = typeof id === 'string' ? parseInt(id) : id;
@@ -57,7 +56,6 @@ function changeQty(id, delta) {
 
 /* ── Remove item ───────────────────────────────────────── */
 function removeItem(id) {
-  console.log('️ removeItem:', id);
   cart = cart.filter(i => {
     const itemId = typeof i.id === 'string' ? parseInt(i.id) : i.id;
     const searchId = typeof id === 'string' ? parseInt(id) : id;
@@ -67,7 +65,7 @@ function removeItem(id) {
   renderCart();
 }
 
-/* ── Calculate total ───────────────────────────────────── */
+/* ─ Calculate total ───────────────────────────────────── */
 function calculateTotal() {
   return cart.reduce((sum, item) => {
     const price = parseFloat(item.price) || 0;
@@ -78,15 +76,10 @@ function calculateTotal() {
 
 /* ── Render cart ───────────────────────────────────────── */
 function renderCart() {
-  console.log('🎨 renderCart, cart.length:', cart.length);
-  
   const list = document.getElementById('cart-list');
   const totalBlock = document.getElementById('cart-total-block');
   
-  if (!list) {
-    console.error('❌ cart-list not found');
-    return;
-  }
+  if (!list) return;
 
   if (cart.length === 0) {
     list.innerHTML = `
@@ -98,13 +91,10 @@ function renderCart() {
     return;
   }
 
-  // Render items
   list.innerHTML = cart.map(item => {
     const price = parseFloat(item.price) || 0;
     const qty = parseInt(item.quantity) || 1;
     const lineTotal = price * qty;
-    
-    console.log('️ Item:', item.name, 'price:', price, 'qty:', qty, 'total:', lineTotal);
     
     const imageSrc = item.image && item.image.trim() !== '' ? item.image : 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22157%22 height=%22132%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22157%22 height=%22132%22/%3E%3C/svg%3E';
     
@@ -135,9 +125,7 @@ function renderCart() {
     </div>`;
   }).join('');
 
-  // Calculate and show total
   const total = calculateTotal();
-  console.log('💰 Total:', total, '₽');
 
   if (totalBlock) {
     totalBlock.innerHTML = `
@@ -149,39 +137,201 @@ function renderCart() {
   }
 }
 
+/* ── Валидация формы ──────────────────────────────────── */
+function validateForm() {
+  const form = document.getElementById('order-form');
+  if (!form) return { valid: false, errors: {} };
+  
+  const errors = {};
+  const fields = {
+    'address': document.getElementById('order-address') || form.querySelector('input[placeholder="Адрес*"]'),
+    'phone': document.getElementById('order-phone') || form.querySelector('input[placeholder="Телефон*"]'),
+    'name': document.getElementById('order-name') || form.querySelector('input[placeholder="Имя и фамилия*"]'),
+    'email': document.getElementById('order-email') || form.querySelector('input[placeholder="E-mail*"]')
+  };
+  
+  const address = fields.address ? fields.address.value.trim() : '';
+  const phone = fields.phone ? fields.phone.value.trim() : '';
+  const name = fields.name ? fields.name.value.trim() : '';
+  const email = fields.email ? fields.email.value.trim() : '';
+  
+  // Проверка обязательных полей
+  if (!address) errors.address = 'Укажите адрес доставки';
+  if (!name) errors.name = 'Укажите имя и фамилию';
+  if (!email) errors.email = 'Укажите e-mail';
+  
+  // Валидация email
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errors.email = 'Некорректный e-mail';
+  }
+  
+  // Валидация телефона РБ (+375XXXXXXXXX)
+  if (phone && !/^\+375\d{9}$/.test(phone.replace(/\s/g, ''))) {
+    errors.phone = 'Номер должен быть в формате +375XXXXXXXXX';
+  }
+  if (!phone) {
+    errors.phone = 'Укажите номер телефона';
+  }
+  
+  return {
+    valid: Object.keys(errors).length === 0,
+    errors,
+    data: { address, phone, name, email }
+  };
+}
+
+/* ── Показать ошибки валидации ─────────────────────────── */
+function showValidationErrors(errors) {
+  // Удаляем старые сообщения
+  document.querySelectorAll('.validation-error').forEach(el => el.remove());
+  
+  const form = document.getElementById('order-form');
+  if (!form) return;
+  
+  const fieldMap = {
+    'address': form.querySelector('input[placeholder="Адрес*"]') || document.getElementById('order-address'),
+    'phone': form.querySelector('input[placeholder="Телефон*"]') || document.getElementById('order-phone'),
+    'name': form.querySelector('input[placeholder="Имя и фамилия*"]') || document.getElementById('order-name'),
+    'email': form.querySelector('input[placeholder="E-mail*"]') || document.getElementById('order-email')
+  };
+  
+  Object.keys(errors).forEach(field => {
+    const input = fieldMap[field];
+    if (input) {
+      input.classList.add('input-error');
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'validation-error';
+      errorDiv.textContent = errors[field];
+      errorDiv.style.cssText = 'color: #E8593A; font-size: 12px; margin-top: 4px; font-family: Manrope;';
+      input.parentNode.insertBefore(errorDiv, input.nextSibling);
+    }
+  });
+}
+
+/* ── Убрать ошибки при вводе ───────────────────────────── */
+function attachInputListeners() {
+  const form = document.getElementById('order-form');
+  if (!form) return;
+  
+  form.querySelectorAll('input, textarea').forEach(input => {
+    input.addEventListener('input', () => {
+      input.classList.remove('input-error');
+      const error = input.nextElementSibling;
+      if (error && error.classList.contains('validation-error')) {
+        error.remove();
+      }
+    });
+  });
+}
+
+/* ── Отправка заказа ───────────────────────────────────── */
+/* ── Отправка заказа ───────────────────────────────────── */
+async function submitOrder(e) {
+  e.preventDefault();
+  
+  const validation = validateForm();
+  
+  if (!validation.valid) {
+    showValidationErrors(validation.errors);
+    alert('Пожалуйста, исправьте ошибки в форме');
+    return;
+  }
+  
+  if (cart.length === 0) {
+    alert('Корзина пуста!');
+    return;
+  }
+  
+  const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
+  const total = calculateTotal();
+  
+  const order = {
+    userId: session ? session.id : 'guest-' + Date.now(),
+    userName: session ? session.name : validation.data.name,
+    userEmail: session ? session.email : validation.data.email,
+    customer: {
+      name: validation.data.name,
+      phone: validation.data.phone,
+      address: validation.data.address,
+      email: validation.data.email
+    },
+    orderDate: new Date().toISOString(),
+    status: 'pending',
+    totalPrice: total,
+    items: cart.map(item => ({
+      productId: item.id,
+      name: item.name,
+      quantity: parseInt(item.quantity) || 1,
+      price: parseFloat(item.price) || 0,
+      image: item.image || '',
+      weight: item.weight || ''
+    })),
+    notes: (document.querySelector('.order-form__textarea') || {}).value || ''
+  };
+  
+  console.log('📦 Отправка заказа:', order);
+  
+  try {
+    // 🔥 ОТПРАВЛЯЕМ НА JSON SERVER
+    const response = await fetch('http://localhost:3002/orders', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(order)
+});
+    
+    if (response.ok) {
+      const savedOrder = await response.json();
+      console.log('✅ Заказ сохранён на сервере:', savedOrder);
+      
+      // Очищаем корзину
+      cart = [];
+      saveCart();
+      renderCart();
+      
+      // Показываем сообщение
+      alert(`✅ Заказ #${savedOrder.id} успешно оформлен!\n\nСумма: ${total} ₽\nМы свяжемся с вами в ближайшее время.`);
+      
+      // Сброс формы
+      const form = document.getElementById('order-form');
+      if (form) form.reset();
+      
+      // Перенаправляем на главную
+      setTimeout(() => {
+        window.location.href = 'catalog.html';
+      }, 2000);
+      
+    } else {
+      const errorText = await response.text();
+      console.error('❌ Server error:', response.status, errorText);
+      throw new Error('Server error: ' + response.status);
+    }
+  } catch (error) {
+    console.error('❌ Ошибка при оформлении заказа:', error);
+    alert('Произошла ошибка при оформлении заказа: ' + error.message + '\n\nУбедитесь, что:\n1. JSON Server запущен на порту 3001\n2. В Products.json есть массив "orders": []');
+  }
+}
+
 /* ── Order form ────────────────────────────────────────── */
 function initOrderForm() {
   const form = document.getElementById('order-form');
   if (!form) return;
   
-  // 🔥 Проверка: только для зарегистрированных
   const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
+  
+  // Если гость — показываем блок с предложением войти
   if (!session) {
-    form.innerHTML = `
-      <div style="text-align: center; padding: 40px; background: #f8f8f8; border-radius: 8px;">
-        <p style="font-size: 16px; color: #7B7B7B; margin-bottom: 20px;">
-          ⚠️ Для оформления заказа необходимо войти
-        </p>
-        <a href="login.html" style="display: inline-block; padding: 12px 32px; background: #E8593A; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600;">
-          Войти
-        </a>
-      </div>
-    `;
-    return;
+    // Но разрешаем оформление как гостю (заполняет данные вручную)
+    console.log('⚠️ Оформление заказа гостем');
+  } else {
+    // Предзаполняем имя и email из сессии
+    const nameField = document.getElementById('order-name') || form.querySelector('input[placeholder="Имя и фамилия*"]');
+    const emailField = document.getElementById('order-email') || form.querySelector('input[placeholder="E-mail*"]');
+    if (nameField) nameField.value = session.name || '';
+    if (emailField) emailField.value = session.email || '';
   }
   
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    if (cart.length === 0) {
-      alert('Корзина пуста.');
-      return;
-    }
-    alert('Заказ оформлен! Сумма: ' + calculateTotal() + ' ₽');
-    cart = [];
-    saveCart();
-    renderCart();
-    form.reset();
-  });
+  attachInputListeners();
+  form.addEventListener('submit', submitOrder);
 }
 
 /* ── Init ──────────────────────────────────────────────── */

@@ -59,33 +59,38 @@
   </div>
 
   <!-- ORDER FORM -->
-  <section class="order-block">
-    <h2 class="order-block__title">Покупатель</h2>
-    <form class="order-form" id="order-form" novalidate>
-      <div class="order-form__row">
-        <div class="order-form__field">
-          <input type="text" placeholder="Адрес*" required class="order-form__input"/>
-        </div>
-        <div class="order-form__field">
-          <input type="tel" placeholder="Телефон*" required class="order-form__input"/>
-        </div>
+<section class="order-block">
+  <h2 class="order-block__title">Покупатель</h2>
+  <form class="order-form" id="order-form" novalidate>
+    <!-- Row 1: Адрес + Телефон -->
+    <div class="order-form__row">
+      <div class="order-form__field">
+        <input type="text" id="order-address" placeholder="Адрес*" required class="order-form__input"/>
       </div>
-      <div class="order-form__row">
-        <div class="order-form__field">
-          <input type="text" placeholder="Имя и фамилия*" required class="order-form__input"/>
-        </div>
-        <div class="order-form__field">
-          <input type="email" placeholder="E-mail*" required class="order-form__input"/>
-        </div>
+      <div class="order-form__field">
+        <input type="tel" id="order-phone" placeholder="Телефон* (+375...)" required class="order-form__input"/>
       </div>
-      <div class="order-form__field order-form__field--full">
-        <textarea placeholder="Примечания покупателя*" class="order-form__textarea" rows="5"></textarea>
+    </div>
+
+    <!-- Row 2: Имя и фамилия + E-mail -->
+    <div class="order-form__row">
+      <div class="order-form__field">
+        <input type="text" id="order-name" placeholder="Имя и фамилия*" required class="order-form__input"/>
       </div>
-      <button type="submit" class="order-form__btn">Оформить заказ</button>
-    </form>
-  </section>
-    <!-- ИТОГОВАЯ СУММА -->
-  <div id="cart-total-block" style="display: none;"></div>
+      <div class="order-form__field">
+        <input type="email" id="order-email" placeholder="E-mail*" required class="order-form__input"/>
+      </div>
+    </div>
+
+    <!-- Row 3: Примечания -->
+    <div class="order-form__field order-form__field--full">
+      <textarea id="order-notes" placeholder="Примечания к заказу" class="order-form__textarea" rows="5"></textarea>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" class="order-form__btn">Оформить заказ</button>
+  </form>
+</section>
 
 
 </main>
