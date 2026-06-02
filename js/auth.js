@@ -272,7 +272,19 @@ function updateUserInterface() {
 }
 
 /* ── Logout ──────────────────────────────────────────────── */
+/* ── Logout ──────────────────────────────────────────────── */
 function logout() {
+  console.log('🚪 Выход из системы');
+  
+  // Очищаем корзину и избранное текущего пользователя
+  const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
+  if (session) {
+    const userId = session.id;
+    localStorage.removeItem(`ami-cart-${userId}`);
+    localStorage.removeItem(`ami-favorites-${userId}`);
+    console.log(`✅ Очищены данные пользователя ${userId}`);
+  }
+  
   localStorage.removeItem('ami-session');
   window.location.href = 'login.html';
 }

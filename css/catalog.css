@@ -92,7 +92,7 @@ button { cursor: pointer; border: none; background: none; padding: 0; font-famil
 /* cart icon below nav */
 .sidebar__cart {
     position: absolute;
-    top: 407px;
+    top: 440px;
     left: 119px;
     display: flex;
     align-items: center;
@@ -102,7 +102,7 @@ button { cursor: pointer; border: none; background: none; padding: 0; font-famil
 
 .sidebar__cart1 {
     position: absolute;
-    top: 393px;
+    top: 424px;
     left: 170px;
     display: flex;
     align-items: center;
@@ -1405,12 +1405,12 @@ button { cursor: pointer; border: none; background: none; padding: 0; font-famil
 
 /* ========== ПАНЕЛЬ АВТОРИЗАЦИИ В САЙДБАРЕ ========== */
 .sidebar__auth {
-  padding: 0 20px;
-  margin-top: 445px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-left: 32px;
+    padding: 0 20px;
+    margin-top: 489px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-left: 32px;
 }
 
 /* Кнопка админ панели */
