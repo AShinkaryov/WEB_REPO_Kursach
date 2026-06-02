@@ -91,11 +91,20 @@ function renderFavorites() {
     return;
   }
   
-  const favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
+  const favorites = JSON.parse(localStorage.getItem('ami-favorites') || '[]');
   console.log('   favorites IDs:', favorites);
   
-  const favoriteProducts = allProducts.filter(p => favorites.includes(p.id));
+  // 🔥 ИСПРАВЛЕННОЕ СРАВНЕНИЕ (с приведением типов)
+  const favoriteProducts = allProducts.filter(p => {
+    const productId = typeof p.id === 'string' ? p.id : String(p.id);
+    return favorites.some(favId => {
+      const favIdStr = typeof favId === 'string' ? favId : String(favId);
+      return productId === favIdStr;
+    });
+  });
+  
   console.log('   favorite products:', favoriteProducts.length);
+  console.log('   first favorite:', favoriteProducts[0]);
   
   if (favoriteProducts.length === 0) {
     console.log('ℹ️ No favorites to display');
@@ -112,7 +121,7 @@ function renderFavorites() {
   }
   
   grid.innerHTML = favoriteProducts.map(product => {
-    console.log('   🖼️ Rendering:', product.name, 'image:', product.image);
+    console.log('   🖼️ Rendering:', product.name, 'ID:', product.id, 'image:', product.image);
     return `
     <article class="product-card" data-id="${product.id}">
       <div class="product-card__image-wrap">

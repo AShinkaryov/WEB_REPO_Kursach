@@ -321,53 +321,58 @@ const CatalogApp = (() => {
 
   /* ── Render Favorites Section ───────────────────────────── */
   function renderFavoritesSection() {
-    const container = document.getElementById('favorites-section');
-    if (!container) return;
+  const container = document.getElementById('favorites-section');
+  if (!container) return;
 
-    if (allProducts.length === 0) return;
+  if (allProducts.length === 0) return;
 
-    const favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
-    const favoriteProducts = allProducts.filter(p => favorites.includes(p.id));
+  const favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
+  
+  // 🔥 ИСПРАВЛЕННОЕ СРАВНЕНИЕ
+  const favoriteProducts = allProducts.filter(p => {
+    const productId = typeof p.id === 'string' ? p.id : String(p.id);
+    return favorites.some(favId => String(favId) === productId);
+  });
 
-    if (favoriteProducts.length === 0) {
-      container.innerHTML = '';
-      return;
-    }
+  if (favoriteProducts.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
 
-    container.innerHTML = `
-      <h3 class="favorites-title">❤️ Избранное</h3>
-      <div class="favorites-grid">
-        ${favoriteProducts.map(product => `
-          <article class="product-card" data-id="${product.id}">
-            <div class="product-card__image-wrap">
-              <img class="product-card__img" src="${product.image}" alt="${product.name}" />
-              <button class="product-card__favorite product-card__favorite--active" 
-                      onclick="CatalogApp.toggleFavorite(${product.id}); event.stopPropagation();"
-                      aria-label="Удалить из избранного">
-                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" width="20" height="20">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                </svg>
+  container.innerHTML = `
+    <h3 class="favorites-title">❤️ Избранное</h3>
+    <div class="favorites-grid">
+      ${favoriteProducts.map(product => `
+        <article class="product-card" data-id="${product.id}">
+          <div class="product-card__image-wrap">
+            <img class="product-card__img" src="${product.image}" alt="${product.name}" />
+            <button class="product-card__favorite product-card__favorite--active" 
+                    onclick="CatalogApp.toggleFavorite(${product.id}); event.stopPropagation();"
+                    aria-label="Удалить из избранного">
+              <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" width="20" height="20">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__title">${product.name}</h3>
+            <p class="product-card__weight">${product.weight}</p>
+            <div class="product-card__meta">
+              <span class="product-card__brand">${product.brand}</span>
+              <span class="product-card__pack">${product.packQty}</span>
+            </div>
+            <div class="product-card__footer">
+              <span class="product-card__price">${product.price} ₽</span>
+              <button class="product-card__add" 
+                      onclick="CatalogApp.addToCart(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price}); event.stopPropagation();">
+                В корзину
               </button>
             </div>
-            <div class="product-card__body">
-              <h3 class="product-card__title">${product.name}</h3>
-              <p class="product-card__weight">${product.weight}</p>
-              <div class="product-card__meta">
-                <span class="product-card__brand">${product.brand}</span>
-                <span class="product-card__pack">${product.packQty}</span>
-              </div>
-              <div class="product-card__footer">
-                <span class="product-card__price">${product.price} ₽</span>
-                <button class="product-card__add" 
-                        onclick="CatalogApp.addToCart(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price}); event.stopPropagation();">
-                  В корзину
-                </button>
-              </div>
-            </div>
-          </article>
-        `).join('')}
-      </div>`;
-  }
+          </div>
+        </article>
+      `).join('')}
+    </div>`;
+}
 
   /* ── Cart Functions ─────────────────────────────────────── */
  function addToCart(id, name, price) {
@@ -438,26 +443,34 @@ const CatalogApp = (() => {
 
   /* ── Favorites Functions ────────────────────────────────── */
   function toggleFavorite(id) {
-    let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
-    const index = favorites.indexOf(id);
-    
-    if (index === -1) {
-      favorites.push(id);
-      showToast('Добавлено в избранное');
-    } else {
-      favorites.splice(index, 1);
-      showToast('Удалено из избранного');
-    }
-    
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
-    updateFavoritesBadge();
-    
-    if (allProducts.length > 0) {
-      renderProducts(getFilteredProducts());
-      renderRecommended();
-      renderFavoritesSection();
-    }
+  console.log('❤️ toggleFavorite:', id, 'type:', typeof id);
+  
+  let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
+  console.log('Current favorites:', favorites);
+  
+  // 🔥 Приводим к строке для сравнения
+  const idStr = String(id);
+  const index = favorites.findIndex(favId => String(favId) === idStr);
+  
+  if (index === -1) {
+    favorites.push(id);
+    showToast('Добавлено в избранное');
+  } else {
+    favorites.splice(index, 1);
+    showToast('Удалено из избранного');
   }
+  
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+  console.log('New favorites:', favorites);
+  
+  updateFavoritesBadge();
+  
+  if (allProducts.length > 0) {
+    renderProducts(getFilteredProducts());
+    renderRecommended();
+    renderFavoritesSection();
+  }
+}
 
   function isInFavorites(id) {
     const favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');

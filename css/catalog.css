@@ -82,12 +82,25 @@ button { cursor: pointer; border: none; background: none; padding: 0; font-famil
 
 /* cart icon below nav */
 .sidebar__cart {
-  position: absolute;
-  top: 455px; left: 49px;
-  display: flex; align-items: center;
-  color: var(--black);
-  text-decoration: none;
+    position: absolute;
+    top: 498px;
+    left: 119px;
+    display: flex;
+    align-items: center;
+    color: #E8593A;
+    text-decoration: none;
 }
+
+.sidebar__cart1 {
+    position: absolute;
+    top: 482px;
+    left: 170px;
+    display: flex;
+    align-items: center;
+    color: #E8593A;
+    text-decoration: none;
+}
+
 .cart-badge {
   position: absolute;
   top: -6px; right: -10px;

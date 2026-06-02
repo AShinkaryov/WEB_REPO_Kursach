@@ -16,6 +16,58 @@
     .favorites-empty p { font-family: "Manrope", sans-serif; font-size: 18px; color: #999; margin-bottom: 30px; }
     .btn-primary { display: inline-block; padding: 12px 32px; background: var(--main-red, #E8593A); color: #fff; text-decoration: none; border-radius: 6px; font-family: "Manrope", sans-serif; font-weight: 600; transition: opacity 0.2s; }
     .btn-primary:hover { opacity: 0.9; }
+    /* ========== ИКОНКИ КОРЗИНЫ И ИЗБРАННОГО ========== */
+.sidebar__icons {
+    position: absolute;
+    top: 521px;
+    left: 115px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.sidebar__icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--red);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.sidebar__icon:hover {
+  opacity: 0.7;
+}
+
+/* Бейджи (счетчики) */
+.icon-badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  min-width: 18px;
+  height: 18px;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.icon-badge:empty {
+  display: none;
+}
+
+/* Удаляем старые стили cart-badge если они конфликтуют */
+.cart-badge {
+  display: none !important;
+}
   </style>
 </head>
 <body>
@@ -31,19 +83,25 @@
     <a href="blog.html" class="sidebar__nav-item">БЛОГ</a>
     <a href="#" class="sidebar__nav-item">FOR KIDS</a>
   </nav>
-  <a href="cart.html" class="sidebar__cart" aria-label="Корзина">
+  <!-- Контейнер для иконок корзины и избранного -->
+<div class="sidebar__icons">
+  <!-- Корзина -->
+  <a href="cart.html" class="sidebar__icon" aria-label="Корзина">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28">
       <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
       <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
     </svg>
-    <span id="cart-badge" class="cart-badge"></span>
+    <span id="cart-badge" class="icon-badge"></span>
   </a>
-  <a href="favorites.html" class="sidebar__cart sidebar__cart--active" aria-label="Избранное" style="margin-top: 16px;">
-    <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" width="28" height="28">
+
+  <!-- Избранное -->
+  <a href="favorites.html" class="sidebar__icon" aria-label="Избранное">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28">
       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
     </svg>
-    <span id="favorites-badge" class="cart-badge"></span>
+    <span id="favorites-badge" class="icon-badge"></span>
   </a>
+</div>
   <div class="sidebar__social">
     <img src="img/Partners/inst.png" alt="Instagram" width="24" height="24"/>
     <img src="img/Partners/YT.png" alt="YouTube" width="24" height="24"/>
@@ -59,7 +117,7 @@
     <span class="sidebar__lang sidebar__lang--active">Ru</span>
     <span class="sidebar__lang sidebar__lang--inactive">Ro</span>
   </div>
-  <img class="sidebar__copy" src="img/bag.png" alt=""/>
+  
   <img class="sidebar__border" src="img/line-4.svg" alt=""/>
 </aside>
 

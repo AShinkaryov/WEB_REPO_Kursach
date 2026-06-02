@@ -70,10 +70,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 /* cart icon */
 .sidebar__cart {
-  position: absolute;
-  top: 455px; left: 49px;
-  display: flex; align-items: center;
-  color: var(--red); text-decoration: none;
+    position: absolute;
+    top: 506px;
+    left: 126px;
+    display: flex;
+    align-items: center;
+    color: var(--red);
+    text-decoration: none;
 }
 .sidebar__cart--active { color: var(--red); }
 .cart-badge {
@@ -368,3 +371,71 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .footer__year { font-weight: 400; }
 .footer__confidance { margin: 0 auto; }
 .footer__created { font-weight: 400; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ========== СТОИМОСТЬ И ИТОГО ========== */
+
+/* Цена за единицу × количество */
+.cart-item__price-one {
+  font-family: var(--font);
+  font-size: 13px;
+  color: var(--dgray);
+  margin-top: 4px;
+}
+
+/* Сумма за позицию */
+.cart-item__line-total {
+  min-width: 100px;
+  text-align: right;
+}
+
+.line-total-value {
+  font-family: var(--font);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--red);
+}
+
+/* Блок итоговой суммы */
+#cart-total-block {
+  display: flex;
+  justify-content: flex-end;
+  margin: 40px auto 0;
+  width: 910px;
+  padding-top: 24px;
+  border-top: 2px solid #e8e8e8;
+}
+
+.cart-total {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.cart-total__label {
+  font-family: "Yeseva One", serif;
+  font-size: 24px;
+  color: var(--black);
+}
+
+.cart-total__value {
+  font-family: "Manrope", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--red);
+  background: #fff5f2;
+  padding: 12px 24px;
+  border-radius: 8px;
+}
