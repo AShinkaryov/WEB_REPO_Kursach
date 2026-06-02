@@ -1,286 +1,412 @@
 /**
  * AMI Catalog Module
- * Loads products from /data/products.json
- * Handles: category tabs, filter panel, active filters, favorites, cart, pagination
+ * Loads products, categories, and filters from json-server (port 3001)
  */
 
-const PAGE_SIZE = 12;
+const CatalogApp = (() => {
+  let allProducts = [];
+  let categories = [];
+  let filters = {};
+  let activeCategory = 'all';
+  let activeFilters = {
+    brands: [],
+    types: [],
+    weights: [],
+    ingredients: [],
+    packQty: []
+  };
 
-let allProducts   = [];
-let allData       = {};
-let activeFilters = {
-  category:    'pechenye',
-  brands:      [],
-  types:       [],
-  weights:     [],
-  ingredients: [],
-  packQty:     []
-};
-let currentPage   = 1;
-let favorites     = JSON.parse(localStorage.getItem('ami_favorites') || '[]');
-let cart          = JSON.parse(localStorage.getItem('ami_cart')      || '[]');
+  /* ── Fetch Data ─────────────────────────────────────────── */
+  async function fetchData() {
+    try {
+      const [productsRes, categoriesRes, filtersRes] = await Promise.all([
+        fetch('http://localhost:3001/products'),
+        fetch('http://localhost:3001/categories'),
+        fetch('http://localhost:3001/filters')
+      ]);
 
-/* ── Persist ────────────────────────────────────────────────── */
-function saveFavorites() { localStorage.setItem('ami_favorites', JSON.stringify(favorites)); }
-function saveCart()      { localStorage.setItem('ami_cart',      JSON.stringify(cart));      }
+      if (!productsRes.ok || !categoriesRes.ok || !filtersRes.ok) {
+        throw new Error('Failed to fetch data');
+      }
 
-/* ── Cart badge ─────────────────────────────────────────────── */
-function updateCartBadge() {
-  const total = cart.reduce((s, i) => s + i.qty, 0);
-  const badge = document.getElementById('cart-badge');
-  if (badge) badge.textContent = total > 0 ? total : '';
-}
+      allProducts = await productsRes.json();
+      categories = await categoriesRes.json();
+      filters = await filtersRes.json();
 
-/* ── Cart ops ───────────────────────────────────────────────── */
-function addToCart(id) {
-  const product = allProducts.find(p => p.id === id);
-  if (!product) return;
-  const existing = cart.find(i => i.id === id);
-  if (existing) {
-    existing.qty++;
-  } else {
-    cart.push({ id, name: product.name, weight: product.weight, image: product.image, price: product.price, qty: 1 });
-  }
-  saveCart();
-  updateCartBadge();
-  showToast(`«${product.name}» добавлен в корзину`);
-}
-
-/* ── Favorites ──────────────────────────────────────────────── */
-function toggleFavorite(id) {
-  const idx = favorites.indexOf(id);
-  if (idx === -1) { favorites.push(id); }
-  else            { favorites.splice(idx, 1); }
-  saveFavorites();
-  // re-render hearts
-  document.querySelectorAll(`.fav-btn[data-id="${id}"]`).forEach(btn => {
-    btn.classList.toggle('fav-btn--active', favorites.includes(id));
-    btn.setAttribute('aria-pressed', favorites.includes(id));
-  });
-}
-
-/* ── Toast ──────────────────────────────────────────────────── */
-function showToast(msg) {
-  let toast = document.getElementById('ami-toast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.id = 'ami-toast';
-    document.body.appendChild(toast);
-  }
-  toast.textContent = msg;
-  toast.classList.add('ami-toast--visible');
-  clearTimeout(toast._t);
-  toast._t = setTimeout(() => toast.classList.remove('ami-toast--visible'), 2200);
-}
-
-/* ── Filter logic ───────────────────────────────────────────── */
-function filtered() {
-  return allProducts.filter(p => {
-    if (p.category !== activeFilters.category) return false;
-    if (activeFilters.brands.length      && !activeFilters.brands.includes(p.brand))       return false;
-    if (activeFilters.types.length       && !activeFilters.types.includes(p.type))         return false;
-    if (activeFilters.weights.length     && !activeFilters.weights.includes(p.weight))     return false;
-    if (activeFilters.ingredients.length && !activeFilters.ingredients.includes(p.ingredient)) return false;
-    if (activeFilters.packQty.length     && !activeFilters.packQty.includes(p.packQty))   return false;
-    return true;
-  });
-}
-
-/* ── Active filter pills ────────────────────────────────────── */
-function renderActivePills() {
-  const bar = document.getElementById('active-filters');
-  if (!bar) return;
-  bar.innerHTML = '';
-  const groups = ['brands','types','weights','ingredients','packQty'];
-  groups.forEach(group => {
-    activeFilters[group].forEach(val => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'active-pill';
-      btn.innerHTML = `<span>${val}</span><span class="active-pill__x">✕</span>`;
-      btn.addEventListener('click', () => {
-        activeFilters[group] = activeFilters[group].filter(v => v !== val);
-        // uncheck in panel
-        const cb = document.querySelector(`input[data-group="${group}"][value="${val}"]`);
-        if (cb) cb.checked = false;
-        currentPage = 1;
-        renderAll();
+      console.log('✅ Loaded:', {
+        products: allProducts.length,
+        categories: categories.length,
+        filters: Object.keys(filters)
       });
-      bar.appendChild(btn);
+
+      init();
+    } catch (error) {
+      console.error('❌ Error loading catalog:', error);
+      showToast('Ошибка загрузки каталога');
+    }
+  }
+
+  /* ── Init ───────────────────────────────────────────────── */
+  function init() {
+    renderCategories();
+    renderFilters();
+    renderProducts(getFilteredProducts());
+    renderRecommended();
+    updateCartBadge();
+  }
+
+  /* ── Render Categories ──────────────────────────────────── */
+  function renderCategories() {
+    const tabsContainer = document.getElementById('category-tabs');
+    if (!tabsContainer) return;
+
+    tabsContainer.innerHTML = categories.map(cat => `
+      <button 
+        class="catalog-tab${cat.id === 'all' || cat.id === activeCategory ? ' catalog-tab--active' : ''}" 
+        data-category="${cat.id}"
+        data-label="${cat.label}"
+      >
+        ${cat.label}
+      </button>
+    `).join('');
+
+    tabsContainer.querySelectorAll('.catalog-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const categoryId = tab.dataset.category;
+        activeCategory = categoryId;
+        
+        tabsContainer.querySelectorAll('.catalog-tab').forEach(t => {
+          t.classList.toggle('catalog-tab--active', t.dataset.category === categoryId);
+        });
+
+        renderProducts(getFilteredProducts());
+      });
     });
-  });
-}
-
-/* ── Product card ───────────────────────────────────────────── */
-function buildCard(p) {
-  const isFav = favorites.includes(p.id);
-  return `
-    <article class="product-card" data-id="${p.id}">
-      <button class="fav-btn ${isFav ? 'fav-btn--active' : ''}"
-              data-id="${p.id}"
-              aria-label="В избранное"
-              aria-pressed="${isFav}"
-              onclick="toggleFavorite(${p.id})">
-        <svg viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-        </svg>
-      </button>
-      <img class="product-card__img" src="${p.image}" alt="${p.name}" loading="lazy"/>
-      <p class="product-card__name">${p.name}</p>
-      <div class="product-card__weight">${p.weight}</div>
-      <button class="product-card__cart-btn" onclick="addToCart(${p.id})" aria-label="В корзину">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-        </svg>
-        В корзину
-      </button>
-    </article>`;
-}
-
-/* ── Render grid ────────────────────────────────────────────── */
-function renderGrid() {
-  const grid = document.getElementById('products-grid');
-  if (!grid) return;
-  const items = filtered();
-  const start = (currentPage - 1) * PAGE_SIZE;
-  const page  = items.slice(start, start + PAGE_SIZE);
-  grid.innerHTML = page.length
-    ? page.map(buildCard).join('')
-    : '<p class="catalog__empty">Товары не найдены</p>';
-}
-
-/* ── Pagination ─────────────────────────────────────────────── */
-function renderPagination() {
-  const wrap = document.getElementById('pagination');
-  if (!wrap) return;
-  const total = Math.ceil(filtered().length / PAGE_SIZE);
-  if (total <= 1) { wrap.innerHTML = ''; return; }
-
-  let html = '';
-  html += `<button class="page-btn page-btn--arrow" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
-  for (let i = 1; i <= total; i++) {
-    html += `<button class="page-btn ${i===currentPage?'page-btn--active':''}" onclick="goPage(${i})">${i}</button>`;
   }
-  html += `<button class="page-btn page-btn--arrow" onclick="goPage(${currentPage+1})" ${currentPage===total?'disabled':''}>›</button>`;
-  wrap.innerHTML = html;
-}
 
-function goPage(n) {
-  const total = Math.ceil(filtered().length / PAGE_SIZE);
-  if (n < 1 || n > total) return;
-  currentPage = n;
-  renderGrid();
-  renderPagination();
-}
+  /* ── Render Filters ─────────────────────────────────────── */
+  function renderFilters() {
+    // Brands - ЗАПОЛНЯЕМ ТОЛЬКО ЧЕКБОКСЫ (заголовок уже есть в HTML!)
+    const brandsContainer = document.getElementById('filter-brands');
+    if (brandsContainer && filters.brands) {
+      brandsContainer.innerHTML = filters.brands.map(brand => `
+        <label class="filter-checkbox">
+          <input type="checkbox" value="${brand.value}" data-filter-type="brands" />
+          <span>${brand.label}</span>
+        </label>
+      `).join('');
 
-/* ── Recommended ────────────────────────────────────────────── */
-function renderRecommended() {
-  const grid = document.getElementById('recommended-grid');
-  if (!grid) return;
-  const recs = allProducts.filter(p => p.recommended).slice(0, 4);
-  grid.innerHTML = recs.map(buildCard).join('');
-}
+      // Добавляем обработчик клика на УЖЕ СУЩЕСТВУЮЩИЙ заголовок
+      const parentSection = brandsContainer.closest('.filter-section');
+      const head = parentSection ? parentSection.querySelector('.filter-section__head') : null;
+      const arrow = parentSection ? parentSection.querySelector('.filter-section__arrow') : null;
 
-/* ── Category tabs ──────────────────────────────────────────── */
-function buildCategoryTabs() {
-  const nav = document.getElementById('category-tabs');
-  if (!nav || !allData.categories) return;
-  nav.innerHTML = allData.categories.map(cat => `
-    <button class="cat-tab ${cat.id === activeFilters.category ? 'cat-tab--active' : ''}"
-            data-cat="${cat.id}"
-            onclick="switchCategory('${cat.id}')">
-      ${cat.label}
-    </button>`).join('');
-}
+      if (head && parentSection) {
+        head.addEventListener('click', (e) => {
+          e.stopPropagation();
+          
+          // Закрываем все другие секции
+          document.querySelectorAll('.filter-section--open').forEach(section => {
+            if (section !== parentSection) {
+              section.classList.remove('filter-section--open');
+              const otherArrow = section.querySelector('.filter-section__arrow');
+              if (otherArrow) otherArrow.classList.remove('filter-section__arrow--up');
+            }
+          });
+          
+          // Переключаем текущую
+          parentSection.classList.toggle('filter-section--open');
+          if (arrow) {
+            arrow.classList.toggle('filter-section__arrow--up');
+          }
+        });
+      }
+    }
 
-function switchCategory(id) {
-  activeFilters.category = id;
-  currentPage = 1;
-  document.querySelectorAll('.cat-tab').forEach(b => {
-    b.classList.toggle('cat-tab--active', b.dataset.cat === id);
-  });
-  renderAll();
-}
+    // Types
+    renderFilterSection('filter-types', 'Тип', filters.types || []);
+    
+    // Weights
+    renderFilterSection('filter-weights', 'Вес', filters.weights || []);
+    
+    // Ingredients
+    renderFilterSection('filter-ingredients', 'Ингредиенты', filters.ingredients || []);
+    
+    // Pack Qty
+    renderFilterSection('filter-packqty', 'Количество в упаковке', filters.packQty || []);
 
-/* ── Filter panel ───────────────────────────────────────────── */
-function buildFilterPanel() {
-  buildBrandsSection();
-  buildCollapsible('filter-types',       'Тип печенья',       allData.filters.types,       'types');
-  buildCollapsible('filter-weights',     'Вес',               allData.filters.weights,     'weights');
-  buildCollapsible('filter-ingredients', 'Состав',            allData.filters.ingredients, 'ingredients');
-  buildCollapsible('filter-packqty',     'Кол. в упаковке',   allData.filters.packQty,     'packQty');
-}
-
-function buildBrandsSection() {
-  const wrap = document.getElementById('filter-brands');
-  if (!wrap) return;
-  wrap.innerHTML = allData.filters.brands.map(b => `
-    <label class="filter-check">
-      <input type="checkbox" data-group="brands" value="${b.value}"
-             onchange="onFilterChange(this)"/>
-      <span class="filter-check__box"></span>
-      <span class="filter-check__label">${b.label}</span>
-    </label>`).join('');
-}
-
-function buildCollapsible(containerId, title, items, group) {
-  const wrap = document.getElementById(containerId);
-  if (!wrap) return;
-  wrap.innerHTML = `
-    <button class="filter-section__toggle" onclick="toggleSection(this)" aria-expanded="false">
-      <span>${title}</span>
-      <img src="img/arrow-ic.svg" alt="" class="filter-section__arrow"/>
-    </button>
-    <div class="filter-section__body" hidden>
-      ${items.map(v => `
-        <label class="filter-check">
-          <input type="checkbox" data-group="${group}" value="${v}"
-                 onchange="onFilterChange(this)"/>
-          <span class="filter-check__box"></span>
-          <span class="filter-check__label">${v}</span>
-        </label>`).join('')}
-    </div>`;
-}
-
-function toggleSection(btn) {
-  const body = btn.nextElementSibling;
-  const open = btn.getAttribute('aria-expanded') === 'true';
-  btn.setAttribute('aria-expanded', !open);
-  body.hidden = open;
-  btn.querySelector('.filter-section__arrow').style.transform = open ? '' : 'rotate(180deg)';
-}
-
-function onFilterChange(cb) {
-  const group = cb.dataset.group;
-  const val   = cb.value;
-  if (cb.checked) {
-    if (!activeFilters[group].includes(val)) activeFilters[group].push(val);
-  } else {
-    activeFilters[group] = activeFilters[group].filter(v => v !== val);
+    // Add listeners to all checkboxes
+    document.querySelectorAll('.filter-checkbox input').forEach(checkbox => {
+      checkbox.addEventListener('change', handleFilterChange);
+    });
   }
-  currentPage = 1;
-  renderAll();
-}
 
-/* ── Master render ──────────────────────────────────────────── */
-function renderAll() {
-  renderActivePills();
-  renderGrid();
-  renderPagination();
-}
+  function renderFilterSection(containerId, title, items) {
+    const container = document.getElementById(containerId);
+    if (!container || !items.length) return;
 
-/* ── Init ───────────────────────────────────────────────────── */
-async function initCatalog() {
-  const res  = await fetch('data/products.json');
-  allData    = await res.json();
-  allProducts = allData.products;
+    container.innerHTML = `
+      <div class="filter-section__head">
+        <span>${title}</span>
+        <img src="img/arrow-ic-3.svg" alt="" class="filter-section__arrow"/>
+      </div>
+      <div class="filter-section__body">
+        ${items.map(item => `
+          <label class="filter-checkbox">
+            <input type="checkbox" value="${item}" data-filter-type="${containerId.replace('filter-', '')}" />
+            <span>${item}</span>
+          </label>
+        `).join('')}
+      </div>
+    `;
 
-  buildCategoryTabs();
-  buildFilterPanel();
-  renderRecommended();
-  renderAll();
-  updateCartBadge();
-}
+    const head = container.querySelector('.filter-section__head');
+    const body = container.querySelector('.filter-section__body');
+    const arrow = container.querySelector('.filter-section__arrow');
 
-document.addEventListener('DOMContentLoaded', initCatalog);
+    if (head && body) {
+      head.addEventListener('click', () => {
+        const isOpen = container.classList.contains('filter-section--open');
+        
+        document.querySelectorAll('.filter-section--open').forEach(section => {
+          if (section !== container) {
+            section.classList.remove('filter-section--open');
+            const otherArrow = section.querySelector('.filter-section__arrow');
+            if (otherArrow) otherArrow.classList.remove('filter-section__arrow--up');
+          }
+        });
+        
+        container.classList.toggle('filter-section--open');
+        if (arrow) {
+          arrow.classList.toggle('filter-section__arrow--up');
+        }
+      });
+    }
+  }
+
+  /* ── Handle Filter Change ───────────────────────────────── */
+  function handleFilterChange(e) {
+    const checkbox = e.target;
+    const filterType = checkbox.dataset.filterType;
+    const value = checkbox.value;
+
+    if (checkbox.checked) {
+      if (!activeFilters[filterType].includes(value)) {
+        activeFilters[filterType].push(value);
+      }
+    } else {
+      activeFilters[filterType] = activeFilters[filterType].filter(v => v !== value);
+    }
+
+    renderActiveFilters();
+    renderProducts(getFilteredProducts());
+  }
+
+  /* ── Get Filtered Products ──────────────────────────────── */
+  function getFilteredProducts() {
+    return allProducts.filter(product => {
+      if (activeCategory !== 'all' && product.category !== activeCategory) {
+        return false;
+      }
+
+      if (activeFilters.brands.length && !activeFilters.brands.includes(product.brand)) {
+        return false;
+      }
+      if (activeFilters.types.length && !activeFilters.types.includes(product.type)) {
+        return false;
+      }
+      if (activeFilters.weights.length && !activeFilters.weights.includes(product.weight)) {
+        return false;
+      }
+      if (activeFilters.ingredients.length && !activeFilters.ingredients.includes(product.ingredient)) {
+        return false;
+      }
+      if (activeFilters.packQty.length && !activeFilters.packQty.includes(product.packQty)) {
+        return false;
+      }
+
+      return true;
+    });
+  }
+
+  /* ── Render Active Filters Pills ────────────────────────── */
+  function renderActiveFilters() {
+    const container = document.getElementById('active-filters');
+    if (!container) return;
+
+    const pills = [];
+
+    Object.entries(activeFilters).forEach(([type, values]) => {
+      values.forEach(value => {
+        pills.push(`
+          <span class="filter-pill">
+            ${value}
+            <button class="filter-pill__remove" data-type="${type}" data-value="${value}">×</button>
+          </span>
+        `);
+      });
+    });
+
+    container.innerHTML = pills.join('');
+
+    container.querySelectorAll('.filter-pill__remove').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.dataset.type;
+        const value = btn.dataset.value;
+        
+        activeFilters[type] = activeFilters[type].filter(v => v !== value);
+        
+        const checkbox = document.querySelector(`input[data-filter-type="${type}"][value="${value}"]`);
+        if (checkbox) {
+          checkbox.checked = false;
+        }
+
+        renderActiveFilters();
+        renderProducts(getFilteredProducts());
+      });
+    });
+  }
+
+  /* ── Render Products ────────────────────────────────────── */
+  function renderProducts(products) {
+    const grid = document.getElementById('products-grid');
+    if (!grid) return;
+
+    if (products.length === 0) {
+      grid.innerHTML = '<p class="products-empty">Товары не найдены</p>';
+      return;
+    }
+
+    grid.innerHTML = products.map(product => `
+      <article class="product-card" data-id="${product.id}">
+        <div class="product-card__image-wrap">
+          <img class="product-card__img" src="${product.image}" alt="${product.name}" />
+          <button class="product-card__favorite" aria-label="В избранное">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+        </div>
+        <div class="product-card__body">
+          <h3 class="product-card__title">${product.name}</h3>
+          <p class="product-card__weight">${product.weight}</p>
+          <div class="product-card__meta">
+            <span class="product-card__brand">${product.brand}</span>
+            <span class="product-card__pack">${product.packQty}</span>
+          </div>
+          <div class="product-card__footer">
+            <span class="product-card__price">${product.price} ₽</span>
+            <button class="product-card__add" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}">
+              В корзину
+            </button>
+          </div>
+        </div>
+      </article>
+    `).join('');
+
+    grid.querySelectorAll('.product-card__add').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        const name = btn.dataset.name;
+        const price = parseFloat(btn.dataset.price);
+        addToCart(id, name, price);
+      });
+    });
+
+    grid.querySelectorAll('.product-card__favorite').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('product-card__favorite--active');
+        showToast(btn.classList.contains('product-card__favorite--active') ? 'Добавлено в избранное' : 'Удалено из избранного');
+      });
+    });
+  }
+
+  /* ── Render Recommended ─────────────────────────────────── */
+  function renderRecommended() {
+    const grid = document.getElementById('recommended-grid');
+    if (!grid) return;
+
+    const recommended = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 4);
+
+    grid.innerHTML = recommended.map(product => `
+      <article class="recommended-card" data-id="${product.id}">
+        <img class="recommended-card__img" src="${product.image}" alt="${product.name}" />
+        <div class="recommended-card__body">
+          <h4 class="recommended-card__title">${product.name}</h4>
+          <p class="recommended-card__price">${product.price} ₽</p>
+          <button class="recommended-card__add" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}">
+            В корзину
+          </button>
+        </div>
+      </article>
+    `).join('');
+
+    grid.querySelectorAll('.recommended-card__add').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        const name = btn.dataset.name;
+        const price = parseFloat(btn.dataset.price);
+        addToCart(id, name, price);
+      });
+    });
+  }
+
+  /* ── Cart Functions ─────────────────────────────────────── */
+  function addToCart(id, name, price) {
+    let cart = JSON.parse(localStorage.getItem('ami-cart') || '[]');
+    
+    const existingItem = cart.find(item => item.id === id);
+    if (existingItem) {
+      existingItem.quantity++;
+    } else {
+      cart.push({ id, name, price, quantity: 1 });
+    }
+
+    localStorage.setItem('ami-cart', JSON.stringify(cart));
+    updateCartBadge();
+    showToast(`${name} добавлен в корзину`);
+  }
+
+  function updateCartBadge() {
+    const badge = document.getElementById('cart-badge');
+    if (!badge) return;
+
+    const cart = JSON.parse(localStorage.getItem('ami-cart') || '[]');
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+    if (totalItems > 0) {
+      badge.textContent = totalItems;
+      badge.style.display = 'flex';
+    } else {
+      badge.textContent = '';
+      badge.style.display = 'none';
+    }
+  }
+
+  /* ── Toast Notification ─────────────────────────────────── */
+  function showToast(message) {
+    const toast = document.getElementById('ami-toast');
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.add('ami-toast--show');
+
+    setTimeout(() => {
+      toast.classList.remove('ami-toast--show');
+    }, 3000);
+  }
+
+  /* ── Start App ──────────────────────────────────────────── */
+  fetchData();
+
+  return {
+    addToCart,
+    updateCartBadge
+  };
+})();
+
+document.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener('storage', () => {
+    CatalogApp.updateCartBadge();
+  });
+});
