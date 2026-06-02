@@ -273,8 +273,12 @@ function updateUserInterface() {
 
 /* ── Logout ──────────────────────────────────────────────── */
 /* ── Logout ──────────────────────────────────────────────── */
+/* ── Logout ──────────────────────────────────────────────── */
 function logout() {
-  console.log('🚪 Выход из системы');
+  console.log(' Выход из системы');
+  
+  // Сохраняем настройки доступности (они должны остаться)
+  const accessibilitySettings = localStorage.getItem('ami-accessibility');
   
   // Очищаем корзину и избранное текущего пользователя
   const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
@@ -286,6 +290,12 @@ function logout() {
   }
   
   localStorage.removeItem('ami-session');
+  
+  // Восстанавливаем настройки доступности
+  if (accessibilitySettings) {
+    localStorage.setItem('ami-accessibility', accessibilitySettings);
+  }
+  
   window.location.href = 'login.html';
 }
 
