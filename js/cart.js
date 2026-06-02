@@ -154,6 +154,22 @@ function initOrderForm() {
   const form = document.getElementById('order-form');
   if (!form) return;
   
+  // 🔥 Проверка: только для зарегистрированных
+  const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
+  if (!session) {
+    form.innerHTML = `
+      <div style="text-align: center; padding: 40px; background: #f8f8f8; border-radius: 8px;">
+        <p style="font-size: 16px; color: #7B7B7B; margin-bottom: 20px;">
+          ⚠️ Для оформления заказа необходимо войти
+        </p>
+        <a href="login.html" style="display: inline-block; padding: 12px 32px; background: #E8593A; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600;">
+          Войти
+        </a>
+      </div>
+    `;
+    return;
+  }
+  
   form.addEventListener('submit', e => {
     e.preventDefault();
     if (cart.length === 0) {

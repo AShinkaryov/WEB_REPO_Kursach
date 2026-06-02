@@ -1359,3 +1359,37 @@ button { cursor: pointer; border: none; background: none; padding: 0; font-famil
   fill: var(--main-red, #E8593A);
   stroke: var(--main-red, #E8593A);
 }
+
+/* Disabled buttons for guests */
+.product-card__add--disabled,
+.recommended-card__add--disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.product-card__add--disabled:hover,
+.recommended-card__add--disabled:hover {
+  background: #ccc;
+  transform: none;
+  box-shadow: none;
+}
+
+.product-card[title*="Войдите"] {
+  position: relative;
+}
+
+.product-card[title*="Войдите"]:hover::after {
+  content: "Требуется вход";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 10;
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>AMI — Админ панель</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<aside class="admin-sidebar">
+  <div class="admin-logo">
+    <img src="img/logo-sidebar.png" alt="AMI"/>
+  </div>
+  <nav class="admin-nav">
+    <a href="#news" class="admin-nav-item active">📰 Новости</a>
+    <a href="#products" class="admin-nav-item">🛍️ Товары</a>
+    <a href="#orders" class="admin-nav-item">📦 Заказы</a>
+    <a href="#users" class="admin-nav-item">👥 Пользователи</a>
+    <a href="catalog.html" class="admin-nav-item">← На сайт</a>
+  </nav>
+</aside>
+
+<main class="admin-main">
+  <header class="admin-header">
+    <h1 class="admin-title">Панель управления</h1>
+    <div class="admin-user">
+      <span id="admin-name">Администратор</span>
+      <button onclick="auth.logout()" class="admin-logout">Выйти</button>
+    </div>
+  </header>
+
+  <!-- News Section -->
+  <section id="news-section" class="admin-section">
+    <h2 class="admin-section-title">Управление новостями</h2>
+    
+    <div class="admin-form-card">
+      <h3>Добавить новость</h3>
+      <form id="news-form" class="admin-form">
+        <input type="text" id="news-title" placeholder="Заголовок" required class="admin-input"/>
+        <textarea id="news-content" placeholder="Текст новости" rows="5" required class="admin-textarea"></textarea>
+        <input type="date" id="news-date" required class="admin-input"/>
+        <input type="text" id="news-image" placeholder="URL изображения" class="admin-input"/>
+        <div class="admin-form-actions">
+          <button type="submit" class="admin-btn admin-btn--primary">Добавить</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="admin-list" id="news-list">
+      <!-- News items loaded here -->
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section id="products-section" class="admin-section" style="display:none;">
+    <h2 class="admin-section-title">Управление товарами</h2>
+    
+    <div class="admin-form-card">
+      <h3>Добавить товар</h3>
+      <form id="product-form" class="admin-form">
+        <input type="text" id="product-name" placeholder="Название" required class="admin-input"/>
+        <input type="number" id="product-price" placeholder="Цена" required class="admin-input"/>
+        <input type="text" id="product-weight" placeholder="Вес" class="admin-input"/>
+        <input type="text" id="product-brand" placeholder="Бренд" class="admin-input"/>
+        <input type="text" id="product-category" placeholder="Категория" class="admin-input"/>
+        <input type="text" id="product-image" placeholder="URL изображения" class="admin-input"/>
+        <textarea id="product-desc" placeholder="Описание" rows="3" class="admin-textarea"></textarea>
+        <div class="admin-form-actions">
+          <button type="submit" class="admin-btn admin-btn--primary">Добавить</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="admin-list" id="products-list">
+      <!-- Products loaded here -->
+    </div>
+  </section>
+
+  <!-- Orders Section -->
+  <section id="orders-section" class="admin-section" style="display:none;">
+    <h2 class="admin-section-title">Заказы</h2>
+    <div class="admin-list" id="orders-list">
+      <!-- Orders loaded here -->
+    </div>
+  </section>
+
+  <!-- Users Section -->
+  <section id="users-section" class="admin-section" style="display:none;">
+    <h2 class="admin-section-title">Пользователи</h2>
+    <div class="admin-list" id="users-list">
+      <!-- Users loaded here -->
+    </div>
+  </section>
+</main>
+
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
