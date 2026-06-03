@@ -14,13 +14,27 @@ body {
 /* Контейнер страницы */
 /* ========== ВЫРАВНИВАНИЕ СИСТЕМЫ И КОНТЕНТЕРА ========== */
 .article-page, .main-page-container {
-  margin-left: 310px; /* Отступ под левый сайдбар */
-  padding: 40px 50px 0 50px; /* 0 снизу, чтобы убрать лишнюю дыру под футером */
+  margin-left: 310px !important; /* Отступ под левый сайдбар */
+  padding: 40px 50px 0 50px !important;
   
-  display: flex;
-  flex-direction: column;
+  /* Отключаем флекс-бокс, который растягивал пустую страницу */
+  display: block !important; 
+  height: auto !important;
+  min-height: 0 !important;
 }
-
+/* ========== 2. СБРОС ОТСТУПОВ У ВСЕХ ВОЗМОЖНЫХ ТЕГОВ КОНТЕНТА ========== */
+/* Этот блок принудительно запретит любым элементам внутри страницы создавать гигантские невидимые отступы */
+.article-page > div, 
+.article-page > main, 
+.article-page > article,
+.main-page-container > div,
+.main-page-container > main {
+  height: auto !important;
+  min-height: 0 !important;
+  padding-bottom: 0 !important;
+  /* Оставляем только небольшой контролируемый отступ снизу */
+  margin-bottom: 40px !important; 
+}
 /* ОБЕРТКА КОНТЕНТА: Отвечает за от
 
 /* Контентная обертка */
@@ -180,16 +194,17 @@ body {
   font-size: 15px; 
   color: #222; 
 }
-
-
-/* ========== ФУТЕР ПОЛНОСТЬЮ НА FLEXBOX ========== */
 .footer {
   width: 100%;
   max-width: 100%;
   margin-top: 60px !important;
   padding-bottom: 40px;
   width: 100%;
+  top: auto !important;
 }
+
+/* ========== ФУТЕР ПОЛНОСТЬЮ НА FLEXBOX ========== */
+/* ========== 3. ЖЕСТКОЕУПРАВЛЕНИЕ ФУТЕРОМ ========== */
 
 .footer__inner {
   width: 100%;
@@ -330,4 +345,221 @@ body {
 .footer__logo {
   display: none;
 }
+
+/* ==========================================================================
+   1. SYSTEM RESET & BASE LAYOUT (Основа как на Главной)
+   ========================================================================== */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+body {
+  min-height: 100vh;
+  background-color: #ffffff;
+  overflow-x: hidden;
+  font-family: "Manrope", sans-serif;
+}
+
+/* Главный контейнер-флекс (держим структуру как в .page-wrapper) */
+.article-page, .main-page-container, .page-wrapper {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Сайдбар слева */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 310px;
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
+  border-right: 1px solid #ebebeb;
+}
+
+/* Правая контентная область (как .main-content на главной) */
+.main-content, .article-main-content {
+  flex: 1;
+  margin-left: 310px; /* Отступ справа от фиксированного сайдбара */
+  padding: 40px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Убирает километровую дыру, прижимая блоки вверх */
+}
+
+/* Обертка для новости, чтобы она не прилипала к футеру */
+.content-wrapper, .article-content {
+  width: 100%;
+  margin-bottom: 60px; /* Фиксированный аккуратный отступ до футера */
+}
+
+
+/* ==========================================================================
+   2. ARTICLE STYLES (Контент самой статьи)
+   ========================================================================== */
+.article-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #E8593A;
+  margin-bottom: 30px;
+  text-decoration: none;
+}
+.article-back::before { content: "←"; font-size: 16px; }
+
+.article-meta { display: flex; align-items: center; gap: 24px; margin-bottom: 20px; }
+.article-date { font-size: 14px; color: #7b7b7b; }
+.article-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.article-tag { padding: 4px 12px; background: rgba(232, 89, 58, 0.1); border-radius: 6px; font-size: 14px; color: #E8593A; }
+.article-tag:first-child { background: #E8593A; color: #fff; }
+
+.article-title { font-family: "Yeseva One", serif; font-size: 38px; color: #222; margin-bottom: 32px; line-height: 1.3; }
+.article-hero-img { width: 74%; max-height: 407px; object-fit: cover; border-radius: 6px; display: block; margin-bottom: 40px; }
+.article-paragraph { font-size: 16px; line-height: 1.6; color: #333; margin-bottom: 24px; }
+
+
+/* ==========================================================================
+   3. БЛОК ДРУГИЕ НОВОСТИ / КАРТОЧКИ
+   ========================================================================== */
+.article-other-news { margin-top: 30px; padding-top: 30px; border-top: 1px solid #ebebeb; width: 100%; }
+.article-other-title { font-family: "Yeseva One", serif; font-size: 28px; color: #222; margin-bottom: 24px; }
+.article-other-grid { display: flex; gap: 24px; flex-wrap: wrap; }
+.article-other-card { width: 280px; border-radius: 6px; overflow: hidden; text-decoration: none; background: #f8f8f8; display: block; }
+.article-other-card img { width: 100%; height: 160px; object-fit: cover; display: block; }
+.article-other-card__body { padding: 16px; }
+.article-other-card__date { font-size: 13px; color: #7b7b7b; display: block; margin-bottom: 6px; }
+.article-other-card__title { font-weight: 600; font-size: 15px; color: #222; line-height: 1.4; }
+
+
+/* ==========================================================================
+   4. СТАБИЛЬНЫЙ ФУТЕР (Построен на Grid, как на главной)
+   ========================================================================== */
+.footer {
+  width: 100%;
+  margin-top: auto; /* Мягко страхует положение внизу страницы */
+}
+
+.footer__inner {
+  width: 100%;
+  background-color: #A7BB61;
+  border-radius: 6px;
+  padding: 40px;
+}
+
+/* Сетка в 3 колонки: Карта сайта | Контакты | Карта Яндекса */
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 500px;
+  gap: 40px;
+  align-items: start;
+}
+
+.footer__nav-section,
+.footer__nav-section1 {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Заголовки стоят ровно на одной линии */
+.footer__nav-heading,
+.footer__nav-heading1 {
+  font-weight: 700;
+  font-size: 18px;
+  color: white;
+  margin-bottom: 10px;
+  height: 25px; 
+}
+
+.footer__nav-line {
+  width: 158px;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 20px;
+  display: block;
+}
+
+.footer__nav-list,
+.footer__contacts-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer__nav-link,
+.footer__contact span {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.footer__contact {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Стили Яндекс Карты */
+.footer__map-col {
+  width: 100%;
+  height: 300px;
+}
+
+.footer__map {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.footer__map iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* Нижняя панель с копирайтом */
+.footer__divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 35px 0 20px 0;
+  display: block;
+}
+
+.footer__bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer__copy-year,
+.footer__created,
+.footer__confidance {
+  font-size: 14px;
+  color: #ffffff;
+}
+
+/* УВЕЛИЧЕННАЯ ИКОНКА ЛОГОТИПА AMI */
+.footer__corner-img {
+  width: 90px; /* Стала крупнее и заметнее */
+  height: auto;
+  object-fit: contain;
+}
+
+.footer__logo { display: none !important; }
+
+
+/* ==========================================================================
+   5. ADAPTIVE MEDIA QUERIES (Адаптив один в один как на главной)
+   ========================================================================== */
 
