@@ -584,3 +584,23 @@ document.addEventListener('DOMContentLoaded', () => {
     CatalogApp.renderFavoritesSection();
   });
 });
+
+// В функции renderProducts() или где выводятся карточки товаров
+function renderProducts(products) {
+  const container = document.getElementById('products-container');
+  
+  container.innerHTML = products.map(product => `
+    <div class="product-card">
+      <img src="${product.image}" alt="${product.name}"/>
+      <h3>${product.name}</h3>
+      <p class="price">${product.price} ₽</p>
+      <p class="stock" style="color: ${product.stock > 10 ? '#27ae60' : '#e74c3c'}; font-weight: 600;">
+        📦 В наличии: ${product.stock} шт.
+      </p>
+      ${product.stock === 0 ? 
+        '<button disabled>Нет в наличии</button>' : 
+        '<button onclick="addToCart(\'' + product.id + '\')">В корзину</button>'
+      }
+    </div>
+  `).join('');
+}

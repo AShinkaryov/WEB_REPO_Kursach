@@ -18,6 +18,7 @@
     <a href="#orders" class="admin-nav-item">📦 Заказы</a>
     <a href="#users" class="admin-nav-item">👥 Пользователи</a>
     <a href="#stats" class="admin-nav-item">📊 Статистика</a>
+    <a href="#reviews" class="admin-nav-item">💬 Отзывы</a>
     <a href="catalog.html" class="admin-nav-item">← На сайт</a>
   </nav>
 </aside>
@@ -90,7 +91,6 @@
   <section id="stats-section" class="admin-section" style="display:none;">
     <h2 class="admin-section-title">📊 Статистика продаж</h2>
 
-    <!-- Фильтр периода -->
     <div class="stats-filters">
       <label>Период:
         <select id="stats-period">
@@ -104,7 +104,6 @@
       <button id="stats-refresh-btn" class="admin-btn admin-btn--primary">🔄 Обновить</button>
     </div>
 
-    <!-- Карточки-сводка -->
     <div class="stats-grid">
       <div class="stat-card">
         <span class="stat-icon">📦</span>
@@ -133,7 +132,6 @@
       </div>
     </div>
 
-    <!-- Таблица: Популярные товары -->
     <div class="stats-table-wrapper">
       <h3>🍪 Популярные товары</h3>
       <table class="admin-table" id="products-stats-table">
@@ -144,7 +142,6 @@
       </table>
     </div>
 
-    <!-- Таблица: Статистика по пользователям -->
     <div class="stats-table-wrapper">
       <h3>👥 Покупатели</h3>
       <table class="admin-table" id="users-stats-table">
@@ -154,6 +151,12 @@
         <tbody></tbody>
       </table>
     </div>
+  </section>
+
+  <!-- Reviews Section -->
+  <section id="reviews-section" class="admin-section" style="display:none;">
+    <h2 class="admin-section-title">💬 Отзывы пользователей</h2>
+    <div class="admin-list" id="reviews-list"></div>
   </section>
 </main>
 

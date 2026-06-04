@@ -579,3 +579,125 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .promo-message.error { 
   color: #e74c3c; 
 }
+
+
+
+/* Секция отзыва */
+.review-section {
+  margin: 40px auto 0;
+  max-width: 910px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.review-title {
+  font-family: "Yeseva One", serif;
+  font-size: 28px;
+  color: var(--red);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rating-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rating-group label {
+  font-weight: 600;
+  color: var(--black);
+  font-size: 15px;
+}
+
+.stars {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.stars input[type="radio"] {
+  display: none;
+}
+
+.stars label {
+  font-size: 32px;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.stars input[type="radio"]:checked ~ label,
+.stars label:hover,
+.stars label:hover ~ label {
+  color: #f39c12;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--black);
+  font-size: 15px;
+}
+
+.form-group textarea {
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-family: var(--font);
+  font-size: 14px;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.form-group textarea:focus {
+  border-color: var(--red);
+  outline: none;
+}
+
+.review-btn {
+  padding: 14px 32px;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: var(--font);
+  font-size: 16px;
+  transition: background 0.2s;
+  align-self: flex-start;
+}
+
+.review-btn:hover {
+  background: #d44a2e;
+}
+
+.review-message {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  min-height: 20px;
+}
+
+.review-message.success {
+  color: #27ae60;
+}
+
+.review-message.error {
+  color: #e74c3c;
+}

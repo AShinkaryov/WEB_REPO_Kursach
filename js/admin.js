@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadOrders();
   loadUsers();
   initStats();
+  loadReviews();
 });
 
 // Проверка доступности сервера заказов
@@ -30,7 +31,6 @@ async function checkOrdersServer() {
     return true;
   } catch (err) {
     console.error('❌ Сервер заказов недоступен:', err.message);
-    console.error('💡 Убедитесь, что выполнили: npx json-server --watch orders.json --port 3002');
     return false;
   }
 }
@@ -63,7 +63,8 @@ function setupNavigation() {
     'products': 'products-section',
     'orders': 'orders-section',
     'users': 'users-section',
-    'stats': 'stats-section'
+    'stats': 'stats-section',
+    'reviews': 'reviews-section'
   };
 
   navItems.forEach(item => {
@@ -83,9 +84,12 @@ function setupNavigation() {
           }
         });
 
-        // При первом открытии статистики - загружаем данные
+        // Загружаем данные при переключении
         if (section === 'stats') {
           loadStats();
+        }
+        if (section === 'reviews') {
+          loadReviews();
         }
       }
     });
@@ -177,7 +181,8 @@ async function handleProductSubmit(e) {
     description: document.getElementById('product-desc').value,
     packQty: '12 шт',
     type: 'Сахарное',
-    ingredient: 'Без добавок'
+    ingredient: 'Без добавок',
+    stock: 100
   };
 
   const products = JSON.parse(localStorage.getItem('ami-products') || '[]');
@@ -207,21 +212,56 @@ async function loadProducts() {
     const res = await fetch('http://localhost:3001/products');
     const products = await res.json();
     
-    list.innerHTML = products.slice(0, 10).map(item => `
+    list.innerHTML = products.map(item => `
       <div class="admin-item">
         <img src="${item.image}" alt="${item.name}"/>
         <div class="admin-item-info">
           <div class="admin-item-title">${item.name}</div>
-          <div class="admin-item-meta">${item.price} ₽ | ${item.brand}</div>
+          <div class="admin-item-meta">
+            ${item.price} ₽ | ${item.brand} | 
+            <span style="color: ${(item.stock || 0) > 10 ? '#27ae60' : '#e74c3c'}; font-weight: 600;">
+              📦 На складе: ${item.stock || 0} шт.
+            </span>
+          </div>
         </div>
         <div class="admin-item-actions">
+          <button class="admin-btn admin-btn--small" 
+                  onclick="updateProductStock('${item.id}', ${item.stock || 0})">
+            ✏️ Изменить
+          </button>
           <button class="admin-btn admin-btn--danger admin-btn--small" 
-                  onclick="deleteProduct('${item.id}')">Удалить</button>
+                  onclick="deleteProduct('${item.id}')">
+            Удалить
+          </button>
         </div>
       </div>
     `).join('');
   } catch (err) {
     list.innerHTML = '<p>Не удалось загрузить товары</p>';
+  }
+}
+
+async function updateProductStock(productId, currentStock) {
+  const newStock = prompt('Введите количество товара на складе:', currentStock);
+  
+  if (newStock === null) return;
+  
+  const stock = parseInt(newStock);
+  if (isNaN(stock) || stock < 0) {
+    alert('Введите корректное число!');
+    return;
+  }
+  
+  try {
+    await fetch(`http://localhost:3001/products/${productId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ stock: stock })
+    });
+    
+    loadProducts();
+  } catch (err) {
+    alert('Ошибка при обновлении');
   }
 }
 
@@ -240,35 +280,19 @@ async function deleteProduct(id) {
 
 /* ── Orders Management ──────────────────────────────────── */
 async function loadOrders() {
-  console.log('📥 loadOrders вызвана');
   const list = document.getElementById('orders-list');
-  console.log('🔍 Элемент orders-list:', list);
-  
-  if (!list) {
-    console.error('❌ Элемент orders-list не найден в HTML!');
-    return;
-  }
+  if (!list) return;
 
   try {
-    console.log('📥 Загрузка заказов с http://localhost:3002/orders...');
-    
     const res = await fetch('http://localhost:3002/orders');
     
-    console.log('📊 Status:', res.status);
-    console.log('📊 OK:', res.ok);
-    
     if (!res.ok) {
-      const errorText = await res.text();
-      console.error('❌ HTTP Error:', res.status, errorText);
       throw new Error(`HTTP error! status: ${res.status}`);
     }
     
     const orders = await res.json();
-    console.log('📦 Orders loaded:', orders.length);
-    console.log('📦 Orders data:', orders);
     
     if (orders.length === 0) {
-      console.warn('⚠️ Заказов нет в базе данных');
       list.innerHTML = '<p style="color: #999; text-align: center; padding: 40px;">Пока нет заказов</p>';
       return;
     }
@@ -294,7 +318,7 @@ async function loadOrders() {
         hour: '2-digit', minute: '2-digit'
       });
       
-      const itemsText = order.items.map(i => `${i.name} × ${i.quantity}`).join('<br>');
+      const itemsText = (order.items || []).map(i => `${i.name} × ${i.quantity}`).join('<br>');
       
       return `
       <div class="admin-item" style="flex-direction: column; align-items: stretch; gap: 12px; margin-bottom: 20px; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
@@ -304,10 +328,10 @@ async function loadOrders() {
               Заказ #${order.id} — ${date}
             </div>
             <div class="admin-item-meta" style="color: #7B7B7B; font-size: 14px; line-height: 1.6;">
-               👤 ${order.customer.name}<br>
-              📞 ${order.customer.phone}<br>
-              📧 ${order.customer.email}<br>
-              📍 ${order.customer.address}
+              👤 ${order.customer?.name || 'Не указан'}<br>
+              📞 ${order.customer?.phone || '-'}<br>
+              📧 ${order.customer?.email || '-'}<br>
+              📍 ${order.customer?.address || '-'}
             </div>
           </div>
           <div style="text-align: right;">
@@ -322,7 +346,7 @@ async function loadOrders() {
         
         <div style="background: #f8f8f8; padding: 12px; border-radius: 6px; font-size: 13px; line-height: 1.6;">
           <strong style="color: #423F3E;">📦 Товары:</strong><br>
-          ${itemsText}
+          ${itemsText || 'Нет товаров'}
         </div>
         
         ${order.notes ? `
@@ -354,12 +378,10 @@ async function loadOrders() {
       </div>`;
     }).join('');
     
-    console.log('✅ Заказы отрисованы в HTML');
   } catch (err) {
     console.error('❌ Error loading orders:', err);
     list.innerHTML = `
       <div style="text-align: center; padding: 40px; color: #e74c3c;">
-        <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
         <p style="font-size: 16px; margin-bottom: 12px;">Не удалось загрузить заказы</p>
         <p style="font-size: 14px; color: #999;">${err.message}</p>
       </div>`;
@@ -367,8 +389,6 @@ async function loadOrders() {
 }
 
 async function changeOrderStatus(orderId, newStatus) {
-  console.log('🔄 Изменение статуса заказа', orderId, '→', newStatus);
-  
   try {
     const orderRes = await fetch(`http://localhost:3002/orders/${orderId}`);
     
@@ -377,22 +397,16 @@ async function changeOrderStatus(orderId, newStatus) {
     }
     
     const order = await orderRes.json();
-    console.log('📦 Текущий заказ:', order);
     
     const response = await fetch(`http://localhost:3002/orders/${orderId}`, {
       method: 'PATCH',
-      headers: { 
-        'Content-Type': 'application/json' 
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: newStatus })
     });
     
     if (!response.ok) {
       throw new Error(`Server error: ${response.status}`);
     }
-    
-    const updatedOrder = await response.json();
-    console.log('✅ Статус изменён:', updatedOrder);
     
     const notificationsKey = `ami-notifications-${order.userId}`;
     const notifications = JSON.parse(localStorage.getItem(notificationsKey) || '[]');
@@ -416,7 +430,6 @@ async function changeOrderStatus(orderId, newStatus) {
     });
     
     localStorage.setItem(notificationsKey, JSON.stringify(notifications.slice(0, 20)));
-    console.log('🔔 Уведомление сохранено');
     
     loadOrders();
     
@@ -454,6 +467,11 @@ function loadUsers() {
 
   const users = JSON.parse(localStorage.getItem('ami-users') || '[]');
   
+  if (users.length === 0) {
+    list.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Нет пользователей</p>';
+    return;
+  }
+  
   list.innerHTML = users.map(user => `
     <div class="admin-item">
       <div class="admin-item-info">
@@ -469,7 +487,6 @@ function loadUsers() {
 /* ── Statistics Management ───────────────────────────────── */
 async function loadStats() {
   const period = document.getElementById('stats-period')?.value || 'all';
-  console.log('📊 Загрузка статистики, период:', period);
   
   try {
     const res = await fetch('http://localhost:3002/orders');
@@ -477,7 +494,6 @@ async function loadStats() {
     
     let orders = await res.json();
     
-    // Фильтрация по периоду
     if (period !== 'all') {
       const days = parseInt(period);
       const cutoff = new Date();
@@ -493,7 +509,6 @@ async function loadStats() {
 }
 
 function renderStats(orders) {
-  // Сводные карточки
   const totalOrders = orders.length;
   const totalRevenue = orders.reduce((s, o) => s + (o.totalPrice || 0), 0);
   const totalItems = orders.reduce((s, o) => 
@@ -508,7 +523,6 @@ function renderStats(orders) {
   document.getElementById('stat-users').textContent = uniqueUsers;
   document.getElementById('stat-avg').textContent = avgCheck.toLocaleString('ru-RU') + ' ₽';
   
-  // Таблица товаров
   const prodMap = {};
   orders.forEach(order => {
     (order.items || []).forEach(item => {
@@ -541,7 +555,6 @@ function renderStats(orders) {
     }
   }
   
-  // Таблица пользователей
   const userMap = {};
   orders.forEach(order => {
     const uid = order.userId;
@@ -591,10 +604,127 @@ function initStats() {
   }
 }
 
-// ЕДИНОЕ объявление в самом конце файла!
+/* ── Reviews Management ────────────────────────────────── */
+async function loadReviews() {
+  const list = document.getElementById('reviews-list');
+  if (!list) return;
+
+  try {
+    const res = await fetch('http://localhost:3001/reviews');
+    
+    if (!res.ok) {
+      list.innerHTML = '<p style="text-align: center; color: #e74c3c; padding: 40px;">Сервер отзывов недоступен. Убедитесь, что JSON Server запущен на порту 3001</p>';
+      return;
+    }
+    
+    const reviews = await res.json();
+    
+    if (reviews.length === 0) {
+      list.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Пока нет отзывов</p>';
+      return;
+    }
+    
+    // Сортируем по дате (новые сверху)
+    reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    list.innerHTML = reviews.map(review => {
+      const date = new Date(review.date).toLocaleString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+      const isNew = review.status === 'new';
+      
+      return `
+        <div class="admin-item" style="flex-direction: column; align-items: stretch; gap: 12px; padding: 20px; background: ${isNew ? '#fff8f0' : '#fff'}; border-left: 4px solid ${isNew ? '#f39c12' : '#27ae60'};">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div class="admin-item-title" style="font-size: 16px; margin-bottom: 4px;">
+                👤 ${review.userName}
+              </div>
+              <div class="admin-item-meta" style="font-size: 13px;">
+                📧 ${review.userEmail} | 📅 ${date}
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 24px; color: #f39c12; margin-bottom: 4px;">
+                ${stars}
+              </div>
+              <div style="display: inline-block; padding: 4px 12px; border-radius: 12px; background: ${isNew ? '#f39c1222' : '#27ae6022'}; color: ${isNew ? '#f39c12' : '#27ae60'}; font-size: 12px; font-weight: 600;">
+                ${isNew ? '🆕 Новый' : '✅ Прочитан'}
+              </div>
+            </div>
+          </div>
+          
+          <div style="background: #f8f8f8; padding: 12px; border-radius: 6px; font-size: 14px; line-height: 1.6; color: #333;">
+            "${review.text}"
+          </div>
+          
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">
+            ${isNew ? `
+              <button 
+                onclick="window.adminPanel.markReviewAsRead('${review.id}')"
+                style="padding: 6px 12px; background: #27ae60; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600;">
+                ✅ Отметить как прочитанный
+              </button>
+            ` : ''}
+            <button 
+              onclick="window.adminPanel.deleteReview('${review.id}')"
+              style="padding: 6px 12px; background: #e74c3c; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600;">
+              🗑️ Удалить
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+  } catch (err) {
+    console.error('❌ Error loading reviews:', err);
+    list.innerHTML = '<p style="text-align: center; color: #e74c3c; padding: 40px;">Не удалось загрузить отзывы</p>';
+  }
+}
+
+async function markReviewAsRead(reviewId) {
+  try {
+    await fetch(`http://localhost:3001/reviews/${reviewId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'read' })
+    });
+    
+    loadReviews();
+  } catch (err) {
+    console.error('❌ Ошибка обновления статуса:', err);
+    alert('Не удалось обновить статус');
+  }
+}
+
+async function deleteReview(reviewId) {
+  if (!confirm('Удалить этот отзыв?')) return;
+  
+  try {
+    await fetch(`http://localhost:3001/reviews/${reviewId}`, {
+      method: 'DELETE'
+    });
+    
+    loadReviews();
+  } catch (err) {
+    console.error('❌ Ошибка удаления отзыва:', err);
+    alert('Не удалось удалить отзыв');
+  }
+}
+
+// ЕДИНОЕ объявление в самом конце файла
 window.adminPanel = {
   deleteNews,
   deleteProduct,
   changeOrderStatus,
-  deleteOrder
+  deleteOrder,
+  updateProductStock,
+  markReviewAsRead,
+  deleteReview
 };

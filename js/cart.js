@@ -369,6 +369,44 @@ async function submitOrder(e) {
     return;
   }
   
+  // 🔥 ПРОВЕРКА наличия товара на складе
+  try {
+    const productsRes = await fetch('http://localhost:3001/products');
+    const allProducts = await productsRes.json();
+    
+    // Проверяем каждый товар в корзине
+    for (const cartItem of cart) {
+      const product = allProducts.find(p => p.id === cartItem.id);
+      if (!product) {
+        alert(`Товар "${cartItem.name}" не найден!`);
+        return;
+      }
+      if (product.stock < cartItem.quantity) {
+        alert(`Товара "${product.name}" недостаточно на складе! Доступно: ${product.stock} шт.`);
+        return;
+      }
+    }
+    
+    // 🔥 УМЕНЬШАЕМ stock для каждого товара
+    for (const cartItem of cart) {
+      const product = allProducts.find(p => p.id === cartItem.id);
+      const newStock = product.stock - cartItem.quantity;
+      
+      await fetch(`http://localhost:3001/products/${cartItem.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stock: newStock })
+      });
+    }
+    
+  } catch (err) {
+    console.error('❌ Ошибка при обновлении stock:', err);
+    alert('Ошибка при резервировании товара');
+    return;
+  }
+  
+  // ... остальной код оформления заказа ...
+  
   const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
   const subtotal = calculateTotal();
   const discount = appliedPromo ? appliedPromo.discount : 0;
@@ -477,3 +515,85 @@ window.CartApp = {
 
 /* ── Initialize on DOM ready ───────────────────────────── */
 document.addEventListener('DOMContentLoaded', initCart);
+
+/* ── Отзывы ────────────────────────────────────────────── */
+const REVIEWS_API = 'http://localhost:3001/reviews';
+
+async function submitReview(e) {
+  e.preventDefault();
+  
+  const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
+  
+  if (!session) {
+    showMessage(document.getElementById('review-message'), 'Войдите в аккаунт, чтобы оставить отзыв', 'error');
+    return;
+  }
+  
+  const rating = document.querySelector('input[name="rating"]:checked');
+  const text = document.getElementById('review-text').value.trim();
+  
+  if (!rating) {
+    showMessage(document.getElementById('review-message'), 'Пожалуйста, поставьте оценку', 'error');
+    return;
+  }
+  
+  if (!text) {
+    showMessage(document.getElementById('review-message'), 'Напишите отзыв', 'error');
+    return;
+  }
+  
+  if (text.length < 10) {
+    showMessage(document.getElementById('review-message'), 'Отзыв слишком короткий (минимум 10 символов)', 'error');
+    return;
+  }
+  
+  const review = {
+    userId: session.id,
+    userName: session.name,
+    userEmail: session.email,
+    rating: parseInt(rating.value),
+    text: text,
+    date: new Date().toISOString(),
+    status: 'new'
+  };
+  
+  try {
+    const response = await fetch(REVIEWS_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(review)
+    });
+    
+    if (response.ok) {
+      const savedReview = await response.json();
+      console.log('✅ Отзыв сохранён:', savedReview);
+      
+      showMessage(document.getElementById('review-message'), '✅ Спасибо за ваш отзыв!', 'success');
+      
+      // Сброс формы
+      document.getElementById('review-form').reset();
+      
+      // Скрыть сообщение через 3 секунды
+      setTimeout(() => {
+        const msg = document.getElementById('review-message');
+        if (msg) {
+          msg.textContent = '';
+          msg.className = 'review-message';
+        }
+      }, 3000);
+    } else {
+      throw new Error('Server error: ' + response.status);
+    }
+  } catch (error) {
+    console.error('❌ Ошибка отправки отзыва:', error);
+    showMessage(document.getElementById('review-message'), 'Ошибка при отправке отзыва', 'error');
+  }
+}
+
+// Инициализация формы отзыва
+document.addEventListener('DOMContentLoaded', () => {
+  const reviewForm = document.getElementById('review-form');
+  if (reviewForm) {
+    reviewForm.addEventListener('submit', submitReview);
+  }
+});
