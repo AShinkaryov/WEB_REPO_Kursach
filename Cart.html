@@ -18,10 +18,10 @@
   </div>
   <nav class="sidebar__nav">
     <a href="Main.html" class="sidebar__nav-item">ГЛАВНАЯ</a>
-      <a href="Catalog.html" class="sidebar__nav-item sidebar__nav-item--active">КАТАЛОГ</a>
-      <a href="partners.html" class="sidebar__nav-item">ПАРТНЕРАМ</a>
-      <a href="Blog.html" class="sidebar__nav-item">БЛОГ</a>
-      <a href="cabinet.html" class="sidebar__nav-item">ЛИЧНЫЙ КАБИНЕТ</a>
+    <a href="Catalog.html" class="sidebar__nav-item sidebar__nav-item--active">КАТАЛОГ</a>
+    <a href="partners.html" class="sidebar__nav-item">ПАРТНЕРАМ</a>
+    <a href="Blog.html" class="sidebar__nav-item">БЛОГ</a>
+    <a href="cabinet.html" class="sidebar__nav-item">ЛИЧНЫЙ КАБИНЕТ</a>
   </nav>
   <a href="cart.html" class="sidebar__cart sidebar__cart--active" aria-label="Корзина">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28">
@@ -59,40 +59,59 @@
     <!-- populated by cart.js -->
   </div>
 
+  <!-- Блок промокода -->
+  <div class="promo-section">
+    <h3 class="section-subtitle">🎁 Промокод</h3>
+    <div class="promo-form">
+      <input type="text" id="promo-input" placeholder="Введите код (например: AMI10)" autocomplete="off" />
+      <button type="button" id="promo-apply-btn" class="promo-btn">Применить</button>
+    </div>
+    <p class="promo-message" id="promo-message"></p>
+  </div>
+
+  <!-- Строка скидки -->
+  <div class="discount-line" id="discount-line" style="display:none;">
+    <span>Скидка (<span id="promo-code-display"></span>):</span>
+    <span class="discount-value" id="discount-value">-0 ₽</span>
+  </div>
+
+  <!-- ИТОГОВАЯ СУММА -->
+  <div id="cart-total-block" style="display:none;">
+    <div class="cart-total">
+      <span class="cart-total__label">Итого:</span>
+      <span class="cart-total__value" id="total-value">0 ₽</span>
+    </div>
+  </div>
+
   <!-- ORDER FORM -->
-<section class="order-block">
-  <h2 class="order-block__title">Покупатель</h2>
-  <form class="order-form" id="order-form" novalidate>
-    <!-- Row 1: Адрес + Телефон -->
-    <div class="order-form__row">
-      <div class="order-form__field">
-        <input type="text" id="order-address" placeholder="Адрес*" required class="order-form__input"/>
+  <section class="order-block" id="order-section" style="display:none;">
+    <h2 class="order-block__title">Покупатель</h2>
+    <form class="order-form" id="order-form" novalidate>
+      <div class="order-form__row">
+        <div class="order-form__field">
+          <input type="text" id="order-address" placeholder="Адрес*" required class="order-form__input"/>
+        </div>
+        <div class="order-form__field">
+          <input type="tel" id="order-phone" placeholder="Телефон* (+375...)" required class="order-form__input"/>
+        </div>
       </div>
-      <div class="order-form__field">
-        <input type="tel" id="order-phone" placeholder="Телефон* (+375...)" required class="order-form__input"/>
+
+      <div class="order-form__row">
+        <div class="order-form__field">
+          <input type="text" id="order-name" placeholder="Имя и фамилия*" required class="order-form__input"/>
+        </div>
+        <div class="order-form__field">
+          <input type="email" id="order-email" placeholder="E-mail*" required class="order-form__input"/>
+        </div>
       </div>
-    </div>
 
-    <!-- Row 2: Имя и фамилия + E-mail -->
-    <div class="order-form__row">
-      <div class="order-form__field">
-        <input type="text" id="order-name" placeholder="Имя и фамилия*" required class="order-form__input"/>
+      <div class="order-form__field order-form__field--full">
+        <textarea id="order-notes" placeholder="Примечания к заказу" class="order-form__textarea" rows="5"></textarea>
       </div>
-      <div class="order-form__field">
-        <input type="email" id="order-email" placeholder="E-mail*" required class="order-form__input"/>
-      </div>
-    </div>
 
-    <!-- Row 3: Примечания -->
-    <div class="order-form__field order-form__field--full">
-      <textarea id="order-notes" placeholder="Примечания к заказу" class="order-form__textarea" rows="5"></textarea>
-    </div>
-
-    <!-- Submit -->
-    <button type="submit" class="order-form__btn">Оформить заказ</button>
-  </form>
-</section>
-
+      <button type="submit" class="order-form__btn">Оформить заказ</button>
+    </form>
+  </section>
 
 </main>
 
@@ -146,7 +165,5 @@
 </footer>
 
 <script src="js/cart.js"></script>
-<!-- Подключение версии для слабовидящих -->
-
 </body>
 </html>

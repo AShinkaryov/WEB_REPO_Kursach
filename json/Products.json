@@ -1,4 +1,26 @@
 {
+  "promoCodes": [
+    {
+      "id": "1",
+      "code": "AMI10",
+      "type": "percent",
+      "value": 10,
+      "minOrder": 0,
+      "maxUses": 100,
+      "usedCount": 1,
+      "active": true
+    },
+    {
+      "id": "2",
+      "code": "WELCOME",
+      "type": "fixed",
+      "value": 50,
+      "minOrder": 200,
+      "maxUses": 50,
+      "usedCount": 0,
+      "active": true
+    }
+  ],
   "users": [
     {
       "id": "nFFKjgMAQ7w",
