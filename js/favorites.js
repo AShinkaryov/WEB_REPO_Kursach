@@ -11,6 +11,10 @@ function getCurrentUserId() {
   return session ? session.id : 'guest';
 }
 
+function getCurrentUser() {
+  return JSON.parse(localStorage.getItem('ami-session') || 'null');
+}
+
 function getFavoritesKey() {
   return `${FAVORITES_KEY_PREFIX}${getCurrentUserId()}`;
 }
@@ -42,14 +46,14 @@ function removeFromFavorites(productId) {
   
   localStorage.setItem(favoritesKey, JSON.stringify(favorites));
   
-  // Обновляем отображение
   renderFavorites();
   updateFavoritesBadge();
+  updateFavoritesCount();
   
   showToast('Удалено из избранного');
 }
 
-/* ── Обновить счетчик избранного ─────────────────────────── */
+/* ── Обновить счетчик избранного (бейдж) ─────────────────── */
 function updateFavoritesBadge() {
   const badge = document.getElementById('favorites-badge');
   if (!badge) return;
@@ -64,6 +68,16 @@ function updateFavoritesBadge() {
     badge.textContent = '';
     badge.style.display = 'none';
   }
+}
+
+/* ── Обновить счетчик на странице ────────────────────────── */
+function updateFavoritesCount() {
+  const countEl = document.getElementById('favorites-count');
+  if (!countEl) return;
+  
+  const favoritesKey = getFavoritesKey();
+  const favorites = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
+  countEl.textContent = favorites.length;
 }
 
 /* ── Отображение избранного ──────────────────────────────── */
@@ -91,6 +105,7 @@ async function renderFavorites() {
           Перейти в каталог
         </a>
       </div>`;
+    updateFavoritesCount();
     return;
   }
   
@@ -127,7 +142,7 @@ async function renderFavorites() {
     </article>
   `).join('');
   
-  // Добавляем обработчики на сердечки (удаление из избранного)
+  // Обработчики на сердечки (удаление из избранного)
   grid.querySelectorAll('.remove-from-favorites').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -136,7 +151,7 @@ async function renderFavorites() {
     });
   });
   
-  // Добавляем обработчики на кнопки "В корзину"
+  // Обработчики на кнопки "В корзину"
   grid.querySelectorAll('.add-to-cart-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -146,6 +161,8 @@ async function renderFavorites() {
       addToCart(id, name, price);
     });
   });
+  
+  updateFavoritesCount();
 }
 
 /* ── Добавить в корзину ──────────────────────────────────── */
@@ -199,7 +216,7 @@ function showToast(message) {
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'ami-toast';
-    toast.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: #333; color: #fff; padding: 12px 24px; border-radius: 6px; z-index: 9999; opacity: 0; transition: opacity 0.3s;';
+    toast.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: #333; color: #fff; padding: 12px 24px; border-radius: 6px; z-index: 9999; opacity: 0; transition: opacity 0.3s; font-family: Manrope, sans-serif;';
     document.body.appendChild(toast);
   }
   
@@ -211,9 +228,240 @@ function showToast(message) {
   }, 3000);
 }
 
+/* ════════════════════════════════════════════════════════════
+   ЭКСПОРТ / ИМПОРТ ИЗБРАННОГО
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Экспорт избранного в текстовый файл ─────────────────── */
+async function exportFavorites() {
+  const session = getCurrentUser();
+  
+  if (!session) {
+    showToast('Войдите в аккаунт для экспорта');
+    return;
+  }
+  
+  const favoritesKey = getFavoritesKey();
+  const favoritesIds = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
+  
+  if (favoritesIds.length === 0) {
+    showToast('Избранное пусто! Нечего экспортировать.');
+    return;
+  }
+  
+  try {
+    // Загружаем товары, чтобы получить их названия и цены
+    const products = await loadProducts();
+    
+    // Формируем содержимое файла
+    const date = new Date().toLocaleString('ru-RU');
+    const lines = [
+      '# ============================================',
+      '# AMI - Список избранного',
+      '# ============================================',
+      `# Пользователь: ${session.name || 'Не указано'}`,
+      `# Email: ${session.email || 'Не указан'}`,
+      `# Дата экспорта: ${date}`,
+      `# Количество товаров: ${favoritesIds.length}`,
+      '# ============================================',
+      '#',
+      '# Формат файла:',
+      '# Каждая строка содержит ID товара.',
+      '# Строки, начинающиеся с #, являются комментариями.',
+      '# При импорте комментарии и пустые строки игнорируются.',
+      '#',
+      '# Список ID товаров:',
+      '# --------------------------------------------',
+      ''
+    ];
+    
+    // Добавляем ID товаров с информацией о них
+    favoritesIds.forEach((favId, index) => {
+      const product = products.find(p => String(p.id) === String(favId));
+      if (product) {
+        lines.push(`${product.id}  # ${product.name} | ${product.price}₽ | ${product.brand || ''}`);
+      } else {
+        lines.push(`${favId}  # Товар не найден в каталоге`);
+      }
+    });
+    
+    lines.push('');
+    lines.push('# ============================================');
+    lines.push('# Конец файла');
+    lines.push('# ============================================');
+    
+    const fileContent = lines.join('\n');
+    
+    // Создаем Blob и скачиваем файл
+    const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    
+    // Формируем имя файла
+    const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+    const userName = (session.name || 'user').replace(/\s+/g, '_');
+    a.download = `ami-favorites-${userName}-${timestamp}.txt`;
+    
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    console.log('✅ Избранное экспортировано:', favoritesIds.length, 'товаров');
+    showToast(`✅ Экспортировано ${favoritesIds.length} товаров`);
+    
+  } catch (error) {
+    console.error('❌ Ошибка экспорта:', error);
+    showToast('Ошибка при экспорте: ' + error.message);
+  }
+}
+
+/* ── Импорт избранного из файла ──────────────────────────── */
+async function importFavorites(event) {
+  const file = event.target.files[0];
+  
+  if (!file) return;
+  
+  const session = getCurrentUser();
+  
+  if (!session) {
+    showToast('Войдите в аккаунт для импорта');
+    event.target.value = '';
+    return;
+  }
+  
+  // Проверка типа файла
+  if (!file.name.toLowerCase().endsWith('.txt')) {
+    showToast('Выберите текстовый файл (.txt)');
+    event.target.value = '';
+    return;
+  }
+  
+  try {
+    const text = await file.text();
+    const lines = text.split('\n');
+    
+    // Парсим строки с ID товаров
+    const importedIds = [];
+    const invalidLines = [];
+    
+    for (let i = 0; i < lines.length; i++) {
+      let line = lines[i].trim();
+      
+      // Пропускаем пустые строки и комментарии
+      if (line === '' || line.startsWith('#')) continue;
+      
+      // Убираем комментарий после ID (если есть)
+      const commentIndex = line.indexOf('#');
+      if (commentIndex !== -1) {
+        line = line.substring(0, commentIndex).trim();
+      }
+      
+      // Извлекаем ID (первое слово)
+      const parts = line.split(/[\s|,;]+/);
+      const id = parts[0].trim();
+      
+      if (id && /^[a-zA-Z0-9_-]+$/.test(id)) {
+        importedIds.push(id);
+      } else if (line.length > 0) {
+        invalidLines.push({ lineNum: i + 1, content: line });
+      }
+    }
+    
+    if (importedIds.length === 0) {
+      showToast('В файле не найдено товаров для импорта');
+      event.target.value = '';
+      return;
+    }
+    
+    // Загружаем продукты для проверки
+    const products = await loadProducts();
+    const validIds = [];
+    const notFoundIds = [];
+    
+    importedIds.forEach(id => {
+      const exists = products.some(p => String(p.id) === String(id));
+      if (exists) {
+        validIds.push(id);
+      } else {
+        notFoundIds.push(id);
+      }
+    });
+    
+    // Формируем сообщение для подтверждения
+    let confirmMsg = `Найдено в файле: ${importedIds.length} товаров\n\n`;
+    confirmMsg += `✅ Доступно для импорта: ${validIds.length}\n`;
+    
+    if (notFoundIds.length > 0) {
+      confirmMsg += `⚠️ Не найдено в каталоге: ${notFoundIds.length}\n`;
+    }
+    
+    if (invalidLines.length > 0) {
+      confirmMsg += `❌ Нераспознанных строк: ${invalidLines.length}\n`;
+    }
+    
+    confirmMsg += '\nИмпортировать доступные товары в избранное?';
+    
+    if (!confirm(confirmMsg)) {
+      event.target.value = '';
+      return;
+    }
+    
+    // Загружаем текущее избранное
+    const favoritesKey = getFavoritesKey();
+    const currentFavorites = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
+    
+    // Добавляем новые ID (без дубликатов)
+    let addedCount = 0;
+    let skippedCount = 0;
+    
+    validIds.forEach(id => {
+      const idStr = String(id);
+      const exists = currentFavorites.some(favId => String(favId) === idStr);
+      
+      if (!exists) {
+        currentFavorites.push(id);
+        addedCount++;
+      } else {
+        skippedCount++;
+      }
+    });
+    
+    // Сохраняем обновлённое избранное
+    localStorage.setItem(favoritesKey, JSON.stringify(currentFavorites));
+    
+    // Обновляем интерфейс
+    renderFavorites();
+    updateFavoritesBadge();
+    updateFavoritesCount();
+    
+    // Формируем итоговое сообщение
+    let resultMsg = `✅ Импорт завершён!\n\n`;
+    resultMsg += `➕ Добавлено: ${addedCount}\n`;
+    if (skippedCount > 0) {
+      resultMsg += `⏭️ Уже было в избранном: ${skippedCount}\n`;
+    }
+    if (notFoundIds.length > 0) {
+      resultMsg += `❌ Не найдено в каталоге: ${notFoundIds.length}\n`;
+    }
+    
+    alert(resultMsg);
+    console.log(`✅ Импортировано: ${addedCount}, пропущено: ${skippedCount}, не найдено: ${notFoundIds.length}`);
+    
+  } catch (error) {
+    console.error('❌ Ошибка импорта:', error);
+    showToast('Ошибка при чтении файла: ' + error.message);
+  }
+  
+  // Сбрасываем input для возможности повторного импорта
+  event.target.value = '';
+}
+
 /* ── Инициализация ───────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   renderFavorites();
   updateFavoritesBadge();
   updateCartBadge();
+  updateFavoritesCount();
 });

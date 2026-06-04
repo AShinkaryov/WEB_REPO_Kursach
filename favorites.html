@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/catalog.css">
   <script>
-    // 🔥 ПРОВЕРКА: если гость - перенаправляем на вход
+    // Проверка: если гость - перенаправляем на вход
     const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
     if (!session) {
       window.location.href = 'login.html?redirect=favorites';
@@ -17,64 +17,199 @@
   </script>
   <style>
     .favorites-page { margin-left: 310px; padding: 40px 60px; min-height: 100vh; }
-    .favorites-title { font-family: "Yeseva One", serif; font-size: 32px; color: #222; margin-bottom: 40px; }
-    .favorites-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 60px; }
-    .favorites-empty { text-align: center; padding: 100px 20px; }
-    .favorites-empty p { font-family: "Manrope", sans-serif; font-size: 18px; color: #999; margin-bottom: 30px; }
-    .btn-primary { display: inline-block; padding: 12px 32px; background: var(--main-red, #E8593A); color: #fff; text-decoration: none; border-radius: 6px; font-family: "Manrope", sans-serif; font-weight: 600; transition: opacity 0.2s; }
-    .btn-primary:hover { opacity: 0.9; }
-    /* ========== ИКОНКИ КОРЗИНЫ И ИЗБРАННОГО ========== */
-.sidebar__icons {
-    position: absolute;
-    top: 521px;
-    left: 115px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
+    .favorites-title { font-family: "Yeseva One", serif; font-size: 32px; color: #222; margin-bottom: 30px; }
+    
+    /* Панель управления */
+    .favorites-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 20px 24px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    
+    .toolbar-info {
+      font-family: "Manrope", sans-serif;
+      font-size: 14px;
+      color: #7B7B7B;
+    }
+    
+    .toolbar-info strong {
+      color: #E8593A;
+      font-size: 16px;
+    }
+    
+    .toolbar-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    
+    .btn-toolbar {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: "Manrope", sans-serif;
+      font-size: 14px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .btn-export {
+      background: #27ae60;
+      color: #fff;
+    }
+    
+    .btn-export:hover {
+      background: #229954;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+    }
+    
+    .btn-import {
+      background: #3498db;
+      color: #fff;
+    }
+    
+    .btn-import:hover {
+      background: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    }
+    
+    .btn-import:disabled {
+      background: #95a5a6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .favorites-grid { 
+      display: grid; 
+      grid-template-columns: repeat(4, 1fr); 
+      gap: 24px; 
+      margin-bottom: 60px; 
+    }
+    
+    .favorites-empty { 
+      text-align: center; 
+      padding: 100px 20px; 
+    }
+    
+    .favorites-empty p { 
+      font-family: "Manrope", sans-serif; 
+      font-size: 18px; 
+      color: #999; 
+      margin-bottom: 30px; 
+    }
+    
+    .btn-primary { 
+      display: inline-block; 
+      padding: 12px 32px; 
+      background: var(--main-red, #E8593A); 
+      color: #fff; 
+      text-decoration: none; 
+      border-radius: 6px; 
+      font-family: "Manrope", sans-serif; 
+      font-weight: 600; 
+      transition: opacity 0.2s; 
+    }
+    
+    .btn-primary:hover { 
+      opacity: 0.9; 
+    }
+    
+    /* Иконки корзины и избранного */
+    .sidebar__icons {
+      position: absolute;
+      top: 521px;
+      left: 115px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
 
-.sidebar__icon {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--red);
-  text-decoration: none;
-  transition: opacity 0.2s;
-}
+    .sidebar__icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--red);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
 
-.sidebar__icon:hover {
-  opacity: 0.7;
-}
+    .sidebar__icon:hover {
+      opacity: 0.7;
+    }
 
-/* Бейджи (счетчики) */
-.icon-badge {
-  position: absolute;
-  top: -8px;
-  right: -10px;
-  min-width: 18px;
-  height: 18px;
-  background: var(--red);
-  color: #fff;
-  font-family: var(--font);
-  font-size: 11px;
-  font-weight: 700;
-  border-radius: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4px;
-  line-height: 1;
-}
+    .icon-badge {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      min-width: 18px;
+      height: 18px;
+      background: var(--red);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+      line-height: 1;
+    }
 
-.icon-badge:empty {
-  display: none;
-}
+    .icon-badge:empty {
+      display: none;
+    }
 
-/* Удаляем старые стили cart-badge если они конфликтуют */
-.cart-badge {
-  display: none !important;
-}
+    .cart-badge {
+      display: none !important;
+    }
+    
+    /* Адаптивность */
+    @media (max-width: 1200px) {
+      .favorites-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    
+    @media (max-width: 900px) {
+      .favorites-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .favorites-page {
+        margin-left: 0;
+        padding: 20px;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .favorites-grid {
+        grid-template-columns: 1fr;
+      }
+      .favorites-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .toolbar-actions {
+        flex-direction: column;
+      }
+      .btn-toolbar {
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
@@ -90,25 +225,21 @@
     <a href="blog.html" class="sidebar__nav-item">БЛОГ</a>
     <a href="#" class="sidebar__nav-item">FOR KIDS</a>
   </nav>
-  <!-- Контейнер для иконок корзины и избранного -->
-<div class="sidebar__icons">
-  <!-- Корзина -->
-  <a href="cart.html" class="sidebar__icon" aria-label="Корзина">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28">
-      <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-    </svg>
-    <span id="cart-badge" class="icon-badge"></span>
-  </a>
-
-  <!-- Избранное -->
-  <a href="favorites.html" class="sidebar__icon" aria-label="Избранное">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-    </svg>
-    <span id="favorites-badge" class="icon-badge"></span>
-  </a>
-</div>
+  <div class="sidebar__icons">
+    <a href="cart.html" class="sidebar__icon" aria-label="Корзина">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28">
+        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+      </svg>
+      <span id="cart-badge" class="icon-badge"></span>
+    </a>
+    <a href="favorites.html" class="sidebar__icon" aria-label="Избранное">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+      <span id="favorites-badge" class="icon-badge"></span>
+    </a>
+  </div>
   <div class="sidebar__social">
     <img src="img/Partners/inst.png" alt="Instagram" width="24" height="24"/>
     <img src="img/Partners/YT.png" alt="YouTube" width="24" height="24"/>
@@ -124,13 +255,29 @@
     <span class="sidebar__lang sidebar__lang--active">Ru</span>
     <span class="sidebar__lang sidebar__lang--inactive">Ro</span>
   </div>
-  
   <img class="sidebar__border" src="img/line-4.svg" alt=""/>
 </aside>
 
 <!-- MAIN -->
 <main class="favorites-page">
   <h1 class="favorites-title">Избранное</h1>
+  
+  <!-- Панель управления -->
+  <div class="favorites-toolbar">
+    <div class="toolbar-info">
+      Товаров в избранном: <strong id="favorites-count">0</strong>
+    </div>
+    <div class="toolbar-actions">
+      <button class="btn-toolbar btn-export" onclick="exportFavorites()" title="Сохранить избранное в текстовый файл">
+        📥 Экспорт в файл
+      </button>
+      <button class="btn-toolbar btn-import" onclick="document.getElementById('import-file').click()" title="Загрузить избранное из файла">
+        📤 Импорт из файла
+      </button>
+      <input type="file" id="import-file" accept=".txt" style="display:none;" onchange="importFavorites(event)"/>
+    </div>
+  </div>
+  
   <div id="favorites-grid" class="favorites-grid">
     <!-- Заполняется через JS -->
   </div>
@@ -138,7 +285,6 @@
 
 <div id="ami-toast" class="ami-toast"></div>
 <script src="js/favorites.js"></script>
-<!-- Подключение версии для слабовидящих -->
 
 </body>
 </html>
