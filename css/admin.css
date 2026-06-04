@@ -244,3 +244,138 @@ body {
   display: flex;
   gap: 8px;
 }
+
+/* ============ СТАТИСТИКА ============ */
+.stats-filters {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: var(--light-bg);
+  border-radius: 8px;
+}
+
+.stats-filters label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.stats-filters select {
+  padding: 10px 14px;
+  border: 1px solid #DCDCDC;
+  border-radius: 6px;
+  font-family: var(--font);
+  font-size: 14px;
+  background: var(--white);
+  cursor: pointer;
+}
+
+.stats-filters select:focus {
+  outline: none;
+  border-color: var(--red);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #fff 0%, #f8f8f8 100%);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #E8E8E8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.stat-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--gray);
+  margin-bottom: 6px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--red);
+  font-family: var(--font-title);
+}
+
+.stats-table-wrapper {
+  background: var(--white);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #E8E8E8;
+  margin-bottom: 24px;
+}
+
+.stats-table-wrapper h3 {
+  margin: 0 0 16px;
+  font-size: 18px;
+  color: var(--black);
+  font-family: var(--font-title);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.admin-table th {
+  background: var(--light-bg);
+  font-weight: 600;
+  color: var(--black);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-table tbody tr {
+  transition: background 0.15s;
+}
+
+.admin-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.admin-table td {
+  color: var(--black);
+}
+
+.stats-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--gray);
+  font-size: 15px;
+}

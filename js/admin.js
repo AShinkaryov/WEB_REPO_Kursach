@@ -15,7 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
   loadProducts();
   loadOrders();
   loadUsers();
+  initStats();
 });
+
 // Проверка доступности сервера заказов
 async function checkOrdersServer() {
   try {
@@ -33,8 +35,8 @@ async function checkOrdersServer() {
   }
 }
 
-// Проверяем сервер перед загрузкой
 checkOrdersServer();
+
 function initAdminPanel() {
   const user = auth.getCurrentUser();
   if (user) {
@@ -60,7 +62,8 @@ function setupNavigation() {
     'news': 'news-section',
     'products': 'products-section',
     'orders': 'orders-section',
-    'users': 'users-section'
+    'users': 'users-section',
+    'stats': 'stats-section'
   };
 
   navItems.forEach(item => {
@@ -79,6 +82,11 @@ function setupNavigation() {
             el.style.display = key === section ? 'block' : 'none';
           }
         });
+
+        // При первом открытии статистики - загружаем данные
+        if (section === 'stats') {
+          loadStats();
+        }
       }
     });
   });
@@ -231,7 +239,6 @@ async function deleteProduct(id) {
 }
 
 /* ── Orders Management ──────────────────────────────────── */
-/* ── Orders Management ──────────────────────────────────── */
 async function loadOrders() {
   console.log('📥 loadOrders вызвана');
   const list = document.getElementById('orders-list');
@@ -245,7 +252,6 @@ async function loadOrders() {
   try {
     console.log('📥 Загрузка заказов с http://localhost:3002/orders...');
     
-    // Простой запрос без сортировки
     const res = await fetch('http://localhost:3002/orders');
     
     console.log('📊 Status:', res.status);
@@ -267,11 +273,10 @@ async function loadOrders() {
       return;
     }
 
-    // Сортируем на клиенте
     orders.sort((a, b) => {
       const dateA = new Date(a.orderDate || 0);
       const dateB = new Date(b.orderDate || 0);
-      return dateB - dateA; // По убыванию
+      return dateB - dateA;
     });
 
     const statusLabels = {
@@ -365,7 +370,6 @@ async function changeOrderStatus(orderId, newStatus) {
   console.log('🔄 Изменение статуса заказа', orderId, '→', newStatus);
   
   try {
-    // Получаем текущий заказ
     const orderRes = await fetch(`http://localhost:3002/orders/${orderId}`);
     
     if (!orderRes.ok) {
@@ -375,7 +379,6 @@ async function changeOrderStatus(orderId, newStatus) {
     const order = await orderRes.json();
     console.log('📦 Текущий заказ:', order);
     
-    // Обновляем статус
     const response = await fetch(`http://localhost:3002/orders/${orderId}`, {
       method: 'PATCH',
       headers: { 
@@ -391,7 +394,6 @@ async function changeOrderStatus(orderId, newStatus) {
     const updatedOrder = await response.json();
     console.log('✅ Статус изменён:', updatedOrder);
     
-    // Отправляем уведомление пользователю
     const notificationsKey = `ami-notifications-${order.userId}`;
     const notifications = JSON.parse(localStorage.getItem(notificationsKey) || '[]');
     
@@ -416,7 +418,6 @@ async function changeOrderStatus(orderId, newStatus) {
     localStorage.setItem(notificationsKey, JSON.stringify(notifications.slice(0, 20)));
     console.log('🔔 Уведомление сохранено');
     
-    // Перезагружаем список заказов
     loadOrders();
     
     alert(`✅ Статус заказа #${orderId} изменён на: ${statusLabels[newStatus]}`);
@@ -465,7 +466,132 @@ function loadUsers() {
   `).join('');
 }
 
-// 🔥 ЕДИНОЕ объявление в самом конце файла!
+/* ── Statistics Management ───────────────────────────────── */
+async function loadStats() {
+  const period = document.getElementById('stats-period')?.value || 'all';
+  console.log('📊 Загрузка статистики, период:', period);
+  
+  try {
+    const res = await fetch('http://localhost:3002/orders');
+    if (!res.ok) throw new Error('Не удалось загрузить заказы');
+    
+    let orders = await res.json();
+    
+    // Фильтрация по периоду
+    if (period !== 'all') {
+      const days = parseInt(period);
+      const cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() - days);
+      orders = orders.filter(o => new Date(o.orderDate) >= cutoff);
+    }
+    
+    renderStats(orders);
+  } catch (err) {
+    console.error('❌ Ошибка загрузки статистики:', err);
+    document.getElementById('stat-orders').textContent = 'Ошибка';
+  }
+}
+
+function renderStats(orders) {
+  // Сводные карточки
+  const totalOrders = orders.length;
+  const totalRevenue = orders.reduce((s, o) => s + (o.totalPrice || 0), 0);
+  const totalItems = orders.reduce((s, o) => 
+    s + (o.items || []).reduce((sum, i) => sum + (i.quantity || 0), 0), 0
+  );
+  const uniqueUsers = new Set(orders.map(o => o.userId)).size;
+  const avgCheck = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
+  
+  document.getElementById('stat-orders').textContent = totalOrders;
+  document.getElementById('stat-revenue').textContent = totalRevenue.toLocaleString('ru-RU') + ' ₽';
+  document.getElementById('stat-items').textContent = totalItems;
+  document.getElementById('stat-users').textContent = uniqueUsers;
+  document.getElementById('stat-avg').textContent = avgCheck.toLocaleString('ru-RU') + ' ₽';
+  
+  // Таблица товаров
+  const prodMap = {};
+  orders.forEach(order => {
+    (order.items || []).forEach(item => {
+      const key = item.productId || item.name;
+      if (!prodMap[key]) {
+        prodMap[key] = { name: item.name || 'Без названия', qty: 0, revenue: 0, orders: 0 };
+      }
+      prodMap[key].qty += item.quantity || 0;
+      prodMap[key].revenue += (item.price || 0) * (item.quantity || 0);
+      prodMap[key].orders++;
+    });
+  });
+  
+  const sortedProd = Object.values(prodMap).sort((a, b) => b.qty - a.qty);
+  const prodTbody = document.querySelector('#products-stats-table tbody');
+  
+  if (prodTbody) {
+    if (sortedProd.length === 0) {
+      prodTbody.innerHTML = '<tr><td colspan="5" class="stats-empty">Нет данных о продажах</td></tr>';
+    } else {
+      prodTbody.innerHTML = sortedProd.map((p, i) =>
+        `<tr>
+          <td>${i + 1}</td>
+          <td>${p.name}</td>
+          <td><strong>${p.qty}</strong></td>
+          <td>${p.revenue.toLocaleString('ru-RU')} ₽</td>
+          <td>${p.orders}</td>
+        </tr>`
+      ).join('');
+    }
+  }
+  
+  // Таблица пользователей
+  const userMap = {};
+  orders.forEach(order => {
+    const uid = order.userId;
+    if (!userMap[uid]) {
+      userMap[uid] = {
+        name: order.customer?.name || order.userName || 'Гость',
+        email: order.customer?.email || order.userEmail || '-',
+        orders: 0, 
+        total: 0
+      };
+    }
+    userMap[uid].orders++;
+    userMap[uid].total += order.totalPrice || 0;
+  });
+  
+  const sortedUsers = Object.values(userMap).sort((a, b) => b.total - a.total);
+  const userTbody = document.querySelector('#users-stats-table tbody');
+  
+  if (userTbody) {
+    if (sortedUsers.length === 0) {
+      userTbody.innerHTML = '<tr><td colspan="5" class="stats-empty">Нет покупателей</td></tr>';
+    } else {
+      userTbody.innerHTML = sortedUsers.map((u, i) => {
+        const avg = u.orders > 0 ? Math.round(u.total / u.orders) : 0;
+        return `<tr>
+          <td>${i + 1}</td>
+          <td>${u.name}<br><small style="color:#888">${u.email}</small></td>
+          <td>${u.orders}</td>
+          <td><strong>${u.total.toLocaleString('ru-RU')} ₽</strong></td>
+          <td>${avg.toLocaleString('ru-RU')} ₽</td>
+        </tr>`;
+      }).join('');
+    }
+  }
+}
+
+function initStats() {
+  const refreshBtn = document.getElementById('stats-refresh-btn');
+  const periodSelect = document.getElementById('stats-period');
+  
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', loadStats);
+  }
+  
+  if (periodSelect) {
+    periodSelect.addEventListener('change', loadStats);
+  }
+}
+
+// ЕДИНОЕ объявление в самом конце файла!
 window.adminPanel = {
   deleteNews,
   deleteProduct,

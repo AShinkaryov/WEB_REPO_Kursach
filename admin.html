@@ -17,6 +17,7 @@
     <a href="#products" class="admin-nav-item">🛍️ Товары</a>
     <a href="#orders" class="admin-nav-item">📦 Заказы</a>
     <a href="#users" class="admin-nav-item">👥 Пользователи</a>
+    <a href="#stats" class="admin-nav-item">📊 Статистика</a>
     <a href="catalog.html" class="admin-nav-item">← На сайт</a>
   </nav>
 </aside>
@@ -47,9 +48,7 @@
       </form>
     </div>
 
-    <div class="admin-list" id="news-list">
-      <!-- News items loaded here -->
-    </div>
+    <div class="admin-list" id="news-list"></div>
   </section>
 
   <!-- Products Section -->
@@ -72,24 +71,88 @@
       </form>
     </div>
 
-    <div class="admin-list" id="products-list">
-      <!-- Products loaded here -->
-    </div>
+    <div class="admin-list" id="products-list"></div>
   </section>
 
   <!-- Orders Section -->
   <section id="orders-section" class="admin-section" style="display:none;">
     <h2 class="admin-section-title">Заказы</h2>
-    <div class="admin-list" id="orders-list">
-      <!-- Orders loaded here -->
-    </div>
+    <div class="admin-list" id="orders-list"></div>
   </section>
 
   <!-- Users Section -->
   <section id="users-section" class="admin-section" style="display:none;">
     <h2 class="admin-section-title">Пользователи</h2>
-    <div class="admin-list" id="users-list">
-      <!-- Users loaded here -->
+    <div class="admin-list" id="users-list"></div>
+  </section>
+
+  <!-- Statistics Section -->
+  <section id="stats-section" class="admin-section" style="display:none;">
+    <h2 class="admin-section-title">📊 Статистика продаж</h2>
+
+    <!-- Фильтр периода -->
+    <div class="stats-filters">
+      <label>Период:
+        <select id="stats-period">
+          <option value="all">Всё время</option>
+          <option value="30" selected>Последние 30 дней</option>
+          <option value="7">Последние 7 дней</option>
+          <option value="90">Последние 3 месяца</option>
+          <option value="365">Последний год</option>
+        </select>
+      </label>
+      <button id="stats-refresh-btn" class="admin-btn admin-btn--primary">🔄 Обновить</button>
+    </div>
+
+    <!-- Карточки-сводка -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-icon">📦</span>
+        <span class="stat-label">Заказов</span>
+        <span class="stat-value" id="stat-orders">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">💰</span>
+        <span class="stat-label">Выручка</span>
+        <span class="stat-value" id="stat-revenue">0 ₽</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🍪</span>
+        <span class="stat-label">Товаров продано</span>
+        <span class="stat-value" id="stat-items">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">👥</span>
+        <span class="stat-label">Покупателей</span>
+        <span class="stat-value" id="stat-users">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">📈</span>
+        <span class="stat-label">Средний чек</span>
+        <span class="stat-value" id="stat-avg">0 ₽</span>
+      </div>
+    </div>
+
+    <!-- Таблица: Популярные товары -->
+    <div class="stats-table-wrapper">
+      <h3>🍪 Популярные товары</h3>
+      <table class="admin-table" id="products-stats-table">
+        <thead>
+          <tr><th>#</th><th>Название</th><th>Кол-во</th><th>Выручка</th><th>В заказах</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Таблица: Статистика по пользователям -->
+    <div class="stats-table-wrapper">
+      <h3>👥 Покупатели</h3>
+      <table class="admin-table" id="users-stats-table">
+        <thead>
+          <tr><th>#</th><th>Имя / Email</th><th>Заказов</th><th>Сумма</th><th>Средний чек</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
   </section>
 </main>
