@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>AMI — Личный кабинет</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/cabinet.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar__logo-wrap">
+    <img class="sidebar__logo" src="img/logo-sidebar.png" alt="AMI Logo"/>
+  </div>
+  <nav class="sidebar__nav">
+    <a href="Main.html" class="sidebar__nav-item">ГЛАВНАЯ</a>
+    <a href="Catalog.html" class="sidebar__nav-item">КАТАЛОГ</a>
+    <a href="partners.html" class="sidebar__nav-item">ПАРТНЕРАМ</a>
+    <a href="Blog.html" class="sidebar__nav-item">БЛОГ</a>
+    <a href="cabinet.html" class="sidebar__nav-item sidebar__nav-item--active">ЛИЧНЫЙ КАБИНЕТ</a>
+  </nav>
+  
+  <div class="sidebar__auth">
+    <div class="user-info-card">
+      <div class="user-info__avatar">👤</div>
+      <div class="user-info__body">
+        <div class="user-info__name" id="cabinet-username">Загрузка...</div>
+        <div class="user-info__role" id="cabinet-userrole">Покупатель</div>
+        <div class="user-info__email" id="cabinet-useremail">...</div>
+      </div>
+    </div>
+    <button class="logout-btn" id="logout-btn">
+      <span>🚪</span><span>Выйти</span>
+    </button>
+  </div>
+  
+  <img class="sidebar__border" src="img/line-4.svg" alt=""/>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="cabinet-main">
+  <h1 class="cabinet-title">Личный кабинет</h1>
+  
+  <!-- Уведомления -->
+  <section class="notifications-section">
+    <h2 class="section-title">🔔 Уведомления</h2>
+    <div id="notifications-list" class="notifications-list">
+      <!-- Загружаются через JS -->
+    </div>
+  </section>
+  
+  <!-- История заказов -->
+  <section class="orders-section">
+    <h2 class="section-title">📦 Мои заказы</h2>
+    <div id="orders-list" class="orders-list">
+      <!-- Загружаются через JS -->
+    </div>
+  </section>
+  
+  <!-- Настройки профиля -->
+  <section class="profile-section">
+    <h2 class="section-title">⚙️ Настройки</h2>
+    <div class="profile-card">
+      <div class="profile-field">
+        <label>Имя</label>
+        <input type="text" id="profile-name" disabled/>
+      </div>
+      <div class="profile-field">
+        <label>Email</label>
+        <input type="email" id="profile-email" disabled/>
+      </div>
+      <div class="profile-field">
+        <label>Телефон</label>
+        <input type="tel" id="profile-phone" disabled/>
+      </div>
+      <button class="profile-edit-btn" id="profile-edit-btn">Редактировать</button>
+    </div>
+  </section>
+</main>
+
+
+
+<script src="js/cabinet.js"></script>
+<!-- Подключение версии для слабовидящих -->
+
+</body>
+</html>

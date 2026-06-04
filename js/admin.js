@@ -365,21 +365,65 @@ async function changeOrderStatus(orderId, newStatus) {
   console.log('🔄 Изменение статуса заказа', orderId, '→', newStatus);
   
   try {
+    // Получаем текущий заказ
+    const orderRes = await fetch(`http://localhost:3002/orders/${orderId}`);
+    
+    if (!orderRes.ok) {
+      throw new Error(`Заказ не найден: ${orderRes.status}`);
+    }
+    
+    const order = await orderRes.json();
+    console.log('📦 Текущий заказ:', order);
+    
+    // Обновляем статус
     const response = await fetch(`http://localhost:3002/orders/${orderId}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json' 
+      },
       body: JSON.stringify({ status: newStatus })
     });
     
-    if (response.ok) {
-      console.log('✅ Статус изменён');
-      loadOrders();
-    } else {
-      throw new Error('Server error');
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status}`);
     }
+    
+    const updatedOrder = await response.json();
+    console.log('✅ Статус изменён:', updatedOrder);
+    
+    // Отправляем уведомление пользователю
+    const notificationsKey = `ami-notifications-${order.userId}`;
+    const notifications = JSON.parse(localStorage.getItem(notificationsKey) || '[]');
+    
+    const statusLabels = {
+      'pending': '🕐 Принят',
+      'processing': '🔄 Обрабатывается',
+      'shipped': '📦 Отправлен',
+      'delivered': '✅ Доставлен',
+      'cancelled': '❌ Отменён'
+    };
+    
+    notifications.unshift({
+      id: Date.now().toString(),
+      orderId: orderId,
+      type: 'order_status',
+      title: 'Статус заказа изменён',
+      text: `Ваш заказ #${orderId} теперь: ${statusLabels[newStatus] || newStatus}`,
+      date: new Date().toISOString(),
+      read: false
+    });
+    
+    localStorage.setItem(notificationsKey, JSON.stringify(notifications.slice(0, 20)));
+    console.log('🔔 Уведомление сохранено');
+    
+    // Перезагружаем список заказов
+    loadOrders();
+    
+    alert(`✅ Статус заказа #${orderId} изменён на: ${statusLabels[newStatus]}`);
+    
   } catch (err) {
     console.error('❌ Ошибка при изменении статуса:', err);
-    alert('Не удалось изменить статус');
+    alert('Не удалось изменить статус: ' + err.message);
   }
 }
 

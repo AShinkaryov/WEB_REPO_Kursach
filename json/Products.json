@@ -1,6 +1,5 @@
 {
   "users": [
-    
     {
       "id": "nFFKjgMAQ7w",
       "name": "Павел Федоров",
@@ -11,13 +10,22 @@
       "createdAt": "2026-06-04T12:29:46.948Z"
     },
     {
-    "id": "admin-001",
-    "name": "Администратор",
-    "email": "admin@ami.md",
-    "phone": "+37330000001",
-    "password": "Admin123!",
-    "role": "admin",
-    "createdAt": "2026-06-04T10:00:00Z"
+      "id": "admin-001",
+      "name": "Администратор",
+      "email": "admin@ami.md",
+      "phone": "+37330000001",
+      "password": "Admin123!",
+      "role": "admin",
+      "createdAt": "2026-06-04T10:00:00Z"
+    },
+    {
+      "id": "aqlyhikFwco",
+      "name": "Алексей Шинкарёв",
+      "email": "sinkareval@gmail.com",
+      "phone": "+375336183494",
+      "password": "123456",
+      "role": "user",
+      "createdAt": "2026-06-04T13:28:58.657Z"
     }
   ],
   "categories": [
