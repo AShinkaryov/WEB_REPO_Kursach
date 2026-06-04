@@ -1,4 +1,25 @@
 {
+  "users": [
+    
+    {
+      "id": "nFFKjgMAQ7w",
+      "name": "Павел Федоров",
+      "email": "PavelF@gmail.com",
+      "phone": "+375338544333",
+      "password": "123456",
+      "role": "user",
+      "createdAt": "2026-06-04T12:29:46.948Z"
+    },
+    {
+    "id": "admin-001",
+    "name": "Администратор",
+    "email": "admin@ami.md",
+    "phone": "+37330000001",
+    "password": "Admin123!",
+    "role": "admin",
+    "createdAt": "2026-06-04T10:00:00Z"
+    }
+  ],
   "categories": [
     {
       "id": "pechenye",

@@ -29,49 +29,60 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ── Login Handler ───────────────────────────────────────── */
-function handleLogin(e) {
+/* ── Login Handler ───────────────────────────────────────── */
+async function handleLogin(e) {
   e.preventDefault();
   
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
   const role = document.getElementById('login-role').value;
 
-  const users = JSON.parse(localStorage.getItem('ami-users') || '[]');
-  const user = users.find(u => u.email === email && u.password === password);
+  try {
+    // Получаем пользователей с сервера
+    const response = await fetch('http://localhost:3001/users');
+    const users = await response.json();
+    
+    const user = users.find(u => u.email === email && u.password === password);
 
-  if (!user) {
-    showError('Неверный email или пароль');
-    return;
-  }
-
-  if (user.role !== role) {
-    showError('Неверная роль пользователя');
-    return;
-  }
-
-  const session = {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    phone: user.phone,
-    loginTime: new Date().toISOString()
-  };
-
-  localStorage.setItem('ami-session', JSON.stringify(session));
-  showSuccess('Вход выполнен успешно!');
-  
-  setTimeout(() => {
-    if (role === ROLES.ADMIN) {
-      window.location.href = 'admin.html';
-    } else {
-      window.location.href = 'catalog.html';
+    if (!user) {
+      showError('Неверный email или пароль');
+      return;
     }
-  }, 1000);
+
+    if (user.role !== role) {
+      showError('Неверная роль пользователя');
+      return;
+    }
+
+    const session = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      phone: user.phone,
+      loginTime: new Date().toISOString()
+    };
+
+    localStorage.setItem('ami-session', JSON.stringify(session));
+    showSuccess('Вход выполнен успешно!');
+    
+    setTimeout(() => {
+      if (role === ROLES.ADMIN) {
+        window.location.href = 'admin.html';
+      } else {
+        window.location.href = 'catalog.html';
+      }
+    }, 1000);
+
+  } catch (error) {
+    console.error('❌ Ошибка входа:', error);
+    showError('Ошибка при входе. Попробуйте позже.');
+  }
 }
 
 /* ── Register Handler ────────────────────────────────────── */
-function handleRegister(e) {
+/* ── Register Handler ────────────────────────────────────── */
+async function handleRegister(e) {
   e.preventDefault();
   
   const name = document.getElementById('register-name').value.trim();
@@ -81,6 +92,7 @@ function handleRegister(e) {
   const confirm = document.getElementById('register-confirm').value;
   const role = document.getElementById('register-role').value;
 
+  // Валидация
   if (password !== confirm) {
     showError('Пароли не совпадают');
     return;
@@ -91,41 +103,62 @@ function handleRegister(e) {
     return;
   }
 
-  const users = JSON.parse(localStorage.getItem('ami-users') || '[]');
-  
-  if (users.find(u => u.email === email)) {
-    showError('Пользователь с таким email уже существует');
-    return;
-  }
-
-  const newUser = {
-    id: Date.now().toString(),
-    name,
-    email,
-    phone,
-    password,
-    role,
-    createdAt: new Date().toISOString()
-  };
-
-  users.push(newUser);
-  localStorage.setItem('ami-users', JSON.stringify(users));
-
-  showSuccess('Регистрация успешна! Выполняется вход...');
-  
-  setTimeout(() => {
-    const session = {
-      id: newUser.id,
-      name: newUser.name,
-      email: newUser.email,
-      role: newUser.role,
-      phone: newUser.phone,
-      loginTime: new Date().toISOString()
-    };
+  // Проверяем существование пользователя через API
+  try {
+    const response = await fetch('http://localhost:3001/users');
+    const users = await response.json();
     
-    localStorage.setItem('ami-session', JSON.stringify(session));
-    window.location.href = 'catalog.html';
-  }, 1500);
+    if (users.find(u => u.email === email)) {
+      showError('Пользователь с таким email уже существует');
+      return;
+    }
+
+    const newUser = {
+      id: Date.now().toString(),
+      name,
+      email,
+      phone,
+      password, // В реальном проекте нужно хешировать!
+      role,
+      createdAt: new Date().toISOString()
+    };
+
+    // Отправляем нового пользователя на сервер
+    const registerResponse = await fetch('http://localhost:3001/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newUser)
+    });
+
+    if (!registerResponse.ok) {
+      throw new Error('Ошибка при регистрации');
+    }
+
+    const savedUser = await registerResponse.json();
+    console.log('✅ Пользователь сохранён:', savedUser);
+
+    showSuccess('Регистрация успешна! Выполняется вход...');
+    
+    setTimeout(() => {
+      const session = {
+        id: savedUser.id,
+        name: savedUser.name,
+        email: savedUser.email,
+        role: savedUser.role,
+        phone: savedUser.phone,
+        loginTime: new Date().toISOString()
+      };
+      
+      localStorage.setItem('ami-session', JSON.stringify(session));
+      window.location.href = 'catalog.html';
+    }, 1500);
+
+  } catch (error) {
+    console.error('❌ Ошибка регистрации:', error);
+    showError('Ошибка при регистрации. Попробуйте позже.');
+  }
 }
 
 /* ── Helper Functions ────────────────────────────────────── */
@@ -344,3 +377,17 @@ function loginAsGuest() {
   localStorage.removeItem('ami-session');
   window.location.href = 'catalog.html';
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

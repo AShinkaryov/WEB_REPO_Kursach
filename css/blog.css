@@ -142,12 +142,12 @@
 
 /* social icons */
 .sidebar__social {
-  position: absolute;
-  top: 80.75%;     /* ~646px */
-  left: 30.36%;    /* ~85px */
-  display: flex;
-  align-items: center;
-  gap: 16px;
+    position: absolute;
+    top: 56.75%;
+    left: 28.36%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 .sidebar__social img {
   width: 24px;

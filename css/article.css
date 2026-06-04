@@ -563,3 +563,305 @@ body {
    5. ADAPTIVE MEDIA QUERIES (Адаптив один в один как на главной)
    ========================================================================== */
 
+/* ==========================================================================
+   6. ПОЛНАЯ АДАПТИВНАЯ ВЕРСТКА ПОД ВСЕ ЭКРАНЫ
+   ========================================================================== */
+
+/* Планшетная и мобильная версия (Перестроение сайдбара и футера) */
+@media screen and (max-width: 1200px) {
+  
+  /* 1. LAYOUT SYSTEM */
+  .page-wrapper {
+    flex-direction: column; /* Сайдбар теперь сверху, контент снизу */
+  }
+
+  /* 2. SIDEBAR -> ПРЕВРАЩАЕТСЯ В ЦЕНТРАЛЬНУЮ ШАПКУ (По фото 3-4) */
+  /* ШАПКА ПО ЦЕНТРУ (На мобильных и планшетах) */
+  .sidebar {
+            position: static;
+        width: 100%;
+        height: auto;
+        margin-top: 0;
+        padding: 30px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+  }
+
+  /* Сброс абсолютных координат, которые ломали верстку */
+  .sidebar__logo-wrap,
+  .sidebar__nav,
+  .sidebar__contacts,
+  .sidebar__langs,
+  .sidebar__social {
+    position: static;
+    width: auto;
+    height: auto;
+    transform: none;
+    display: flex;
+    flex-direction: row; /* Элементы выстраиваются в линию */
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+  }
+
+  /* Логотип по центру (как на фото 3-4) */
+  .sidebar__logo-wrap {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .sidebar__logo {
+    position: static;
+    margin: 0 auto;
+    width: 140px;          /* Адекватный фиксированный размер */
+    height: 140px;
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+  }
+
+  /* Навигация (КАТАЛОГ ПАРТНЕРАМ БЛОГ FOR KIDS) */
+  .sidebar__nav {
+    gap: 15px 30px;
+    max-width: 600px;
+  }
+
+  .sidebar__nav-item {
+    padding: 0;
+    font-size: 16px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Контакты в столбик под меню */
+  .sidebar__contacts {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sidebar__email {
+    margin-left: 0;
+  }
+
+  /* Языки и соцсети */
+  .sidebar__langs,
+  .sidebar__social {
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  /* Скрываем декоративные элементы, которые нужны были только сбоку */
+  .sidebar__border,
+  .sidebar__copy {
+    display: none;
+  }
+
+
+  /* 3. MAIN CONTENT */
+  .main-content {
+    margin-left: 0; /* Убираем левый отступ, контент на всю ширину */
+    padding: 20px 20px 40px 20px;
+  }
+
+  .content-wrapper {
+    margin-bottom: 50px;
+  }
+
+  .article-hero-img {
+    width: 100%; /* Картинка адаптируется под ширину экрана */
+  }
+
+
+  /* 4. СТАБИЛЬНЫЙ ФУТЕР В ОДНУ КОЛОНКУ (По фото 5) */
+  .footer__inner {
+    padding: 40px 30px;
+  }
+
+  /* Перестраиваем сетку из 3-х колонок в одну вертикальную линию */
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  /* Выравнивание текстов и заголовков по левому краю (как на фото 5) */
+  .footer__section {
+    align-items: flex-start;
+  }
+
+  .footer__nav-heading {
+    font-size: 20px;
+  }
+
+  /* Карта растягивается на всю ширину */
+  .footer__map-col {
+    width: 100%;
+    height: 300px;
+  }
+
+  /* Нижняя панель с копирайтом тоже выстраивается вертикально */
+  .footer__bottom-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .footer__corner-img {
+    margin-left: 0;
+    width: 50px;
+  }
+}
+
+/* Специфичные правки под совсем маленькие экраны телефонов */
+@media screen and (max-width: 600px) {
+  .sidebar {
+    padding-top: 30px;
+    width: 224%;
+  }
+  
+  .sidebar__logo {
+    width: 110px;
+    height: 110px;
+  }
+
+  .sidebar__nav {
+    gap: 15px 20px; /* Сужаем отступы между ссылками меню */
+  }
+
+  .article-title {
+    font-size: 24px;
+  }
+
+  .footer__inner {
+    padding: 30px 20px;
+  }
+
+  .footer__map-col {
+    height: 220px; /* Чуть уменьшаем высоту карты на телефонах */
+  }
+}
+
+
+@media screen and (max-width: 1200px) {
+ 
+  /* Сайдбар превращается в горизонтальную шапку */
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #ebebeb;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+ 
+  .sidebar__logo-wrap { position: static; }
+ 
+  .sidebar__logo {
+    position: static;
+    width: 130px;
+    height: 130px;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+    border-radius: 50%;
+  }
+ 
+  .sidebar__nav {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 28px;
+    width: 100%;
+  }
+ 
+  .sidebar__nav-item { position: static; font-size: 15px; }
+ 
+  .sidebar__contacts {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+  }
+ 
+  .sidebar__phone,
+  .sidebar__email { position: static; }
+ 
+  .sidebar__langs {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    gap: 14px;
+  }
+ 
+  .sidebar__social {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    gap: 14px;
+    align-items: center;
+  }
+ 
+  /* Декоративные элементы только для десктопа */
+  .sidebar__border,
+  .sidebar__copy { display: none; }
+ 
+  /* Контент — убираем отступ под сайдбар */
+  .article-page {
+    margin-left: 0;
+    padding: 30px 24px 0 24px;
+  }
+ 
+  .article-hero-img { width: 100%; }
+ 
+  /* Футер — одна колонка */
+  .footer__nav {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+ 
+  .footer__map-col { height: 280px; }
+ 
+  .footer__inner { padding: 32px 24px; }
+ 
+  .footer__corner-img { width: 60px; }
+}
+ 
+/* ========== АДАПТИВ ≤ 600px (мобильный) ========== */
+@media screen and (max-width: 600px) {
+ 
+  .sidebar { padding: 24px 16px; gap: 16px; }
+ 
+  .sidebar__logo { width: 110px; height: 110px; }
+ 
+  .sidebar__nav { gap: 10px 20px; }
+ 
+  .sidebar__nav-item { font-size: 14px; }
+ 
+  .article-page { padding: 20px 16px 0 16px; }
+ 
+  .article-title { font-size: 26px; }
+ 
+  .article-other-card { width: 100%; }
+ 
+  .footer__inner { padding: 28px 16px; border-radius: 4px; }
+ 
+  .footer__map-col { height: 220px; }
+ 
+  .footer__nav-heading,
+  .footer__nav-heading1 { font-size: 17px; }
+ 
+  .footer__copy-year,
+  .footer__created,
+  .footer__confidance { font-size: 13px; }
+ 
+  .footer__corner-img { width: 50px; }
+}

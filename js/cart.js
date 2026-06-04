@@ -2,13 +2,21 @@
  * AMI Cart Page — с оформлением заказа
  */
 
-const CART_KEY = 'ami-cart';
-const ORDERS_API = 'http://localhost:3001/orders';
+/* ── Получение ключа корзины с привязкой к пользователю ── */
+function getCartKey() {
+  const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
+  return `ami-cart-${session ? session.id : 'guest'}`;
+}
+
+const CART_KEY = getCartKey();
+const ORDERS_API = 'http://localhost:3002/orders';  // ✅ Порт 3002 для заказов
+
 let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
 
-console.log(' Cart loaded:', cart);
+console.log('🛒 Cart key:', CART_KEY);
+console.log('🛒 Cart loaded:', cart);
 
-/* ── Fetch Products ────────────────────────────────────── */
+/* ── Fetch Products (опционально, для доп. данных) ───── */
 async function fetchProducts() {
   try {
     const res = await fetch('http://localhost:3001/products');
@@ -42,11 +50,9 @@ function updateCartBadge() {
 
 /* ── Change qty ────────────────────────────────────────── */
 function changeQty(id, delta) {
-  const item = cart.find(i => {
-    const itemId = typeof i.id === 'string' ? parseInt(i.id) : i.id;
-    const searchId = typeof id === 'string' ? parseInt(id) : id;
-    return itemId === searchId;
-  });
+  const idStr = String(id);
+  const item = cart.find(i => String(i.id) === idStr);
+  
   if (item) {
     item.quantity = Math.max(1, (item.quantity || 1) + delta);
     saveCart();
@@ -56,11 +62,8 @@ function changeQty(id, delta) {
 
 /* ── Remove item ───────────────────────────────────────── */
 function removeItem(id) {
-  cart = cart.filter(i => {
-    const itemId = typeof i.id === 'string' ? parseInt(i.id) : i.id;
-    const searchId = typeof id === 'string' ? parseInt(id) : id;
-    return itemId !== searchId;
-  });
+  const idStr = String(id);
+  cart = cart.filter(i => String(i.id) !== idStr);
   saveCart();
   renderCart();
 }
@@ -108,14 +111,14 @@ function renderCart() {
         <p class="cart-item__price-one">${price} ₽ × ${qty} шт</p>
       </div>
       <div class="cart-item__qty-wrap">
-        <button class="qty-btn" onclick="changeQty(${item.id}, -1)" aria-label="Уменьшить">−</button>
+        <button class="qty-btn" onclick="CartApp.changeQty('${item.id}', -1)" aria-label="Уменьшить">−</button>
         <span class="qty-val">${qty}</span>
-        <button class="qty-btn" onclick="changeQty(${item.id}, 1)" aria-label="Увеличить">+</button>
+        <button class="qty-btn" onclick="CartApp.changeQty('${item.id}', 1)" aria-label="Увеличить">+</button>
       </div>
       <div class="cart-item__line-total">
         <span class="line-total-value">${lineTotal} ₽</span>
       </div>
-      <button class="cart-item__remove" onclick="removeItem(${item.id})" aria-label="Удалить">
+      <button class="cart-item__remove" onclick="CartApp.removeItem('${item.id}')" aria-label="Удалить">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
           <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
           <path d="M10 11v6"/><path d="M14 11v6"/>
@@ -155,17 +158,14 @@ function validateForm() {
   const name = fields.name ? fields.name.value.trim() : '';
   const email = fields.email ? fields.email.value.trim() : '';
   
-  // Проверка обязательных полей
   if (!address) errors.address = 'Укажите адрес доставки';
   if (!name) errors.name = 'Укажите имя и фамилию';
   if (!email) errors.email = 'Укажите e-mail';
   
-  // Валидация email
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     errors.email = 'Некорректный e-mail';
   }
   
-  // Валидация телефона РБ (+375XXXXXXXXX)
   if (phone && !/^\+375\d{9}$/.test(phone.replace(/\s/g, ''))) {
     errors.phone = 'Номер должен быть в формате +375XXXXXXXXX';
   }
@@ -182,7 +182,6 @@ function validateForm() {
 
 /* ── Показать ошибки валидации ─────────────────────────── */
 function showValidationErrors(errors) {
-  // Удаляем старые сообщения
   document.querySelectorAll('.validation-error').forEach(el => el.remove());
   
   const form = document.getElementById('order-form');
@@ -224,7 +223,6 @@ function attachInputListeners() {
   });
 }
 
-/* ── Отправка заказа ───────────────────────────────────── */
 /* ── Отправка заказа ───────────────────────────────────── */
 async function submitOrder(e) {
   e.preventDefault();
@@ -272,30 +270,25 @@ async function submitOrder(e) {
   console.log('📦 Отправка заказа:', order);
   
   try {
-    // 🔥 ОТПРАВЛЯЕМ НА JSON SERVER
-    const response = await fetch('http://localhost:3002/orders', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(order)
-});
+    const response = await fetch(ORDERS_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(order)
+    });
     
     if (response.ok) {
       const savedOrder = await response.json();
       console.log('✅ Заказ сохранён на сервере:', savedOrder);
       
-      // Очищаем корзину
       cart = [];
       saveCart();
       renderCart();
       
-      // Показываем сообщение
       alert(`✅ Заказ #${savedOrder.id} успешно оформлен!\n\nСумма: ${total} ₽\nМы свяжемся с вами в ближайшее время.`);
       
-      // Сброс формы
       const form = document.getElementById('order-form');
       if (form) form.reset();
       
-      // Перенаправляем на главную
       setTimeout(() => {
         window.location.href = 'catalog.html';
       }, 2000);
@@ -307,7 +300,7 @@ async function submitOrder(e) {
     }
   } catch (error) {
     console.error('❌ Ошибка при оформлении заказа:', error);
-    alert('Произошла ошибка при оформлении заказа: ' + error.message + '\n\nУбедитесь, что:\n1. JSON Server запущен на порту 3001\n2. В Products.json есть массив "orders": []');
+    alert('Произошла ошибка при оформлении заказа: ' + error.message + '\n\nУбедитесь, что:\n1. JSON Server запущен на порту 3002\n2. В файле есть массив "orders": []');
   }
 }
 
@@ -318,12 +311,9 @@ function initOrderForm() {
   
   const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
   
-  // Если гость — показываем блок с предложением войти
   if (!session) {
-    // Но разрешаем оформление как гостю (заполняет данные вручную)
     console.log('⚠️ Оформление заказа гостем');
   } else {
-    // Предзаполняем имя и email из сессии
     const nameField = document.getElementById('order-name') || form.querySelector('input[placeholder="Имя и фамилия*"]');
     const emailField = document.getElementById('order-email') || form.querySelector('input[placeholder="E-mail*"]');
     if (nameField) nameField.value = session.name || '';
@@ -337,12 +327,27 @@ function initOrderForm() {
 /* ── Init ──────────────────────────────────────────────── */
 async function init() {
   console.log('🚀 Cart page initializing...');
-  await fetchProducts();
+  console.log('🔍 Cart key:', CART_KEY);
+  console.log('🔍 Cart data:', localStorage.getItem(CART_KEY));
+  console.log('🔍 Session:', localStorage.getItem('ami-session'));
+  
+  // Сначала рендерим корзину
   renderCart();
   updateCartBadge();
+  
+  // Опционально подгружаем продукты
+  await fetchProducts();
+  
+  // Инициализируем форму
   initOrderForm();
 }
 
 document.addEventListener('DOMContentLoaded', init);
 
-window.CartApp = { changeQty, removeItem, updateCartBadge };
+// Экспорт функций
+window.CartApp = { 
+  changeQty, 
+  removeItem, 
+  updateCartBadge,
+  renderCart
+};
