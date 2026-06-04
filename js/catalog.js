@@ -1,21 +1,12 @@
-/**
- * AMI Catalog Module
- */
-
 const CatalogApp = (() => {
   let allProducts = [];
   let categories = [];
   let filters = {};
   let activeCategory = 'all';
   let activeFilters = {
-    brands: [],
-    types: [],
-    weights: [],
-    ingredients: [],
-    packQty: []
+    brands: [], types: [], weights: [], ingredients: [], packQty: []
   };
 
-  /* ── Проверка ролей ─────────────────────────────────────── */
   function isAdmin() {
     const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
     return session && session.role === 'admin';
@@ -31,41 +22,23 @@ const CatalogApp = (() => {
     return session ? session.id : 'guest';
   }
 
-  /* ── Ключи хранилища с привязкой к пользователю ─────────── */
-  function getCartKey() {
-    return `ami-cart-${getCurrentUserId()}`;
-  }
+  function getCartKey() { return `ami-cart-${getCurrentUserId()}`; }
+  function getFavoritesKey() { return `ami-favorites-${getCurrentUserId()}`; }
 
-  function getFavoritesKey() {
-    return `ami-favorites-${getCurrentUserId()}`;
-  }
-
-  /* ── Показать текущего пользователя (для отладки) ───────── */
   function showCurrentUserDebug() {
     const debugDiv = document.getElementById('debug-user-info');
     if (!debugDiv) return;
-
     const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
-
     if (!session) {
-      debugDiv.innerHTML = '👤 <strong>ГОСТЬ</strong> (не авторизован)';
+      debugDiv.innerHTML = '👤 <strong>ГОСТЬ</strong>';
       debugDiv.style.background = '#999';
-      console.log('👤 Текущий пользователь: ГОСТЬ');
     } else {
       const roleText = session.role === 'admin' ? '⚙️ АДМИН' : '👤 ПОЛЬЗОВАТЕЛЬ';
-      const bgColor = session.role === 'admin' ? '#A7BB61' : '#E8593A';
-
-      debugDiv.innerHTML = `
-        ${roleText}<br>
-        <strong>${session.name}</strong><br>
-        <small>${session.email}</small>
-      `;
-      debugDiv.style.background = bgColor;
-      console.log(`✅ Текущий пользователь: ${session.name} (${session.role})`);
+      debugDiv.innerHTML = `${roleText}<br><strong>${session.name}</strong><br><small>${session.email}</small>`;
+      debugDiv.style.background = session.role === 'admin' ? '#A7BB61' : '#E8593A';
     }
   }
 
-  /* ── Fetch Data ─────────────────────────────────────────── */
   async function fetchData() {
     try {
       const [productsRes, categoriesRes, filtersRes] = await Promise.all([
@@ -73,15 +46,10 @@ const CatalogApp = (() => {
         fetch('http://localhost:3001/categories'),
         fetch('http://localhost:3001/filters')
       ]);
-
-      if (!productsRes.ok || !categoriesRes.ok || !filtersRes.ok) {
-        throw new Error('Failed to fetch data');
-      }
-
+      if (!productsRes.ok || !categoriesRes.ok || !filtersRes.ok) throw new Error('Failed to fetch data');
       allProducts = await productsRes.json();
       categories = await categoriesRes.json();
       filters = await filtersRes.json();
-
       console.log('✅ Loaded products:', allProducts.length);
       init();
     } catch (error) {
@@ -90,15 +58,9 @@ const CatalogApp = (() => {
     }
   }
 
-  /* ── Init ───────────────────────────────────────────────── */
   function init() {
     console.log('🚀 Catalog initialized');
-
-    if (isAdmin()) {
-      document.body.classList.add('admin-mode');
-      console.log('✅ admin-mode добавлен в init()');
-    }
-
+    if (isAdmin()) document.body.classList.add('admin-mode');
     showCurrentUserDebug();
     renderCategories();
     renderFilters();
@@ -107,50 +69,35 @@ const CatalogApp = (() => {
     renderFavoritesSection();
     updateCartBadge();
     updateFavoritesBadge();
-
-    // Скрываем иконки корзины/избранного для админа
     if (isAdmin()) {
       const icons = document.querySelector('.sidebar__icons');
       if (icons) icons.style.display = 'none';
     }
-
-    // Вызываем обновление UI авторизации
     if (window.auth && window.auth.updateUserInterface) {
       window.auth.updateUserInterface();
-      console.log('✅ updateUserInterface вызван через auth');
     }
   }
 
-  /* ── Render Categories ──────────────────────────────────── */
   function renderCategories() {
     const tabsContainer = document.getElementById('category-tabs');
     if (!tabsContainer) return;
-
     tabsContainer.innerHTML = categories.map(cat => `
-      <button 
-        class="catalog-tab${cat.id === 'all' || cat.id === activeCategory ? ' catalog-tab--active' : ''}" 
-        data-category="${cat.id}"
-        data-label="${cat.label}"
-      >
+      <button class="catalog-tab${cat.id === 'all' || cat.id === activeCategory ? ' catalog-tab--active' : ''}" 
+              data-category="${cat.id}" data-label="${cat.label}">
         ${cat.label}
       </button>
     `).join('');
-
     tabsContainer.querySelectorAll('.catalog-tab').forEach(tab => {
       tab.addEventListener('click', () => {
-        const categoryId = tab.dataset.category;
-        activeCategory = categoryId;
-
+        activeCategory = tab.dataset.category;
         tabsContainer.querySelectorAll('.catalog-tab').forEach(t => {
-          t.classList.toggle('catalog-tab--active', t.dataset.category === categoryId);
+          t.classList.toggle('catalog-tab--active', t.dataset.category === activeCategory);
         });
-
         renderProducts(getFilteredProducts());
       });
     });
   }
 
-  /* ── Render Filters ─────────────────────────────────────── */
   function renderFilters() {
     const brandsContainer = document.getElementById('filter-brands');
     if (brandsContainer && filters.brands) {
@@ -160,15 +107,12 @@ const CatalogApp = (() => {
           <span>${brand.label}</span>
         </label>
       `).join('');
-
       const parentSection = brandsContainer.closest('.filter-section');
       const head = parentSection ? parentSection.querySelector('.filter-section__head') : null;
       const arrow = parentSection ? parentSection.querySelector('.filter-section__arrow') : null;
-
       if (head && parentSection) {
         head.addEventListener('click', (e) => {
           e.stopPropagation();
-
           document.querySelectorAll('.filter-section--open').forEach(section => {
             if (section !== parentSection) {
               section.classList.remove('filter-section--open');
@@ -176,18 +120,15 @@ const CatalogApp = (() => {
               if (otherArrow) otherArrow.classList.remove('filter-section__arrow--up');
             }
           });
-
           parentSection.classList.toggle('filter-section--open');
           if (arrow) arrow.classList.toggle('filter-section__arrow--up');
         });
       }
     }
-
     renderFilterSection('filter-types', 'Тип', filters.types || []);
     renderFilterSection('filter-weights', 'Вес', filters.weights || []);
     renderFilterSection('filter-ingredients', 'Ингредиенты', filters.ingredients || []);
     renderFilterSection('filter-packqty', 'Количество в упаковке', filters.packQty || []);
-
     document.querySelectorAll('.filter-checkbox input').forEach(checkbox => {
       checkbox.addEventListener('change', handleFilterChange);
     });
@@ -196,7 +137,6 @@ const CatalogApp = (() => {
   function renderFilterSection(containerId, title, items) {
     const container = document.getElementById(containerId);
     if (!container || !items.length) return;
-
     container.innerHTML = `
       <div class="filter-section__head">
         <span>${title}</span>
@@ -211,12 +151,9 @@ const CatalogApp = (() => {
         `).join('')}
       </div>
     `;
-
     const head = container.querySelector('.filter-section__head');
-    const body = container.querySelector('.filter-section__body');
     const arrow = container.querySelector('.filter-section__arrow');
-
-    if (head && body) {
+    if (head) {
       head.addEventListener('click', () => {
         document.querySelectorAll('.filter-section--open').forEach(section => {
           if (section !== container) {
@@ -225,32 +162,25 @@ const CatalogApp = (() => {
             if (otherArrow) otherArrow.classList.remove('filter-section__arrow--up');
           }
         });
-
         container.classList.toggle('filter-section--open');
         if (arrow) arrow.classList.toggle('filter-section__arrow--up');
       });
     }
   }
 
-  /* ── Handle Filter Change ───────────────────────────────── */
   function handleFilterChange(e) {
     const checkbox = e.target;
     const filterType = checkbox.dataset.filterType;
     const value = checkbox.value;
-
     if (checkbox.checked) {
-      if (!activeFilters[filterType].includes(value)) {
-        activeFilters[filterType].push(value);
-      }
+      if (!activeFilters[filterType].includes(value)) activeFilters[filterType].push(value);
     } else {
       activeFilters[filterType] = activeFilters[filterType].filter(v => v !== value);
     }
-
     renderActiveFilters();
     renderProducts(getFilteredProducts());
   }
 
-  /* ── Get Filtered Products ──────────────────────────────── */
   function getFilteredProducts() {
     return allProducts.filter(product => {
       if (activeCategory !== 'all' && product.category !== activeCategory) return false;
@@ -263,11 +193,9 @@ const CatalogApp = (() => {
     });
   }
 
-  /* ── Render Active Filters Pills ────────────────────────── */
   function renderActiveFilters() {
     const container = document.getElementById('active-filters');
     if (!container) return;
-
     const pills = [];
     Object.entries(activeFilters).forEach(([type, values]) => {
       values.forEach(value => {
@@ -279,9 +207,7 @@ const CatalogApp = (() => {
         `);
       });
     });
-
     container.innerHTML = pills.join('');
-
     container.querySelectorAll('.filter-pill__remove').forEach(btn => {
       btn.addEventListener('click', () => {
         const type = btn.dataset.type;
@@ -297,89 +223,123 @@ const CatalogApp = (() => {
 
   /* ── Render Products ────────────────────────────────────── */
   function renderProducts(products) {
-    const grid = document.getElementById('products-grid');
-    if (!grid) return;
-
-    if (products.length === 0) {
-      grid.innerHTML = '<p class="products-empty">Товары не найдены</p>';
-      return;
-    }
-
-    const adminMode = isAdmin();
-    const guestMode = isGuest();
-
-    grid.innerHTML = products.map(product => {
-      const isFav = isInFavorites(product.id);
-
-      return `
-      <article class="product-card" data-id="${product.id}">
-        ${adminMode ? '<div class="admin-view-badge">⚙️ Режим админа</div>' : ''}
-        <div class="product-card__image-wrap">
-          <img class="product-card__img" src="${product.image}" alt="${product.name}" />
+  const grid = document.getElementById('products-grid');
+  if (!grid) return;
+  if (products.length === 0) {
+    grid.innerHTML = '<p class="products-empty">Товары не найдены</p>';
+    return;
+  }
+  const adminMode = isAdmin();
+  const guestMode = isGuest();
+  
+  grid.innerHTML = products.map(product => {
+    const isFav = isInFavorites(product.id);
+    // 🔥 Экранируем кавычки в названии
+    const safeName = product.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    
+    return `
+    <article class="product-card" data-id="${product.id}">
+      ${adminMode ? '<div class="admin-view-badge">⚙️ Режим админа</div>' : ''}
+      <div class="product-card__image-wrap">
+        <img class="product-card__img" src="${product.image}" alt="${product.name}" />
+        
+        <!-- 🔥 Контейнер для кнопок поверх изображения -->
+        <div class="product-card__actions-overlay">
           <button class="product-card__favorite ${isFav ? 'product-card__favorite--active' : ''} ${adminMode ? 'product-card__favorite--disabled' : ''}" 
                   data-product-id="${product.id}"
                   ${adminMode ? 'disabled' : ''}
-                  aria-label="В избранное">
+                  aria-label="В избранное"
+                  title="В избранное">
             <svg viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" 
-                 stroke="currentColor" stroke-width="1.5" width="20" height="20">
+                 stroke="currentColor" stroke-width="1.5" width="18" height="18">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
             </svg>
           </button>
+          
+          <!-- 🔥 КНОПКА QR-КОДА -->
+          <button class="product-card__qr" 
+                  data-product-id="${product.id}"
+                  data-product-name="${safeName}"
+                  data-product-price="${product.price}"
+                  aria-label="QR-код"
+                  title="Показать QR-код">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <path d="M14 14h3v3h-3z"/>
+              <path d="M20 14v3"/>
+              <path d="M14 20h3"/>
+              <path d="M20 20v1"/>
+            </svg>
+          </button>
         </div>
-        <div class="product-card__body">
-          <h3 class="product-card__title">${product.name}</h3>
-          <p class="product-card__weight">${product.weight}</p>
-          <div class="product-card__meta">
-            <span class="product-card__brand">${product.brand}</span>
-            <span class="product-card__pack">${product.packQty}</span>
-          </div>
-          <div class="product-card__footer">
-            <span class="product-card__price">${product.price} ₽</span>
-            <button class="product-card__add ${adminMode ? 'product-card__add--admin' : ''} ${guestMode ? 'product-card__add--disabled' : ''}" 
-                    data-id="${product.id}" 
-                    data-name="${product.name}" 
-                    data-price="${product.price}"
-                    ${adminMode ? 'title="Только просмотр"' : ''}>
-              ${adminMode ? '👁️ Просмотр' : (guestMode ? 'Войти' : 'В корзину')}
-            </button>
-          </div>
+      </div>
+      
+      <div class="product-card__body">
+        <h3 class="product-card__title">${product.name}</h3>
+        <p class="product-card__weight">${product.weight}</p>
+        <div class="product-card__meta">
+          <span class="product-card__brand">${product.brand}</span>
+          <span class="product-card__pack">${product.packQty}</span>
         </div>
-      </article>`;
-    }).join('');
+        <div class="product-card__footer">
+          <span class="product-card__price">${product.price} ₽</span>
+          <button class="product-card__add ${adminMode ? 'product-card__add--admin' : ''} ${guestMode ? 'product-card__add--disabled' : ''}" 
+                  data-id="${product.id}" 
+                  data-name="${product.name}" 
+                  data-price="${product.price}"
+                  ${adminMode ? 'title="Только просмотр"' : ''}>
+            ${adminMode ? '👁️ Просмотр' : (guestMode ? 'Войти' : 'В корзину')}
+          </button>
+        </div>
+      </div>
+    </article>`;
+  }).join('');
 
-    // Обработчики для корзины
-    if (!adminMode) {
-      grid.querySelectorAll('.product-card__add').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const id = btn.dataset.id;
-          const name = btn.dataset.name;
-          const price = parseFloat(btn.dataset.price);
-          addToCart(id, name, price);
-        });
+  // Обработчики для корзины
+  if (!adminMode) {
+    grid.querySelectorAll('.product-card__add').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = btn.dataset.id;
+        const name = btn.dataset.name;
+        const price = parseFloat(btn.dataset.price);
+        addToCart(id, name, price);
       });
-    }
-
-    // Обработчики для избранного
-    grid.querySelectorAll('.product-card__favorite').forEach(btn => {
-      if (!adminMode) {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const id = btn.dataset.productId;
-          toggleFavorite(id);
-        });
-      }
     });
   }
+  
+  // Обработчики для избранного
+  grid.querySelectorAll('.product-card__favorite').forEach(btn => {
+    if (!adminMode) {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = btn.dataset.productId;
+        toggleFavorite(id);
+      });
+    }
+  });
+  
+  // 🔥 Обработчики для QR-кнопок
+  grid.querySelectorAll('.product-card__qr').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      const id = btn.dataset.productId;
+      const name = btn.dataset.productName;
+      const price = parseFloat(btn.dataset.price);
+      console.log('📱 QR click:', id, name, price);
+      showQRCode(id, name, price);
+    });
+  });
+}
 
-  /* ── Render Recommended ─────────────────────────────────── */
   function renderRecommended() {
     const grid = document.getElementById('recommended-grid');
     if (!grid) return;
-
     const adminMode = isAdmin();
     const recommended = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 4);
-
     grid.innerHTML = recommended.map(product => `
       <article class="recommended-card" data-id="${product.id}">
         <img class="recommended-card__img" src="${product.image}" alt="${product.name}" />
@@ -396,7 +356,6 @@ const CatalogApp = (() => {
         </div>
       </article>
     `).join('');
-
     if (!adminMode) {
       grid.querySelectorAll('.recommended-card__add').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -410,67 +369,39 @@ const CatalogApp = (() => {
     }
   }
 
-  /* ── Render Favorites Section (СКРЫТО для всех в каталоге) ─ */
   function renderFavoritesSection() {
     const container = document.getElementById('favorites-section');
     if (!container) return;
-    
-    // 🔥 Блок избранного в каталоге скрыт для всех пользователей
     container.style.display = 'none';
     container.innerHTML = '';
   }
 
-  /* ── Cart Functions ─────────────────────────────────────── */
   function addToCart(id, name, price) {
     if (isAdmin()) {
       showToast('⚙️ Администраторы не могут добавлять товары в корзину');
       return;
     }
-
     if (isGuest()) {
       showToast('⚠️ Для добавления в корзину необходимо войти!');
-      setTimeout(() => {
-        window.location.href = 'login.html';
-      }, 2000);
+      setTimeout(() => { window.location.href = 'login.html'; }, 2000);
       return;
     }
-
-    console.log('🛒 addToCart:', id, name, price);
-
-    const product = allProducts.find(p => {
-      const productId = typeof p.id === 'string' ? p.id : String(p.id);
-      const searchId = typeof id === 'string' ? id : String(id);
-      return productId === searchId;
-    });
-
+    const product = allProducts.find(p => String(p.id) === String(id));
     if (!product) {
       showToast('Ошибка: товар не найден');
       return;
     }
-
     const cartKey = getCartKey();
     let cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
-
-    const existingItem = cart.find(item => {
-      const itemId = typeof item.id === 'string' ? item.id : String(item.id);
-      const searchId = typeof id === 'string' ? id : String(id);
-      return itemId === searchId;
-    });
-
+    const existingItem = cart.find(item => String(item.id) === String(id));
     if (existingItem) {
       existingItem.quantity = (existingItem.quantity || 1) + 1;
     } else {
       cart.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        quantity: 1,
-        image: product.image,
-        weight: product.weight,
-        brand: product.brand
+        id: product.id, name: product.name, price: product.price,
+        quantity: 1, image: product.image, weight: product.weight, brand: product.brand
       });
     }
-
     localStorage.setItem(cartKey, JSON.stringify(cart));
     updateCartBadge();
     showToast(`${name} добавлен в корзину`);
@@ -479,11 +410,9 @@ const CatalogApp = (() => {
   function updateCartBadge() {
     const badge = document.getElementById('cart-badge');
     if (!badge) return;
-
     const cartKey = getCartKey();
     const cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
     const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-
     if (totalItems > 0) {
       badge.textContent = totalItems;
       badge.style.display = 'flex';
@@ -493,26 +422,20 @@ const CatalogApp = (() => {
     }
   }
 
-  /* ── Favorites Functions ────────────────────────────────── */
   function toggleFavorite(id) {
     if (isAdmin()) {
       showToast('⚙️ Администраторы не могут добавлять товары в избранное');
       return;
     }
-
     if (isGuest()) {
       showToast('⚠️ Для добавления в избранное необходимо войти!');
-      setTimeout(() => {
-        window.location.href = 'login.html';
-      }, 2000);
+      setTimeout(() => { window.location.href = 'login.html'; }, 2000);
       return;
     }
-
     const favoritesKey = getFavoritesKey();
     let favorites = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
     const idStr = String(id);
     const index = favorites.findIndex(favId => String(favId) === idStr);
-
     if (index === -1) {
       favorites.push(id);
       showToast('Добавлено в избранное');
@@ -520,10 +443,8 @@ const CatalogApp = (() => {
       favorites.splice(index, 1);
       showToast('Удалено из избранного');
     }
-
     localStorage.setItem(favoritesKey, JSON.stringify(favorites));
     updateFavoritesBadge();
-
     if (allProducts.length > 0) {
       renderProducts(getFilteredProducts());
       renderRecommended();
@@ -534,17 +455,14 @@ const CatalogApp = (() => {
   function isInFavorites(id) {
     const favoritesKey = getFavoritesKey();
     const favorites = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
-    const idStr = String(id);
-    return favorites.some(favId => String(favId) === idStr);
+    return favorites.some(favId => String(favId) === String(id));
   }
 
   function updateFavoritesBadge() {
     const badge = document.getElementById('favorites-badge');
     if (!badge) return;
-
     const favoritesKey = getFavoritesKey();
     const favorites = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
-
     if (favorites.length > 0) {
       badge.textContent = favorites.length;
       badge.style.display = 'flex';
@@ -554,53 +472,165 @@ const CatalogApp = (() => {
     }
   }
 
-  /* ── Toast Notification ─────────────────────────────────── */
   function showToast(message) {
     const toast = document.getElementById('ami-toast');
     if (!toast) return;
-
     toast.textContent = message;
     toast.classList.add('ami-toast--show');
     setTimeout(() => toast.classList.remove('ami-toast--show'), 3000);
   }
 
-  /* ── Start App ──────────────────────────────────────────── */
   fetchData();
 
   return {
-    addToCart,
-    updateCartBadge,
-    toggleFavorite,
-    isInFavorites,
-    updateFavoritesBadge,
-    renderFavoritesSection
+    addToCart, updateCartBadge, toggleFavorite,
+    isInFavorites, updateFavoritesBadge, renderFavoritesSection
   };
 })();
 
-document.addEventListener('DOMContentLoaded', () => {
-  window.addEventListener('storage', () => {
-    CatalogApp.updateCartBadge();
-    CatalogApp.updateFavoritesBadge();
-    CatalogApp.renderFavoritesSection();
-  });
+/* ════════════════════════════════════════════════════════════
+   🔥 QR-КОДЫ ТОВАРОВ
+   ════════════════════════════════════════════════════════════ */
+
+let currentQRProduct = null;
+
+function showQRCode(productId, productName, productPrice) {
+  console.log('📱 Opening QR for product:', productId, productName);
+  
+  const modal = document.getElementById('qr-modal');
+  const qrContainer = document.getElementById('qrcode-container');
+  const nameEl = document.getElementById('qr-product-name');
+  const priceEl = document.getElementById('qr-product-price');
+  
+  if (!modal || !qrContainer) {
+    console.error('❌ QR modal elements not found!');
+    alert('Ошибка: модальное окно не найдено');
+    return;
+  }
+  
+  // Очищаем предыдущий QR-код
+  qrContainer.innerHTML = '';
+  
+  // Сохраняем данные текущего товара
+  currentQRProduct = { id: productId, name: productName, price: productPrice };
+  
+  // Формируем ссылку на товар (для сканирования)
+  const productUrl = `${window.location.origin}/catalog.html?product=${productId}`;
+  
+  console.log('🔗 Generating QR for URL:', productUrl);
+  
+  // Проверяем, загрузилась ли библиотека
+  if (typeof QRCode === 'undefined') {
+    console.error('❌ QRCode library not loaded!');
+    qrContainer.innerHTML = '<p style="color:#e74c3c; padding: 20px;">Ошибка загрузки библиотеки QR-кодов<br><small>Проверьте подключение к интернету</small></p>';
+    modal.classList.add('qr-modal--active');
+    return;
+  }
+  
+  // Генерируем QR-код
+  try {
+    new QRCode(qrContainer, {
+      text: productUrl,
+      width: 220,
+      height: 220,
+      colorDark: "#423F3E",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H
+    });
+    
+    console.log('✅ QR code generated successfully');
+  } catch (err) {
+    console.error('❌ Error generating QR:', err);
+    qrContainer.innerHTML = '<p style="color:#e74c3c;">Ошибка генерации QR-кода</p>';
+  }
+  
+  // Заполняем информацию
+  nameEl.textContent = productName;
+  priceEl.textContent = `${productPrice} ₽`;
+  
+  // Показываем модальное окно
+  modal.classList.add('qr-modal--active');
+  console.log('✅ Modal opened');
+}
+
+function closeQRModal() {
+  const modal = document.getElementById('qr-modal');
+  if (modal) {
+    modal.classList.remove('qr-modal--active');
+    currentQRProduct = null;
+    console.log('✅ Modal closed');
+  }
+}
+
+function downloadQR() {
+  const canvas = document.querySelector('#qrcode-container canvas');
+  if (!canvas) {
+    alert('QR-код ещё не сгенерирован');
+    return;
+  }
+  
+  const link = document.createElement('a');
+  const fileName = currentQRProduct 
+    ? `qr-ami-${currentQRProduct.id}-${currentQRProduct.name.replace(/\s+/g, '_')}.png`
+    : `qr-product-${Date.now()}.png`;
+  link.download = fileName;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  console.log('✅ QR downloaded:', fileName);
+}
+
+function printQR() {
+  const canvas = document.querySelector('#qrcode-container canvas');
+  if (!canvas) return;
+  
+  const printWindow = window.open('', '', 'width=400,height=500');
+  const productInfo = currentQRProduct 
+    ? `<h2 style="font-family:Arial;color:#E8593A;">${currentQRProduct.name}</h2>
+       <p style="font-size:20px;font-weight:bold;color:#E8593A;">${currentQRProduct.price} ₽</p>`
+    : '';
+  
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>QR-код товара AMI</title>
+        <style>
+          body { text-align: center; padding: 30px; font-family: Arial, sans-serif; }
+          .label { border: 2px dashed #ccc; padding: 20px; display: inline-block; border-radius: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="label">
+          <h1 style="color:#E8593A;margin:0 0 10px;">AMI</h1>
+          ${productInfo}
+          <img src="${canvas.toDataURL()}" style="width:220px;height:220px;margin:15px 0;"/>
+          <p style="color:#666;font-size:12px;">Отсканируйте код для перехода к товару</p>
+        </div>
+      </body>
+    </html>
+  `);
+  printWindow.document.close();
+  setTimeout(() => {
+    printWindow.focus();
+    printWindow.print();
+  }, 300);
+}
+
+// Закрытие модального окна по клику на фон или Escape
+document.addEventListener('click', (e) => {
+  const modal = document.getElementById('qr-modal');
+  if (e.target === modal) closeQRModal();
 });
 
-// В функции renderProducts() или где выводятся карточки товаров
-function renderProducts(products) {
-  const container = document.getElementById('products-container');
-  
-  container.innerHTML = products.map(product => `
-    <div class="product-card">
-      <img src="${product.image}" alt="${product.name}"/>
-      <h3>${product.name}</h3>
-      <p class="price">${product.price} ₽</p>
-      <p class="stock" style="color: ${product.stock > 10 ? '#27ae60' : '#e74c3c'}; font-weight: 600;">
-        📦 В наличии: ${product.stock} шт.
-      </p>
-      ${product.stock === 0 ? 
-        '<button disabled>Нет в наличии</button>' : 
-        '<button onclick="addToCart(\'' + product.id + '\')">В корзину</button>'
-      }
-    </div>
-  `).join('');
-}
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeQRModal();
+});
+
+// Проверка загрузки библиотеки при старте
+window.addEventListener('load', () => {
+  if (typeof QRCode !== 'undefined') {
+    console.log('✅ QRCode library loaded successfully');
+  } else {
+    console.error('❌ QRCode library NOT loaded!');
+  }
+});
+

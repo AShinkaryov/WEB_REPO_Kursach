@@ -1598,3 +1598,207 @@ body.admin-mode a[href="favorites.html"] {
   display: none !important;
 }
 
+
+
+/* ════════════════════════════════════════════════════════════
+   QR-КОД ТОВАРА
+   ════════════════════════════════════════════════════════════ */
+
+/* Кнопка QR в карточке товара */
+.qr-code-btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  letter-spacing: 0.5px;
+}
+
+.qr-code-btn:hover {
+  background: #2980b9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(52, 152, 219, 0.3);
+}
+
+/* Модальное окно QR */
+.qr-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.2s ease;
+}
+
+.qr-modal--active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.qr-modal__content {
+  background: #fff;
+  padding: 32px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 420px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.qr-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+  color: #999;
+  line-height: 1;
+  transition: color 0.2s;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-modal__close:hover {
+  color: #E8593A;
+}
+
+.qr-modal__title {
+  font-family: "Yeseva One", serif;
+  font-size: 24px;
+  color: #E8593A;
+  margin-bottom: 16px;
+}
+
+.qr-modal__product-name {
+  font-family: "Manrope", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #423F3E;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.qr-modal__code {
+  display: inline-block;
+  padding: 16px;
+  background: #fff;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.qr-modal__code img,
+.qr-modal__code canvas {
+  display: block;
+}
+
+.qr-modal__product-price {
+  font-family: "Manrope", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #E8593A;
+  margin-bottom: 20px;
+}
+
+.qr-modal__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.qr-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Manrope", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.qr-btn--download {
+  background: #27ae60;
+  color: #fff;
+}
+
+.qr-btn--download:hover {
+  background: #229954;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.qr-btn--print {
+  background: #3498db;
+  color: #fff;
+}
+
+.qr-btn--print:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.qr-modal__hint {
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  color: #999;
+  margin: 0;
+}
+
+/* Адаптивность для QR */
+@media (max-width: 600px) {
+  .qr-modal__content {
+    padding: 24px 16px;
+  }
+  
+  .qr-modal__title {
+    font-size: 20px;
+  }
+  
+  .qr-modal__product-price {
+    font-size: 18px;
+  }
+  
+  .qr-modal__actions {
+    flex-direction: column;
+  }
+  
+  .qr-btn {
+    justify-content: center;
+  }
+}

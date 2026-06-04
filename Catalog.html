@@ -8,28 +8,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/catalog.css">
+  <!-- 🔥 Библиотека для QR-кодов - используем другой CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════
-     FIXED SIDEBAR  (280 × 800px)
-     ═══════════════════════════════════════════════════════════ -->
 <aside class="sidebar">
   <div class="sidebar__logo-wrap">
     <img class="sidebar__logo" src="img/logo-sidebar.png" alt="AMI Logo"/>
   </div>
-
   <nav class="sidebar__nav">
     <a href="Main.html" class="sidebar__nav-item sidebar__nav-item--active">ГЛАВНАЯ</a>
     <a href="partners.html" class="sidebar__nav-item">ПАРТНЕРАМ</a>
-    <a href="blog.html"    class="sidebar__nav-item">БЛОГ</a>
+    <a href="blog.html" class="sidebar__nav-item">БЛОГ</a>
     <a href="cabinet.html" class="sidebar__nav-item">ЛИЧНЫЙ КАБИНЕТ</a>
   </nav>
-<!-- AUTH SECTION (добавить после sidebar__langs) -->
-<div class="sidebar__auth" id="sidebar-auth">
-  <!-- Заполняется через auth.js -->
-</div>
-  <!-- cart icon under nav -->
+  <div class="sidebar__auth" id="sidebar-auth"></div>
   <a href="cart.html" class="sidebar__cart" aria-label="Корзина">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28">
       <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
@@ -37,93 +31,62 @@
     </svg>
     <span id="cart-badge" class="cart-badge"></span>
   </a>
-  <!-- favorites icon -->
-  <a href="favorites.html" class="sidebar__cart1" aria-label="Избранное" style="margin-top: 16px;">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28">
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-  </svg>
-  <span id="favorites-badge" class="cart-badge"></span>
-</a>
+  <a href="favorites.html" class="sidebar__cart1" aria-label="Избранное">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+    </svg>
+    <span id="favorites-badge" class="cart-badge"></span>
+  </a>
   <div class="sidebar__social">
-    <img src="img/Partners/inst.png"  alt="Instagram" width="24" height="24"/>
-    <img src="img/Partners/YT.png"   alt="YouTube"   width="24" height="24"/>
-    <img src="img/Partners/FB.png"   alt="Facebook"  width="24" height="24"/>
-    <img src="img/Partners/VK.png"   alt="VK"        width="24" height="24"/>
+    <img src="img/Partners/inst.png" alt="Instagram" width="24" height="24"/>
+    <img src="img/Partners/YT.png" alt="YouTube" width="24" height="24"/>
+    <img src="img/Partners/FB.png" alt="Facebook" width="24" height="24"/>
+    <img src="img/Partners/VK.png" alt="VK" width="24" height="24"/>
   </div>
-
   <div class="sidebar__contacts">
     <div class="sidebar__phone">+373 00000000</div>
     <div class="sidebar__email">ami@mail.ru</div>
   </div>
-
   <div class="sidebar__langs">
     <span class="sidebar__lang sidebar__lang--inactive">En</span>
     <span class="sidebar__lang sidebar__lang--active">Ru</span>
     <span class="sidebar__lang sidebar__lang--inactive">Ro</span>
   </div>
-    <div class="sidebar__auth"></div>
-
-
-  
   <img class="sidebar__border" src="img/line-4.svg" alt=""/>
 </aside>
 
-<!-- ═══════════════════════════════════════════════════════════
-     MAIN
-     ═══════════════════════════════════════════════════════════ -->
 <main class="catalog-main">
-
-  <!-- HERO BANNER  top:36 left:333  1496×400 -->
   <section class="catalog-hero">
     <img class="catalog-hero__img" src="img/Catalog/CatImg.png" alt="Каталог AMI"/>
-    <!-- red badge -->
     <div class="catalog-hero__badge">
       <div class="catalog-hero__circle"></div>
       <span class="catalog-hero__text">Каталог</span>
     </div>
   </section>
 
-  <!-- CATEGORY TABS  top:500 left:593 -->
-  <nav class="catalog-tabs" id="category-tabs" aria-label="Категории продукции">
-    <!-- populated by catalog.js -->
-  </nav>
+  <nav class="catalog-tabs" id="category-tabs" aria-label="Категории продукции"></nav>
 
-  <!-- TOOLBAR: active pills + download  top:590 -->
   <div class="catalog-toolbar">
-    <!-- active filter pills -->
     <div class="catalog-toolbar__pills" id="active-filters"></div>
-    <!-- download link -->
     <a class="catalog-toolbar__download" href="docs/catalog.pdf" download>
       Скачать каталог .pdf
       <img src="img/Catalog/CatDownload.png" alt="" width="21" height="21"/>
     </a>
   </div>
 
-  <!-- SEPARATOR LINE  top:537 -->
   <hr class="catalog-hr"/>
 
-  <!-- PRODUCTS + FILTER PANEL wrapper -->
   <div class="catalog-body">
+    <section class="products-grid" id="products-grid" aria-label="Каталог товаров"></section>
 
-    <!-- PRODUCT GRID  left:525 -->
-    <section class="products-grid" id="products-grid" aria-label="Каталог товаров">
-      <!-- populated by catalog.js -->
-    </section>
-
-    <!-- FILTER PANEL  left:1541  254×304 -->
     <aside class="filter-panel" aria-label="Фильтры">
-
-      <!-- Бренд — always open -->
       <div class="filter-section filter-section--open">
         <div class="filter-section__head">
           <span>Бренд</span>
           <img src="img/arrow-ic-3.svg" alt="" class="filter-section__arrow filter-section__arrow--up"/>
         </div>
-        <div class="filter-section__body" id="filter-brands">
-          <!-- populated by catalog.js -->
-        </div>
+        <div class="filter-section__body" id="filter-brands"></div>
       </div>
-
       <div class="filter-section" id="filter-types"></div>
       <div class="filter-section" id="filter-weights"></div>
       <div class="filter-section" id="filter-ingredients"></div>
@@ -131,47 +94,39 @@
     </aside>
   </div>
 
-  <!-- PAGINATION  top:2052 -->
   <nav class="catalog-pagination" id="pagination" aria-label="Пагинация"></nav>
 
-  <!-- RECOMMENDED  top:2228 -->
   <section class="catalog-recommended">
     <h2 class="catalog-recommended__title">ВАМ МОЖЕТ ПОНРАВИТЬСЯ</h2>
     <div class="recommended-grid" id="recommended-grid"></div>
   </section>
-
 </main>
 
-<!-- ═══════════════════════════════════════════════════════════
-     FOOTER  (matches design from doc-6 footer block)
-     ═══════════════════════════════════════════════════════════ -->
 <footer class="footer">
   <div class="footer__inner">
     <img class="footer__logo" src="img/Partners/logo-sidebar.png" alt="AMI"/>
-
     <div class="footer__nav">
       <div class="footer__nav-section">
         <p class="footer__nav-heading">Карта сайта</p>
         <img src="img/Partners/lineFooter.png" alt="" class="footer__nav-line"/>
         <ul class="footer__nav-list">
-          <li><a href="catalog.html"      class="footer__nav-link">Каталог</a></li>
-          <li><a href="partners.html"     class="footer__nav-link">Партнерам</a></li>
-          <li><a href="blog.html"         class="footer__nav-link">Блог</a></li>
-          <li><a href="kids.html"         class="footer__nav-link">For kids</a></li>
-          <li><a href="docs/catalog.pdf"  class="footer__nav-link">Скачать каталог .pdf</a></li>
+          <li><a href="catalog.html" class="footer__nav-link">Каталог</a></li>
+          <li><a href="partners.html" class="footer__nav-link">Партнерам</a></li>
+          <li><a href="blog.html" class="footer__nav-link">Блог</a></li>
+          <li><a href="kids.html" class="footer__nav-link">For kids</a></li>
+          <li><a href="docs/catalog.pdf" class="footer__nav-link">Скачать каталог .pdf</a></li>
         </ul>
       </div>
-
       <div class="footer__nav-section">
         <p class="footer__nav-heading">Контакты</p>
         <img src="img/Partners/lineFooter.png" alt="" class="footer__nav-line"/>
         <ul class="footer__contacts-list">
           <li class="footer__contact">
-            <img src="img/Partners/phoneFooter.png"    alt="" width="16" height="16"/>
+            <img src="img/Partners/phoneFooter.png" alt="" width="16" height="16"/>
             <span>+373 00000000</span>
           </li>
           <li class="footer__contact">
-            <img src="img/Partners/emailFooter.png"    alt="" width="16" height="16"/>
+            <img src="img/Partners/emailFooter.png" alt="" width="16" height="16"/>
             <span>ami@mail.ru</span>
           </li>
           <li class="footer__contact">
@@ -181,16 +136,11 @@
         </ul>
       </div>
     </div>
-
     <div class="footer__map-col">
       <div class="footer__map">
-        <iframe
-          src="https://yandex.ru/map-widget/v1/?um=constructor%3A6757509e11c89f72b929f1887470bc56819d056937c31c8a47f025aea712c852&source=constructor"
-          width="100%" height="100%" frameborder="0" allowfullscreen="true">
-        </iframe>
+        <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A6757509e11c89f72b929f1887470bc56819d056937c31c8a47f025aea712c852&source=constructor" width="100%" height="100%" frameborder="0" allowfullscreen="true"></iframe>
       </div>
     </div>
-
     <img src="img/Partners/big-lineFooter.png" alt="" class="footer__divider"/>
     <div class="footer__bottom">
       <span class="footer__year">AMI 2020</span>
@@ -199,18 +149,26 @@
     </div>
   </div>
 </footer>
-<!-- Favorites Section -->
-<section id="favorites-section" style="margin: 60px 0; padding: 0 20px;"></section>
 
-<!-- Toast notification -->
-<div id="ami-toast" class="ami-toast"></div>
-<!-- Toast notification -->
+<!-- 🔥 МОДАЛЬНОЕ ОКНО ДЛЯ QR-КОДА -->
+<div id="qr-modal" class="qr-modal">
+  <div class="qr-modal__content">
+    <button class="qr-modal__close" onclick="closeQRModal()">×</button>
+    <h3 class="qr-modal__title">📱 QR-код товара</h3>
+    <p class="qr-modal__product-name" id="qr-product-name"></p>
+    <div id="qrcode-container" class="qr-modal__code"></div>
+    <p class="qr-modal__product-price" id="qr-product-price"></p>
+    <div class="qr-modal__actions">
+      <button class="qr-btn qr-btn--download" onclick="downloadQR()">💾 Скачать PNG</button>
+      <button class="qr-btn qr-btn--print" onclick="printQR()">🖨️ Печать</button>
+    </div>
+    <p class="qr-modal__hint">Отсканируйте код для быстрого доступа к товару</p>
+  </div>
+</div>
+
 <div id="ami-toast" class="ami-toast"></div>
 <script src="js/auth.js"></script>
 <script src="js/catalog.js"></script>
-<!-- DEBUG INFO (удалите после тестирования) -->
-
-<!-- Подключение версии для слабовидящих -->
 
 </body>
 </html>
