@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/catalog.css">
-  <!-- 🔥 Библиотека для QR-кодов - используем другой CDN -->
+  <!-- 🔥 Библиотека для QR-кодов -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
@@ -18,10 +18,10 @@
     <img class="sidebar__logo" src="img/logo-sidebar.png" alt="AMI Logo"/>
   </div>
   <nav class="sidebar__nav">
-    <a href="Main.html" class="sidebar__nav-item sidebar__nav-item--active">ГЛАВНАЯ</a>
-    <a href="partners.html" class="sidebar__nav-item">ПАРТНЕРАМ</a>
-    <a href="blog.html" class="sidebar__nav-item">БЛОГ</a>
-    <a href="cabinet.html" class="sidebar__nav-item">ЛИЧНЫЙ КАБИНЕТ</a>
+    <a href="Main.html" class="sidebar__nav-item sidebar__nav-item--active" data-i18n="nav.home">ГЛАВНАЯ</a>
+    <a href="partners.html" class="sidebar__nav-item" data-i18n="nav.partners">ПАРТНЕРАМ</a>
+    <a href="blog.html" class="sidebar__nav-item" data-i18n="nav.blog">БЛОГ</a>
+    <a href="cabinet.html" class="sidebar__nav-item" data-i18n="nav.cabinet">ЛИЧНЫЙ КАБИНЕТ</a>
   </nav>
   <div class="sidebar__auth" id="sidebar-auth"></div>
   <a href="cart.html" class="sidebar__cart" aria-label="Корзина">
@@ -44,13 +44,14 @@
     <img src="img/Partners/VK.png" alt="VK" width="24" height="24"/>
   </div>
   <div class="sidebar__contacts">
-    <div class="sidebar__phone">+373 00000000</div>
-    <div class="sidebar__email">ami@mail.ru</div>
+    <div class="sidebar__phone" data-i18n="sidebar.phone">+375294857777</div>
+    <div class="sidebar__email" data-i18n="sidebar.email">ami@mail.ru</div>
   </div>
+  <!-- 🔥 ИЗМЕНЁННЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ -->
   <div class="sidebar__langs">
-    <span class="sidebar__lang sidebar__lang--inactive">En</span>
-    <span class="sidebar__lang sidebar__lang--active">Ru</span>
-    <span class="sidebar__lang sidebar__lang--inactive">Ro</span>
+    <span class="sidebar__lang sidebar__lang--inactive" data-lang="en">En</span>
+    <span class="sidebar__lang sidebar__lang--active" data-lang="ru">Ru</span>
+    <span class="sidebar__lang sidebar__lang--inactive" data-lang="be">Be</span>
   </div>
   <img class="sidebar__border" src="img/line-4.svg" alt=""/>
 </aside>
@@ -60,7 +61,7 @@
     <img class="catalog-hero__img" src="img/Catalog/CatImg.png" alt="Каталог AMI"/>
     <div class="catalog-hero__badge">
       <div class="catalog-hero__circle"></div>
-      <span class="catalog-hero__text">Каталог</span>
+      <span class="catalog-hero__text" data-i18n="catalog.title">Каталог</span>
     </div>
   </section>
 
@@ -68,10 +69,7 @@
 
   <div class="catalog-toolbar">
     <div class="catalog-toolbar__pills" id="active-filters"></div>
-    <a class="catalog-toolbar__download" href="docs/catalog.pdf" download>
-      Скачать каталог .pdf
-      <img src="img/Catalog/CatDownload.png" alt="" width="21" height="21"/>
-    </a>
+    
   </div>
 
   <hr class="catalog-hr"/>
@@ -82,7 +80,7 @@
     <aside class="filter-panel" aria-label="Фильтры">
       <div class="filter-section filter-section--open">
         <div class="filter-section__head">
-          <span>Бренд</span>
+          <span data-i18n="catalog.filter_brand">Бренд</span>
           <img src="img/arrow-ic-3.svg" alt="" class="filter-section__arrow filter-section__arrow--up"/>
         </div>
         <div class="filter-section__body" id="filter-brands"></div>
@@ -97,7 +95,7 @@
   <nav class="catalog-pagination" id="pagination" aria-label="Пагинация"></nav>
 
   <section class="catalog-recommended">
-    <h2 class="catalog-recommended__title">ВАМ МОЖЕТ ПОНРАВИТЬСЯ</h2>
+    <h2 class="catalog-recommended__title" data-i18n="catalog.recommended">ВАМ МОЖЕТ ПОНРАВИТЬСЯ</h2>
     <div class="recommended-grid" id="recommended-grid"></div>
   </section>
 </main>
@@ -107,31 +105,31 @@
     <img class="footer__logo" src="img/Partners/logo-sidebar.png" alt="AMI"/>
     <div class="footer__nav">
       <div class="footer__nav-section">
-        <p class="footer__nav-heading">Карта сайта</p>
+        <p class="footer__nav-heading" data-i18n="footer.sitemap">Карта сайта</p>
         <img src="img/Partners/lineFooter.png" alt="" class="footer__nav-line"/>
         <ul class="footer__nav-list">
-          <li><a href="catalog.html" class="footer__nav-link">Каталог</a></li>
-          <li><a href="partners.html" class="footer__nav-link">Партнерам</a></li>
-          <li><a href="blog.html" class="footer__nav-link">Блог</a></li>
-          <li><a href="kids.html" class="footer__nav-link">For kids</a></li>
-          <li><a href="docs/catalog.pdf" class="footer__nav-link">Скачать каталог .pdf</a></li>
+          <li><a href="catalog.html" class="footer__nav-link" data-i18n="nav.catalog">Каталог</a></li>
+          <li><a href="partners.html" class="footer__nav-link" data-i18n="nav.partners">Партнерам</a></li>
+          <li><a href="blog.html" class="footer__nav-link" data-i18n="nav.blog">Блог</a></li>
+          <li><a href="kids.html" class="footer__nav-link" data-i18n="nav.kids">For kids</a></li>
+          <li><a href="docs/catalog.pdf" class="footer__nav-link" data-i18n="catalog.download">Скачать каталог .pdf</a></li>
         </ul>
       </div>
       <div class="footer__nav-section">
-        <p class="footer__nav-heading">Контакты</p>
+        <p class="footer__nav-heading" data-i18n="footer.contacts">Контакты</p>
         <img src="img/Partners/lineFooter.png" alt="" class="footer__nav-line"/>
         <ul class="footer__contacts-list">
           <li class="footer__contact">
             <img src="img/Partners/phoneFooter.png" alt="" width="16" height="16"/>
-            <span>+373 00000000</span>
+            <span data-i18n="sidebar.phone">+375294857777</span>
           </li>
           <li class="footer__contact">
             <img src="img/Partners/emailFooter.png" alt="" width="16" height="16"/>
-            <span>ami@mail.ru</span>
+            <span data-i18n="sidebar.email">ami@mail.ru</span>
           </li>
           <li class="footer__contact">
             <img src="img/Partners/locationFooter.png" alt="" width="16" height="16"/>
-            <span>2972 Westheimer Rd. Santa Ana, Illinois 85486</span>
+            <span data-i18n="footer.address">Могилёв, Габровская ул., 43</span>
           </li>
         </ul>
       </div>
@@ -143,9 +141,9 @@
     </div>
     <img src="img/Partners/big-lineFooter.png" alt="" class="footer__divider"/>
     <div class="footer__bottom">
-      <span class="footer__year">AMI 2020</span>
-      <span class="footer__confidance">Политика конфиденциальности</span>
-      <span class="footer__created">Created by be-adv.com</span>
+      <span class="footer__year" data-i18n="footer.year">AMI 2020</span>
+      <span class="footer__confidance" data-i18n="footer.privacy">Политика конфиденциальности</span>
+      <span class="footer__created" data-i18n="footer.created">Created by be-adv.com</span>
     </div>
   </div>
 </footer>
@@ -154,21 +152,23 @@
 <div id="qr-modal" class="qr-modal">
   <div class="qr-modal__content">
     <button class="qr-modal__close" onclick="closeQRModal()">×</button>
-    <h3 class="qr-modal__title">📱 QR-код товара</h3>
+    <h3 class="qr-modal__title" data-i18n="catalog.qr_title">📱 QR-код товара</h3>
     <p class="qr-modal__product-name" id="qr-product-name"></p>
     <div id="qrcode-container" class="qr-modal__code"></div>
     <p class="qr-modal__product-price" id="qr-product-price"></p>
     <div class="qr-modal__actions">
-      <button class="qr-btn qr-btn--download" onclick="downloadQR()">💾 Скачать PNG</button>
-      <button class="qr-btn qr-btn--print" onclick="printQR()">🖨️ Печать</button>
+      <button class="qr-btn qr-btn--download" onclick="downloadQR()" data-i18n="catalog.qr_download">💾 Скачать PNG</button>
+      <button class="qr-btn qr-btn--print" onclick="printQR()" data-i18n="catalog.qr_print">🖨️ Печать</button>
     </div>
-    <p class="qr-modal__hint">Отсканируйте код для быстрого доступа к товару</p>
+    <p class="qr-modal__hint" data-i18n="catalog.qr_hint">Отсканируйте код для быстрого доступа к товару</p>
   </div>
 </div>
 
 <div id="ami-toast" class="ami-toast"></div>
 <script src="js/auth.js"></script>
 <script src="js/catalog.js"></script>
+<!-- 🔥 ПОДКЛЮЧЕНИЕ МОДУЛЯ ИНТЕРНАЦИОНАЛИЗАЦИИ -->
+<script src="js/i18n.js"></script>
 
 </body>
 </html>

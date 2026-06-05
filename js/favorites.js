@@ -50,7 +50,8 @@ function removeFromFavorites(productId) {
   updateFavoritesBadge();
   updateFavoritesCount();
   
-  showToast('Удалено из избранного');
+  const removedText = typeof I18n !== 'undefined' ? I18n.t('favorites.removed') : 'Удалено из избранного';
+  showToast(removedText);
 }
 
 /* ── Обновить счетчик избранного (бейдж) ─────────────────── */
@@ -94,15 +95,22 @@ async function renderFavorites() {
     return favorites.some(favId => String(favId) === productId);
   });
   
+  // 🔥 Переводы
+  const emptyText = typeof I18n !== 'undefined' ? I18n.t('favorites.empty') : 'В избранном пока нет товаров';
+  const catalogText = typeof I18n !== 'undefined' ? I18n.t('favorites.go_catalog') : 'Перейти в каталог';
+  const cartBtnText = typeof I18n !== 'undefined' ? I18n.t('catalog.add_to_cart') : 'В корзину';
+  const removeTitle = typeof I18n !== 'undefined' ? I18n.t('favorites.remove_title') : 'Удалить из избранного';
+  const currency = typeof I18n !== 'undefined' ? I18n.t('common.currency') : '₽';
+  
   if (favoriteProducts.length === 0) {
     grid.innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; padding: 100px 20px;">
         <div style="font-size: 64px; margin-bottom: 24px;">🤍</div>
         <p style="font-family: Manrope; font-size: 18px; color: #7B7B7B; margin-bottom: 32px;">
-          В избранном пока нет товаров
+          ${emptyText}
         </p>
         <a href="catalog.html" style="display: inline-block; padding: 14px 32px; background: #E8593A; color: #fff; text-decoration: none; border-radius: 100px; font-family: Manrope; font-weight: 600;">
-          Перейти в каталог
+          ${catalogText}
         </a>
       </div>`;
     updateFavoritesCount();
@@ -116,7 +124,7 @@ async function renderFavorites() {
              style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px 8px 0 0;"/>
         <button class="remove-from-favorites" 
                 data-product-id="${product.id}"
-                title="Удалить из избранного"
+                title="${removeTitle}"
                 style="position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all 0.2s;">
           ❤️
         </button>
@@ -129,13 +137,13 @@ async function renderFavorites() {
           <span>${product.packQty}</span>
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-family: Manrope; font-size: 18px; font-weight: 700; color: #E8593A;">${product.price} ₽</span>
+          <span style="font-family: Manrope; font-size: 18px; font-weight: 700; color: #E8593A;">${product.price} ${currency}</span>
           <button class="add-to-cart-btn" 
                   data-product-id="${product.id}"
                   data-product-name="${product.name}"
                   data-product-price="${product.price}"
                   style="padding: 10px 24px; background: #E8593A; color: #fff; border: none; border-radius: 6px; font-family: Manrope; font-weight: 600; cursor: pointer; transition: all 0.2s;">
-            В корзину
+            ${cartBtnText}
           </button>
         </div>
       </div>
@@ -189,7 +197,9 @@ function addToCart(id, name, price) {
   
   localStorage.setItem(cartKey, JSON.stringify(cart));
   updateCartBadge();
-  showToast(`${name} добавлен в корзину`);
+  
+  const addedText = typeof I18n !== 'undefined' ? I18n.t('catalog.added_to_cart') : 'добавлен в корзину';
+  showToast(`${name} ${addedText}`);
 }
 
 /* ── Обновить счетчик корзины ────────────────────────────── */
@@ -236,8 +246,13 @@ function showToast(message) {
 async function exportFavorites() {
   const session = getCurrentUser();
   
+  const needLogin = typeof I18n !== 'undefined' ? I18n.t('favorites.need_login') : 'Войдите в аккаунт';
+  const exportEmpty = typeof I18n !== 'undefined' ? I18n.t('favorites.export_empty') : 'Избранное пусто! Нечего экспортировать.';
+  const exportSuccess = typeof I18n !== 'undefined' ? I18n.t('favorites.export_success') : '✅ Экспортировано товаров:';
+  const exportError = typeof I18n !== 'undefined' ? I18n.t('favorites.export_error') : 'Ошибка при экспорте:';
+  
   if (!session) {
-    showToast('Войдите в аккаунт для экспорта');
+    showToast(needLogin);
     return;
   }
   
@@ -245,15 +260,13 @@ async function exportFavorites() {
   const favoritesIds = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
   
   if (favoritesIds.length === 0) {
-    showToast('Избранное пусто! Нечего экспортировать.');
+    showToast(exportEmpty);
     return;
   }
   
   try {
-    // Загружаем товары, чтобы получить их названия и цены
     const products = await loadProducts();
     
-    // Формируем содержимое файла
     const date = new Date().toLocaleString('ru-RU');
     const lines = [
       '# ============================================',
@@ -275,8 +288,7 @@ async function exportFavorites() {
       ''
     ];
     
-    // Добавляем ID товаров с информацией о них
-    favoritesIds.forEach((favId, index) => {
+    favoritesIds.forEach((favId) => {
       const product = products.find(p => String(p.id) === String(favId));
       if (product) {
         lines.push(`${product.id}  # ${product.name} | ${product.price}₽ | ${product.brand || ''}`);
@@ -292,13 +304,11 @@ async function exportFavorites() {
     
     const fileContent = lines.join('\n');
     
-    // Создаем Blob и скачиваем файл
     const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     
-    // Формируем имя файла
     const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
     const userName = (session.name || 'user').replace(/\s+/g, '_');
     a.download = `ami-favorites-${userName}-${timestamp}.txt`;
@@ -309,11 +319,11 @@ async function exportFavorites() {
     URL.revokeObjectURL(url);
     
     console.log('✅ Избранное экспортировано:', favoritesIds.length, 'товаров');
-    showToast(`✅ Экспортировано ${favoritesIds.length} товаров`);
+    showToast(`${exportSuccess} ${favoritesIds.length}`);
     
   } catch (error) {
     console.error('❌ Ошибка экспорта:', error);
-    showToast('Ошибка при экспорте: ' + error.message);
+    showToast(`${exportError} ${error.message}`);
   }
 }
 
@@ -325,15 +335,30 @@ async function importFavorites(event) {
   
   const session = getCurrentUser();
   
+  const needLogin = typeof I18n !== 'undefined' ? I18n.t('favorites.need_login') : 'Войдите в аккаунт';
+  const needTxt = typeof I18n !== 'undefined' ? I18n.t('favorites.need_txt') : 'Выберите текстовый файл (.txt)';
+  const importEmpty = typeof I18n !== 'undefined' ? I18n.t('favorites.import_empty') : 'В файле не найдено товаров для импорта';
+  const importConfirm = typeof I18n !== 'undefined' ? I18n.t('favorites.import_confirm') : 'Импортировать доступные товары в избранное?';
+  const importSuccess = typeof I18n !== 'undefined' ? I18n.t('favorites.import_success') : '✅ Импорт завершён!';
+  const importError = typeof I18n !== 'undefined' ? I18n.t('favorites.import_error') : 'Ошибка при чтении файла:';
+  
+  const foundInFile = typeof I18n !== 'undefined' ? I18n.t('favorites.found_in_file') : 'Найдено в файле:';
+  const available = typeof I18n !== 'undefined' ? I18n.t('favorites.available') : '✅ Доступно для импорта:';
+  const notFoundInCatalog = typeof I18n !== 'undefined' ? I18n.t('favorites.not_found_in_catalog') : '⚠️ Не найдено в каталоге:';
+  const unrecognized = typeof I18n !== 'undefined' ? I18n.t('favorites.unrecognized') : '❌ Нераспознанных строк:';
+  const addedCountText = typeof I18n !== 'undefined' ? I18n.t('favorites.added_count') : '➕ Добавлено:';
+  const alreadyHad = typeof I18n !== 'undefined' ? I18n.t('favorites.already_had') : '⏭️ Уже было в избранном:';
+  const notFoundText = typeof I18n !== 'undefined' ? I18n.t('favorites.not_found_text') : '❌ Не найдено в каталоге:';
+  const itemsWord = typeof I18n !== 'undefined' ? I18n.t('common.pcs') : 'товаров';
+  
   if (!session) {
-    showToast('Войдите в аккаунт для импорта');
+    showToast(needLogin);
     event.target.value = '';
     return;
   }
   
-  // Проверка типа файла
   if (!file.name.toLowerCase().endsWith('.txt')) {
-    showToast('Выберите текстовый файл (.txt)');
+    showToast(needTxt);
     event.target.value = '';
     return;
   }
@@ -342,23 +367,19 @@ async function importFavorites(event) {
     const text = await file.text();
     const lines = text.split('\n');
     
-    // Парсим строки с ID товаров
     const importedIds = [];
     const invalidLines = [];
     
     for (let i = 0; i < lines.length; i++) {
       let line = lines[i].trim();
       
-      // Пропускаем пустые строки и комментарии
       if (line === '' || line.startsWith('#')) continue;
       
-      // Убираем комментарий после ID (если есть)
       const commentIndex = line.indexOf('#');
       if (commentIndex !== -1) {
         line = line.substring(0, commentIndex).trim();
       }
       
-      // Извлекаем ID (первое слово)
       const parts = line.split(/[\s|,;]+/);
       const id = parts[0].trim();
       
@@ -370,12 +391,11 @@ async function importFavorites(event) {
     }
     
     if (importedIds.length === 0) {
-      showToast('В файле не найдено товаров для импорта');
+      showToast(importEmpty);
       event.target.value = '';
       return;
     }
     
-    // Загружаем продукты для проверки
     const products = await loadProducts();
     const validIds = [];
     const notFoundIds = [];
@@ -389,30 +409,27 @@ async function importFavorites(event) {
       }
     });
     
-    // Формируем сообщение для подтверждения
-    let confirmMsg = `Найдено в файле: ${importedIds.length} товаров\n\n`;
-    confirmMsg += `✅ Доступно для импорта: ${validIds.length}\n`;
+    let confirmMsg = `${foundInFile} ${importedIds.length} ${itemsWord}\n\n`;
+    confirmMsg += `${available} ${validIds.length}\n`;
     
     if (notFoundIds.length > 0) {
-      confirmMsg += `⚠️ Не найдено в каталоге: ${notFoundIds.length}\n`;
+      confirmMsg += `${notFoundInCatalog} ${notFoundIds.length}\n`;
     }
     
     if (invalidLines.length > 0) {
-      confirmMsg += `❌ Нераспознанных строк: ${invalidLines.length}\n`;
+      confirmMsg += `${unrecognized} ${invalidLines.length}\n`;
     }
     
-    confirmMsg += '\nИмпортировать доступные товары в избранное?';
+    confirmMsg += `\n${importConfirm}`;
     
     if (!confirm(confirmMsg)) {
       event.target.value = '';
       return;
     }
     
-    // Загружаем текущее избранное
     const favoritesKey = getFavoritesKey();
     const currentFavorites = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
     
-    // Добавляем новые ID (без дубликатов)
     let addedCount = 0;
     let skippedCount = 0;
     
@@ -428,22 +445,19 @@ async function importFavorites(event) {
       }
     });
     
-    // Сохраняем обновлённое избранное
     localStorage.setItem(favoritesKey, JSON.stringify(currentFavorites));
     
-    // Обновляем интерфейс
     renderFavorites();
     updateFavoritesBadge();
     updateFavoritesCount();
     
-    // Формируем итоговое сообщение
-    let resultMsg = `✅ Импорт завершён!\n\n`;
-    resultMsg += `➕ Добавлено: ${addedCount}\n`;
+    let resultMsg = `${importSuccess}\n\n`;
+    resultMsg += `${addedCountText} ${addedCount}\n`;
     if (skippedCount > 0) {
-      resultMsg += `⏭️ Уже было в избранном: ${skippedCount}\n`;
+      resultMsg += `${alreadyHad} ${skippedCount}\n`;
     }
     if (notFoundIds.length > 0) {
-      resultMsg += `❌ Не найдено в каталоге: ${notFoundIds.length}\n`;
+      resultMsg += `${notFoundText} ${notFoundIds.length}\n`;
     }
     
     alert(resultMsg);
@@ -451,10 +465,9 @@ async function importFavorites(event) {
     
   } catch (error) {
     console.error('❌ Ошибка импорта:', error);
-    showToast('Ошибка при чтении файла: ' + error.message);
+    showToast(`${importError} ${error.message}`);
   }
   
-  // Сбрасываем input для возможности повторного импорта
   event.target.value = '';
 }
 
@@ -463,5 +476,15 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFavorites();
   updateFavoritesBadge();
   updateCartBadge();
+  updateFavoritesCount();
+});
+
+// 🔥 Перерендер избранного при смене языка
+window.addEventListener('languageChanged', () => {
+  console.log('🌐 Перерендер избранного из-за смены языка');
+  if (typeof I18n !== 'undefined') {
+    I18n.translatePage();
+  }
+  renderFavorites();
   updateFavoritesCount();
 });

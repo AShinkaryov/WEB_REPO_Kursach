@@ -1,10 +1,18 @@
 /**
- * AMI Cart Page — с оформлением заказа и промокодами
+ * AMI Cart Page — с оформлением заказа, промокодами и отзывами
  */
+
+// 🔥 Перерендер корзины при смене языка
+window.addEventListener('languageChanged', () => {
+  console.log('🌐 Перерендер корзины из-за смены языка');
+  if (typeof renderCart === 'function') renderCart();
+  if (typeof updateCartUI === 'function') updateCartUI();
+});
 
 /* ── Глобальные константы ───────────────────────────────── */
 const PROMO_API = 'http://localhost:3001/promoCodes';
 const ORDERS_API = 'http://localhost:3002/orders';
+const REVIEWS_API = 'http://localhost:3001/reviews';
 
 /* ── Получение ключа корзины ────────────────────────────── */
 function getCartKey() {
@@ -129,13 +137,16 @@ function renderCart() {
   if (cart.length === 0) {
     list.innerHTML = `
       <div class="cart-empty">
-        <p>Корзина пуста</p>
-        <a href="catalog.html" class="cart-empty__link">Перейти в каталог</a>
+        <p>${I18n.t('cart.empty')}</p>
+        <a href="catalog.html" class="cart-empty__link">${I18n.t('cart.go_catalog')}</a>
       </div>`;
     if (totalBlock) totalBlock.style.display = 'none';
     if (orderSection) orderSection.style.display = 'none';
     return;
   }
+
+  const currency = I18n.t('common.currency');
+  const pcs = I18n.t('common.pcs');
 
   list.innerHTML = cart.map(item => {
     const price = parseFloat(item.price) || 0;
@@ -151,17 +162,17 @@ function renderCart() {
       <div class="cart-item__info">
         <p class="cart-item__name">${item.name}</p>
         <p class="cart-item__weight">${item.weight || ''}</p>
-        <p class="cart-item__price-one">${price} ₽ × ${qty} шт</p>
+        <p class="cart-item__price-one">${price} ${currency} × ${qty} ${pcs}</p>
       </div>
       <div class="cart-item__qty-wrap">
-        <button class="qty-btn" onclick="window.CartApp.changeQty('${item.id}', -1)" aria-label="Уменьшить">−</button>
+        <button class="qty-btn" onclick="window.CartApp.changeQty('${item.id}', -1)" aria-label="${I18n.t('cart.decrease')}">−</button>
         <span class="qty-val">${qty}</span>
-        <button class="qty-btn" onclick="window.CartApp.changeQty('${item.id}', 1)" aria-label="Увеличить">+</button>
+        <button class="qty-btn" onclick="window.CartApp.changeQty('${item.id}', 1)" aria-label="${I18n.t('cart.increase')}">+</button>
       </div>
       <div class="cart-item__line-total">
-        <span class="line-total-value">${lineTotal} ₽</span>
+        <span class="line-total-value">${lineTotal} ${currency}</span>
       </div>
-      <button class="cart-item__remove" onclick="window.CartApp.removeItem('${item.id}')" aria-label="Удалить">
+      <button class="cart-item__remove" onclick="window.CartApp.removeItem('${item.id}')" aria-label="${I18n.t('cart.remove')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
           <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
           <path d="M10 11v6"/><path d="M14 11v6"/>
@@ -190,29 +201,30 @@ async function applyPromo() {
   const code = input ? input.value.trim().toUpperCase() : '';
   
   if (!code) {
-    showMessage(message, 'Введите промокод', 'error');
+    showMessage(message, I18n.t('cart.promo_enter'), 'error');
     return;
   }
 
   const promo = promoCodes.find(p => p.code === code);
   if (!promo) {
-    showMessage(message, 'Промокод не найден', 'error');
+    showMessage(message, I18n.t('cart.promo_not_found'), 'error');
     return;
   }
   
   if (!promo.active) {
-    showMessage(message, 'Промокод не активен', 'error');
+    showMessage(message, I18n.t('cart.promo_inactive'), 'error');
     return;
   }
   
   if ((promo.usedCount || 0) >= promo.maxUses) {
-    showMessage(message, 'Лимит использования исчерпан', 'error');
+    showMessage(message, I18n.t('cart.promo_limit'), 'error');
     return;
   }
 
   const subtotal = calculateTotal();
+  const currency = I18n.t('common.currency');
   if (promo.minOrder > 0 && subtotal < promo.minOrder) {
-    showMessage(message, `Минимальная сумма заказа: ${promo.minOrder} ₽`, 'error');
+    showMessage(message, `${I18n.t('cart.promo_min_order')}: ${promo.minOrder} ${currency}`, 'error');
     return;
   }
 
@@ -229,7 +241,7 @@ async function applyPromo() {
   };
 
   localStorage.setItem('ami-applied-promo', JSON.stringify(appliedPromo));
-  showMessage(message, `✅ Промокод ${promo.code} применён!`, 'success');
+  showMessage(message, `✅ ${I18n.t('cart.promo_applied')} ${promo.code}!`, 'success');
   updateCartUI();
 }
 
@@ -237,6 +249,7 @@ function updateCartUI() {
   const subtotal = calculateTotal();
   const discount = appliedPromo ? appliedPromo.discount : 0;
   const finalTotal = Math.max(0, subtotal - discount);
+  const currency = I18n.t('common.currency');
 
   const discountLine = document.getElementById('discount-line');
   const promoCodeDisplay = document.getElementById('promo-code-display');
@@ -247,14 +260,14 @@ function updateCartUI() {
     if (appliedPromo) {
       discountLine.style.display = 'flex';
       promoCodeDisplay.textContent = appliedPromo.code;
-      discountValue.textContent = `-${appliedPromo.discount} ₽`;
+      discountValue.textContent = `-${appliedPromo.discount} ${currency}`;
     } else {
       discountLine.style.display = 'none';
     }
   }
 
   if (totalValue) {
-    totalValue.textContent = `${finalTotal} ₽`;
+    totalValue.textContent = `${finalTotal} ${currency}`;
   }
 }
 
@@ -289,19 +302,19 @@ function validateForm() {
   const name = fields.name ? fields.name.value.trim() : '';
   const email = fields.email ? fields.email.value.trim() : '';
   
-  if (!address) errors.address = 'Укажите адрес доставки';
-  if (!name) errors.name = 'Укажите имя и фамилию';
-  if (!email) errors.email = 'Укажите e-mail';
+  if (!address) errors.address = I18n.t('cart.err_address');
+  if (!name) errors.name = I18n.t('cart.err_name');
+  if (!email) errors.email = I18n.t('cart.err_email');
   
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    errors.email = 'Некорректный e-mail';
+    errors.email = I18n.t('cart.err_email_invalid');
   }
   
   if (phone && !/^\+375\d{9}$/.test(phone.replace(/\s/g, ''))) {
-    errors.phone = 'Номер должен быть в формате +375XXXXXXXXX';
+    errors.phone = I18n.t('cart.err_phone_format');
   }
   if (!phone) {
-    errors.phone = 'Укажите номер телефона';
+    errors.phone = I18n.t('cart.err_phone');
   }
   
   return {
@@ -365,7 +378,7 @@ async function submitOrder(e) {
   }
   
   if (cart.length === 0) {
-    alert('Корзина пуста!');
+    alert(I18n.t('cart.empty_alert'));
     return;
   }
   
@@ -374,15 +387,15 @@ async function submitOrder(e) {
     const productsRes = await fetch('http://localhost:3001/products');
     const allProducts = await productsRes.json();
     
-    // Проверяем каждый товар в корзине
     for (const cartItem of cart) {
       const product = allProducts.find(p => p.id === cartItem.id);
       if (!product) {
-        alert(`Товар "${cartItem.name}" не найден!`);
+        alert(`${I18n.t('cart.product_not_found')}: "${cartItem.name}"`);
         return;
       }
       if (product.stock < cartItem.quantity) {
-        alert(`Товара "${product.name}" недостаточно на складе! Доступно: ${product.stock} шт.`);
+        const pcs = I18n.t('common.pcs');
+        alert(`${I18n.t('cart.stock_not_enough')} "${product.name}"! ${I18n.t('cart.stock_available')}: ${product.stock} ${pcs}`);
         return;
       }
     }
@@ -401,16 +414,15 @@ async function submitOrder(e) {
     
   } catch (err) {
     console.error('❌ Ошибка при обновлении stock:', err);
-    alert('Ошибка при резервировании товара');
+    alert(I18n.t('cart.stock_error'));
     return;
   }
-  
-  // ... остальной код оформления заказа ...
   
   const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
   const subtotal = calculateTotal();
   const discount = appliedPromo ? appliedPromo.discount : 0;
   const finalTotal = Math.max(0, subtotal - discount);
+  const currency = I18n.t('common.currency');
   
   const order = {
     userId: session ? session.id : 'guest-' + Date.now(),
@@ -468,7 +480,7 @@ async function submitOrder(e) {
       saveCart();
       renderCart();
       
-      alert(`✅ Заказ #${savedOrder.id} оформлен!\nСумма: ${finalTotal} ₽`);
+      alert(`✅ ${I18n.t('cart.order_success')} #${savedOrder.id}!\n${I18n.t('cart.total_amount')}: ${finalTotal} ${currency}`);
       document.getElementById('order-form').reset();
       setTimeout(() => window.location.href = 'catalog.html', 2000);
     } else {
@@ -476,7 +488,7 @@ async function submitOrder(e) {
     }
   } catch (error) {
     console.error('❌ Ошибка заказа:', error);
-    alert('Ошибка оформления: ' + error.message);
+    alert(`${I18n.t('cart.order_error')}: ${error.message}`);
   }
 }
 
@@ -517,15 +529,13 @@ window.CartApp = {
 document.addEventListener('DOMContentLoaded', initCart);
 
 /* ── Отзывы ────────────────────────────────────────────── */
-const REVIEWS_API = 'http://localhost:3001/reviews';
-
 async function submitReview(e) {
   e.preventDefault();
   
   const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
   
   if (!session) {
-    showMessage(document.getElementById('review-message'), 'Войдите в аккаунт, чтобы оставить отзыв', 'error');
+    showMessage(document.getElementById('review-message'), I18n.t('cart.review_login_required'), 'error');
     return;
   }
   
@@ -533,17 +543,17 @@ async function submitReview(e) {
   const text = document.getElementById('review-text').value.trim();
   
   if (!rating) {
-    showMessage(document.getElementById('review-message'), 'Пожалуйста, поставьте оценку', 'error');
+    showMessage(document.getElementById('review-message'), I18n.t('cart.review_rating_required'), 'error');
     return;
   }
   
   if (!text) {
-    showMessage(document.getElementById('review-message'), 'Напишите отзыв', 'error');
+    showMessage(document.getElementById('review-message'), I18n.t('cart.review_text_required'), 'error');
     return;
   }
   
   if (text.length < 10) {
-    showMessage(document.getElementById('review-message'), 'Отзыв слишком короткий (минимум 10 символов)', 'error');
+    showMessage(document.getElementById('review-message'), I18n.t('cart.review_too_short'), 'error');
     return;
   }
   
@@ -568,12 +578,10 @@ async function submitReview(e) {
       const savedReview = await response.json();
       console.log('✅ Отзыв сохранён:', savedReview);
       
-      showMessage(document.getElementById('review-message'), '✅ Спасибо за ваш отзыв!', 'success');
+      showMessage(document.getElementById('review-message'), I18n.t('cart.review_thanks'), 'success');
       
-      // Сброс формы
       document.getElementById('review-form').reset();
       
-      // Скрыть сообщение через 3 секунды
       setTimeout(() => {
         const msg = document.getElementById('review-message');
         if (msg) {
@@ -586,7 +594,7 @@ async function submitReview(e) {
     }
   } catch (error) {
     console.error('❌ Ошибка отправки отзыва:', error);
-    showMessage(document.getElementById('review-message'), 'Ошибка при отправке отзыва', 'error');
+    showMessage(document.getElementById('review-message'), I18n.t('cart.review_error'), 'error');
   }
 }
 

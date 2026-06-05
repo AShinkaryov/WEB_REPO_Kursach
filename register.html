@@ -8,8 +8,47 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/auth.css">
+  <style>
+    /* 🔥 Переключатель языков на странице регистрации */
+    .lang-switcher {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+    }
+    .lang-switcher span {
+      cursor: pointer;
+      padding: 6px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: #fff;
+      font-family: "Manrope", sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #666;
+      transition: all 0.2s;
+    }
+    .lang-switcher span:hover {
+      border-color: #E8593A;
+      color: #E8593A;
+    }
+    .lang-switcher span.active {
+      background: #E8593A;
+      color: #fff;
+      border-color: #E8593A;
+    }
+  </style>
 </head>
 <body class="auth-page">
+
+  <!-- 🔥 ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ -->
+  <div class="lang-switcher">
+    <span onclick="changeLang('en')" id="lang-en">En</span>
+    <span onclick="changeLang('ru')" id="lang-ru" class="active">Ru</span>
+    <span onclick="changeLang('be')" id="lang-be">Be</span>
+  </div>
 
   <div class="auth-container">
     <!-- Logo -->
@@ -19,46 +58,82 @@
 
     <!-- Register Form -->
     <div class="auth-form-wrapper">
-      <h1 class="auth-title">Регистрация</h1>
+      <h1 class="auth-title" data-i18n="auth.register_title">Регистрация</h1>
       
       <form id="register-form" class="auth-form" autocomplete="off">
-  <div class="form-group">
-    <input type="text" id="register-name" class="form-input" placeholder="Имя и фамилия*" required autocomplete="name" />
-  </div>
-  
-  <div class="form-group">
-    <input type="email" id="register-email" class="form-input" placeholder="E-mail*" required autocomplete="new-email" />
-  </div>
-  
-  <div class="form-group">
-    <input type="tel" id="register-phone" class="form-input" placeholder="Телефон*" required autocomplete="tel" />
-  </div>
+        <div class="form-group">
+          <input type="text" id="register-name" class="form-input" placeholder="Имя и фамилия*" required autocomplete="name" data-i18n-placeholder="auth.name_placeholder" />
+        </div>
+        
+        <div class="form-group">
+          <input type="email" id="register-email" class="form-input" placeholder="E-mail*" required autocomplete="new-email" data-i18n-placeholder="auth.email_placeholder" />
+        </div>
+        
+        <div class="form-group">
+          <input type="tel" id="register-phone" class="form-input" placeholder="Телефон*" required autocomplete="tel" data-i18n-placeholder="auth.phone_placeholder" />
+        </div>
 
-  <div class="form-group">
-    <input type="password" id="register-password" class="form-input" placeholder="Пароль*" required minlength="6" autocomplete="new-password" />
-  </div>
+        <div class="form-group">
+          <input type="password" id="register-password" class="form-input" placeholder="Пароль*" required minlength="6" autocomplete="new-password" data-i18n-placeholder="auth.password_placeholder" />
+        </div>
 
-  <div class="form-group">
-    <input type="password" id="register-confirm" class="form-input" placeholder="Подтвердите пароль*" required autocomplete="new-password" />
-  </div>
+        <div class="form-group">
+          <input type="password" id="register-confirm" class="form-input" placeholder="Подтвердите пароль*" required autocomplete="new-password" data-i18n-placeholder="auth.confirm_password_placeholder" />
+        </div>
 
-  <div class="form-group">
-    <select id="register-role" class="form-select">
-      <option value="user">Покупатель</option>
-    </select>
-  </div>
+        <div class="form-group">
+          <select id="register-role" class="form-select">
+            <option value="user" data-i18n="auth.role_user">Покупатель</option>
+          </select>
+        </div>
 
-  <button type="submit" class="auth-btn">Зарегистрироваться</button>
-</form>
+        <button type="submit" class="auth-btn" data-i18n="auth.register_btn">Зарегистрироваться</button>
+      </form>
 
       <p class="auth-link">
-        Уже есть аккаунт? <a href="login.html">Войти</a>
+        <span data-i18n="auth.have_account">Уже есть аккаунт?</span> <a href="login.html" data-i18n="auth.login_link">Войти</a>
       </p>
     </div>
   </div>
 
   <script src="js/auth.js"></script>
-  <!-- Подключение версии для слабовидящих -->
-
+  <!-- 🔥 ПОДКЛЮЧЕНИЕ МОДУЛЯ ИНТЕРНАЦИОНАЛИЗАЦИИ -->
+  <script src="js/i18n.js"></script>
+  
+  <!-- 🔥 СКРИПТ ДЛЯ ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ -->
+  <script>
+    // Функция переключения языка (глобальная)
+    function changeLang(lang) {
+      console.log('🔄 Changing language to:', lang);
+      
+      if (typeof I18n !== 'undefined' && typeof I18n.setLang === 'function') {
+        I18n.setLang(lang);
+        updateLangButtons(lang);
+      } else {
+        localStorage.setItem('ami-lang', lang);
+        location.reload();
+      }
+    }
+    
+    // Обновление кнопок
+    function updateLangButtons(activeLang) {
+      ['en', 'ru', 'be'].forEach(lang => {
+        const btn = document.getElementById('lang-' + lang);
+        if (btn) {
+          if (lang === activeLang) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        }
+      });
+    }
+    
+    // При загрузке страницы устанавливаем активную кнопку
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentLang = localStorage.getItem('ami-lang') || 'ru';
+      updateLangButtons(currentLang);
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,1042 @@
+/**
+ * AMI Internationalization Module
+ * Поддержка: Русский (ru), English (en), Беларуская (be)
+ */
+
+const I18n = (() => {
+  // Словари переводов
+  const translations = {
+    ru: {
+      // Навигация
+      'nav.home': 'ГЛАВНАЯ',
+      'nav.catalog': 'КАТАЛОГ',
+      'nav.partners': 'ПАРТНЕРАМ',
+      'nav.blog': 'БЛОГ',
+      'nav.kids': 'FOR KIDS',
+      'nav.cabinet': 'ЛИЧНЫЙ КАБИНЕТ',
+      
+      // Сайдбар
+      'sidebar.cart': 'Корзина',
+      'sidebar.favorites': 'Избранное',
+      'sidebar.phone': '+375294857777',
+      'sidebar.email': 'ami@mail.ru',
+      
+      // Главная страница
+      'home.title': 'AMI — Твой сладкий друг',
+      'home.catalog_btn': 'Каталог',
+      'home.tagline': 'Мы самые вкусные',
+      'home.trust_title': 'Нам доверяют',
+      
+      // Каталог
+      'catalog.title': 'Каталог',
+      'catalog.download': 'Скачать каталог .pdf',
+      'catalog.filter_brand': 'Бренд',
+      'catalog.filter_type': 'Тип',
+      'catalog.filter_weight': 'Вес',
+      'catalog.filter_ingredient': 'Ингредиенты',
+      'catalog.filter_packqty': 'В упаковке',
+      'catalog.add_to_cart': 'В корзину',
+      'catalog.login': 'Войти',
+      'catalog.view': '👁️ Просмотр',
+      'catalog.empty': 'Товары не найдены',
+      'catalog.recommended': 'ВАМ МОЖЕТ ПОНРАВИТЬСЯ',
+      'catalog.qr_btn': '📱 QR',
+      'catalog.qr_title': '📱 QR-код товара',
+      'catalog.qr_download': '💾 Скачать PNG',
+      'catalog.qr_print': '🖨️ Печать',
+      'catalog.qr_hint': 'Отсканируйте код для быстрого доступа к товару',
+      
+      // Корзина
+      'cart.title': 'Оформить заказ',
+      'cart.empty': 'Корзина пуста',
+      'cart.go_catalog': 'Перейти в каталог',
+      'cart.promo_title': '🎁 Промокод',
+      'cart.promo_placeholder': 'Введите код (например: AMI10)',
+      'cart.promo_apply': 'Применить',
+      'cart.total': 'Итого:',
+      'cart.buyer': 'Покупатель',
+      'cart.address': 'Адрес*',
+      'cart.phone': 'Телефон* (+375...)',
+      'cart.name': 'Имя и фамилия*',
+      'cart.email': 'E-mail*',
+      'cart.notes': 'Примечания к заказу',
+      'cart.submit': 'Оформить заказ',
+      'cart.review_title': '💬 Оставить отзыв о работе сайта',
+      'cart.review_rating': 'Ваша оценка:',
+      'cart.review_text': 'Ваш отзыв:',
+      'cart.review_submit': 'Отправить отзыв',
+      
+      // Избранное
+      'favorites.title': 'Избранное',
+      'favorites.empty': 'В избранном пока нет товаров',
+      'favorites.go_catalog': 'Перейти в каталог',
+      'favorites.count': 'Товаров в избранном:',
+      'favorites.export': '📥 Экспорт в файл',
+      'favorites.import': '📤 Импорт из файла',
+      
+      // Личный кабинет
+      'cabinet.title': 'Личный кабинет',
+      'cabinet.notifications': '🔔 Уведомления',
+      'cabinet.orders': '📦 Мои заказы',
+      'cabinet.settings': '⚙️ Настройки',
+      'cabinet.no_notifications': 'Нет новых уведомлений',
+      'cabinet.no_orders': 'У вас пока нет заказов',
+      
+      // Авторизация
+      'auth.login_title': 'Вход',
+      'auth.register_title': 'Регистрация',
+      'auth.email': 'E-mail',
+      'auth.password': 'Пароль',
+      'auth.login_btn': 'Войти',
+      'auth.register_btn': 'Зарегистрироваться',
+      'auth.no_account': 'Нет аккаунта?',
+      'auth.register_link': 'Зарегистрироваться',
+      'auth.guest': 'Продолжить как гость',
+      
+      // Админка
+      'admin.title': 'Панель управления',
+      'admin.news': '📰 Новости',
+      'admin.products': '🛍️ Товары',
+      'admin.orders': '📦 Заказы',
+      'admin.users': '👥 Пользователи',
+      'admin.stats': '📊 Статистика',
+      'admin.reviews': '💬 Отзывы',
+      'admin.logout': 'Выйти',
+      'admin.on_site': '← На сайт',
+      
+      // Футер
+      'footer.sitemap': 'Карта сайта',
+      'footer.contacts': 'Контакты',
+      'footer.year': 'AMI 2020',
+      'footer.privacy': 'Политика конфиденциальности',
+      'footer.created': 'Created by be-adv.com',
+      
+      // Общее
+      'common.currency': '₽',
+      'common.in_stock': 'В наличии',
+      'common.out_of_stock': 'Нет в наличии',
+      'common.pcs': 'шт',
+      'admin.news_management': 'Управление новостями',
+'admin.add_news': 'Добавить новость',
+'admin.news_title_placeholder': 'Заголовок',
+'admin.news_content_placeholder': 'Текст новости',
+'admin.news_image_placeholder': 'URL изображения',
+'admin.add': 'Добавить',
+'admin.products_management': 'Управление товарами',
+'admin.add_product': 'Добавить товар',
+'admin.product_name_placeholder': 'Название',
+'admin.product_price_placeholder': 'Цена',
+'admin.product_weight_placeholder': 'Вес',
+'admin.product_brand_placeholder': 'Бренд',
+'admin.product_category_placeholder': 'Категория',
+'admin.product_image_placeholder': 'URL изображения',
+'admin.product_desc_placeholder': 'Описание',
+'admin.stats_title': '📊 Статистика продаж',
+'admin.stats_period': 'Период:',
+'admin.stats_all_time': 'Всё время',
+'admin.stats_30_days': 'Последние 30 дней',
+'admin.stats_7_days': 'Последние 7 дней',
+'admin.stats_3_months': 'Последние 3 месяца',
+'admin.stats_year': 'Последний год',
+'admin.stats_refresh': '🔄 Обновить',
+'admin.stats_orders': 'Заказов',
+'admin.stats_revenue': 'Выручка',
+'admin.stats_items_sold': 'Товаров продано',
+'admin.stats_customers': 'Покупателей',
+'admin.stats_avg_check': 'Средний чек',
+'admin.stats_popular_products': '🍪 Популярные товары',
+'admin.stats_name': 'Название',
+'admin.stats_qty': 'Кол-во',
+'admin.stats_in_orders': 'В заказах',
+'admin.stats_name_email': 'Имя / Email',
+'admin.stats_sum': 'Сумма',
+'admin.reviews_title': '💬 Отзывы пользователей',
+'blog.top_nav': 'БЛОГ',
+'blog.back_to_blog': 'Назад к блогу',
+'blog.loading': 'Загрузка...',
+'blog.title': 'Блог',
+'blog.all_posts': 'Все записи',
+'blog.read_more': 'Читать далее',
+'blog.no_posts': 'Пока нет записей',
+'blog.back_to_list': '← Вернуться к списку',
+'blog.latest_news': 'Наши последние новости',
+'blog.subtitle': 'Здесь вы можете ознакомиться с нашими последними событиями, достижениями, а так же узнать новые рецепты домашнего вкусного',
+'blog.partner_title': 'Хочу стать партнером',
+'blog.partner_subtitle': 'Заполните форму и мы предоставим вам интересное коммерческое предложение',
+'blog.partner_name': 'Имя, фамилия',
+'blog.partner_company': 'Компания',
+'blog.partner_phone': 'Номер телефона',
+'blog.partner_email': 'Email',
+'blog.partner_submit': 'Отправить',
+'blog.learn_more': 'Узнайте о нас больше',
+'blog.hashtag': '#ВСЕЛЮБЯТAMI',
+'cabinet.title': 'Личный кабинет',
+'cabinet.notifications': '🔔 Уведомления',
+'cabinet.orders': '📦 Мои заказы',
+'cabinet.settings': '⚙️ Настройки',
+'cabinet.role_buyer': 'Покупатель',
+'cabinet.role_admin': 'Администратор',
+'cabinet.logout': 'Выйти',
+'cabinet.label_name': 'Имя',
+'cabinet.label_phone': 'Телефон',
+'cabinet.edit_btn': 'Редактировать',
+'cabinet.save_btn': 'Сохранить',
+'cabinet.no_notifications': 'Нет новых уведомлений',
+'cabinet.no_orders': 'У вас пока нет заказов',
+'cabinet.go_catalog': 'Перейти в каталог',
+'cabinet.order_status_pending': '🕐 Принят',
+'cabinet.order_status_processing': '🔄 Обрабатывается',
+'cabinet.order_status_shipped': '📦 Отправлен',
+'cabinet.order_status_delivered': '✅ Доставлен',
+'cabinet.order_status_cancelled': '❌ Отменён',
+'cabinet.loading': 'Загрузка...',
+'cart.title': 'Оформить заказ',
+'cart.promo_title': '🎁 Промокод',
+'cart.promo_placeholder': 'Введите код (например: AMI10)',
+'cart.promo_apply': 'Применить',
+'cart.discount_label': 'Скидка',
+'cart.total_label': 'Итого:',
+'cart.buyer': 'Покупатель',
+'cart.address': 'Адрес*',
+'cart.phone': 'Телефон* (+375...)',
+'cart.name': 'Имя и фамилия*',
+'cart.email': 'E-mail*',
+'cart.notes': 'Примечания к заказу',
+'cart.submit': 'Оформить заказ',
+'cart.review_title': '💬 Оставить отзыв о работе сайта',
+'cart.review_rating': 'Ваша оценка:',
+'cart.review_text_label': 'Ваш отзыв:',
+'cart.review_text_placeholder': 'Расскажите о вашем опыте использования сайта...',
+'cart.review_submit': 'Отправить отзыв',
+'cart.empty': 'Корзина пуста',
+'cart.go_catalog': 'Перейти в каталог',
+'footer.address_full': 'Могилёв, Габровская ул., 43',
+'cart.title': 'Оформить заказ',
+'cart.promo_title': '🎁 Промокод',
+'cart.promo_placeholder': 'Введите код (например: AMI10)',
+'cart.promo_apply': 'Применить',
+'cart.discount_label': 'Скидка',
+'cart.total_label': 'Итого:',
+'cart.buyer': 'Покупатель',
+'cart.address': 'Адрес*',
+'cart.phone': 'Телефон* (+375...)',
+'cart.name': 'Имя и фамилия*',
+'cart.email': 'E-mail*',
+'cart.notes': 'Примечания к заказу',
+'cart.submit': 'Оформить заказ',
+'cart.review_title': '💬 Оставить отзыв о работе сайта',
+'cart.review_rating': 'Ваша оценка:',
+'cart.review_text_label': 'Ваш отзыв:',
+'cart.review_text_placeholder': 'Расскажите о вашем опыте использования сайта...',
+'cart.review_submit': 'Отправить отзыв',
+'cart.empty': 'Корзина пуста',
+'cart.go_catalog': 'Перейти в каталог',
+'footer.address_full': 'Могилёв, Габровская ул., 43',
+'catalog.title': 'Каталог',
+'catalog.download': 'Скачать каталог .pdf',
+'catalog.filter_brand': 'Бренд',
+'catalog.filter_type': 'Тип',
+'catalog.filter_weight': 'Вес',
+'catalog.filter_ingredient': 'Ингредиенты',
+'catalog.filter_packqty': 'В упаковке',
+'catalog.recommended': 'ВАМ МОЖЕТ ПОНРАВИТЬСЯ',
+'catalog.qr_title': '📱 QR-код товара',
+'catalog.qr_download': '💾 Скачать PNG',
+'catalog.qr_print': '🖨️ Печать',
+'catalog.qr_hint': 'Отсканируйте код для быстрого доступа к товару',
+'footer.address': 'Могилёв, Габровская ул., 43',
+'favorites.title': 'Избранное',
+'favorites.count': 'Товаров в избранном:',
+'favorites.export': '📥 Экспорт в файл',
+'favorites.import': '📤 Импорт из файла',
+'favorites.empty': 'В избранном пока нет товаров',
+'favorites.go_catalog': 'Перейти в каталог',
+'favorites.added_to_cart': 'добавлен в корзину',
+'favorites.removed': 'Удалено из избранного',
+'favorites.login_required': '⚠️ Для работы с избранным необходимо войти!',
+'favorites.export_success': '✅ Экспортировано товаров:',
+'favorites.export_empty': 'Избранное пусто! Нечего экспортировать.',
+'favorites.import_success': '✅ Импорт завершён! Добавлено:',
+'favorites.import_empty': 'В файле не найдено товаров',
+'favorites.import_confirm': 'Импортировать товары в избранное?',
+'favorites.need_login': 'Войдите в аккаунт',
+'auth.login_title': 'Вход',
+'auth.email_placeholder': 'E-mail*',
+'auth.password_placeholder': 'Пароль*',
+'auth.role_user': 'Покупатель',
+'auth.role_admin': 'Администратор',
+'auth.login_btn': 'Войти',
+'auth.no_account': 'Нет аккаунта?',
+'auth.register_link': 'Зарегистрироваться',
+'auth.continue_as_guest': 'Продолжить как гость',
+'auth.register_title': 'Регистрация',
+'auth.name_placeholder': 'Имя и фамилия*',
+'auth.phone_placeholder': 'Телефон* (+375...)',
+'auth.confirm_password_placeholder': 'Подтвердите пароль*',
+'auth.register_btn': 'Зарегистрироваться',
+'auth.have_account': 'Уже есть аккаунт?',
+'auth.login_link': 'Войти',
+'partners.company_name': 'Кондитерская фабрика «AMI»',
+'partners.company_desc': ' — это крупный производитель печенья в Молдове.',
+'partners.main_goal_title': 'Наша главная цель',
+'partners.main_goal_text': '"Выпускать вкусное печенье, чтобы дарить радость и удовольствие каждому."',
+'partners.about_text': ' – это широкий ассортимент, оперативные оптовые поставки кондитерских изделий, современное оборудование и возможность существенно расширить спектр предлагаемых кондитерских изделий. Мы являемся сторонниками новаторства и постоянной работы над собой, постоянно внедряя новые технологии в производство. Мы ценим и учитываем мнение наших сотрудников, партнеров и потребителей на всех этапах работы. Для нас важно получать обратную связь и стараться совершенствовать наш продукт.',
+'partners.quality_priority_1': 'Обеспечение более ',
+'partners.quality_priority_2': 'высокого качества продукции и обслуживания',
+'partners.quality_priority_3': ' является приоритетным направлением нашей работы.',
+'partners.why_us_title': 'Почему вы должны выбрать нас',
+'partners.quality_title': 'Мы делаем качественную продукцию',
+'partners.quality_subtitle': 'Наши сертификаты соответствия стандартам',
+'partners.trust_title': 'Нам доверяют',
+'partners.everywhere_title': 'AMI везде',
+'partners.form_title': 'Хочу стать партнером',
+'partners.form_subtitle': 'Заполните форму и мы предоставим вам интересное коммерческое предложение',
+'partners.form_name': 'Имя, фамилия',
+'partners.form_company': 'Компания',
+'partners.form_phone': 'Номер телефона',
+'partners.form_email': 'Email',
+'partners.form_submit': 'Отправить',
+'auth.register_title': 'Регистрация',
+'auth.name_placeholder': 'Имя и фамилия*',
+'auth.phone_placeholder': 'Телефон* (+375...)',
+'auth.confirm_password_placeholder': 'Подтвердите пароль*',
+'auth.register_btn': 'Зарегистрироваться',
+'auth.have_account': 'Уже есть аккаунт?',
+'auth.login_link': 'Войти',
+'auth.role_user': 'Покупатель',
+    },
+    
+    en: {
+      // Navigation
+      'nav.home': 'HOME',
+      'nav.catalog': 'CATALOG',
+      'nav.partners': 'PARTNERS',
+      'nav.blog': 'BLOG',
+      'nav.kids': 'FOR KIDS',
+      'nav.cabinet': 'MY ACCOUNT',
+      
+      // Sidebar
+      'sidebar.cart': 'Cart',
+      'sidebar.favorites': 'Favorites',
+      'sidebar.phone': '+375294857777',
+      'sidebar.email': 'ami@mail.ru',
+      
+      // Home page
+      'home.title': 'AMI — Your Sweet Friend',
+      'home.catalog_btn': 'Catalog',
+      'home.tagline': 'We are the most delicious',
+      'home.trust_title': 'They trust us',
+      
+      // Catalog
+      'catalog.title': 'Catalog',
+      'catalog.download': 'Download catalog .pdf',
+      'catalog.filter_brand': 'Brand',
+      'catalog.filter_type': 'Type',
+      'catalog.filter_weight': 'Weight',
+      'catalog.filter_ingredient': 'Ingredients',
+      'catalog.filter_packqty': 'In pack',
+      'catalog.add_to_cart': 'Add to cart',
+      'catalog.login': 'Login',
+      'catalog.view': '👁️ View',
+      'catalog.empty': 'Products not found',
+      'catalog.recommended': 'YOU MAY ALSO LIKE',
+      'catalog.qr_btn': '📱 QR',
+      'catalog.qr_title': '📱 Product QR Code',
+      'catalog.qr_download': '💾 Download PNG',
+      'catalog.qr_print': '🖨️ Print',
+      'catalog.qr_hint': 'Scan the code to access the product',
+      
+      // Cart
+      'cart.title': 'Checkout',
+      'cart.empty': 'Cart is empty',
+      'cart.go_catalog': 'Go to catalog',
+      'cart.promo_title': '🎁 Promo code',
+      'cart.promo_placeholder': 'Enter code (e.g. AMI10)',
+      'cart.promo_apply': 'Apply',
+      'cart.total': 'Total:',
+      'cart.buyer': 'Buyer',
+      'cart.address': 'Address*',
+      'cart.phone': 'Phone* (+375...)',
+      'cart.name': 'Full name*',
+      'cart.email': 'E-mail*',
+      'cart.notes': 'Order notes',
+      'cart.submit': 'Place order',
+      'cart.review_title': '💬 Leave a review about the website',
+      'cart.review_rating': 'Your rating:',
+      'cart.review_text': 'Your review:',
+      'cart.review_submit': 'Submit review',
+      
+      // Favorites
+      'favorites.title': 'Favorites',
+      'favorites.empty': 'No favorites yet',
+      'favorites.go_catalog': 'Go to catalog',
+      'favorites.count': 'Items in favorites:',
+      'favorites.export': '📥 Export to file',
+      'favorites.import': '📤 Import from file',
+      
+      // Cabinet
+      'cabinet.title': 'My Account',
+      'cabinet.notifications': '🔔 Notifications',
+      'cabinet.orders': '📦 My Orders',
+      'cabinet.settings': '⚙️ Settings',
+      'cabinet.no_notifications': 'No new notifications',
+      'cabinet.no_orders': 'You have no orders yet',
+      
+      // Auth
+      'auth.login_title': 'Login',
+      'auth.register_title': 'Registration',
+      'auth.email': 'E-mail',
+      'auth.password': 'Password',
+      'auth.login_btn': 'Login',
+      'auth.register_btn': 'Register',
+      'auth.no_account': "Don't have an account?",
+      'auth.register_link': 'Register',
+      'auth.guest': 'Continue as guest',
+      
+      // Admin
+      'admin.title': 'Admin Panel',
+      'admin.news': '📰 News',
+      'admin.products': '🛍️ Products',
+      'admin.orders': '📦 Orders',
+      'admin.users': '👥 Users',
+      'admin.stats': '📊 Statistics',
+      'admin.reviews': '💬 Reviews',
+      'admin.logout': 'Logout',
+      'admin.on_site': '← Back to site',
+      
+      // Footer
+      'footer.sitemap': 'Site Map',
+      'footer.contacts': 'Contacts',
+      'footer.year': 'AMI 2020',
+      'footer.privacy': 'Privacy Policy',
+      'footer.created': 'Created by be-adv.com',
+      
+      // Common
+      'common.currency': 'BYN',
+      'common.in_stock': 'In stock',
+      'common.out_of_stock': 'Out of stock',
+      'common.pcs': 'pcs',
+      'admin.news_management': 'News Management',
+'admin.add_news': 'Add News',
+'admin.news_title_placeholder': 'Title',
+'admin.news_content_placeholder': 'News content',
+'admin.news_image_placeholder': 'Image URL',
+'admin.add': 'Add',
+'admin.products_management': 'Products Management',
+'admin.add_product': 'Add Product',
+'admin.product_name_placeholder': 'Name',
+'admin.product_price_placeholder': 'Price',
+'admin.product_weight_placeholder': 'Weight',
+'admin.product_brand_placeholder': 'Brand',
+'admin.product_category_placeholder': 'Category',
+'admin.product_image_placeholder': 'Image URL',
+'admin.product_desc_placeholder': 'Description',
+'admin.stats_title': '📊 Sales Statistics',
+'admin.stats_period': 'Period:',
+'admin.stats_all_time': 'All time',
+'admin.stats_30_days': 'Last 30 days',
+'admin.stats_7_days': 'Last 7 days',
+'admin.stats_3_months': 'Last 3 months',
+'admin.stats_year': 'Last year',
+'admin.stats_refresh': '🔄 Refresh',
+'admin.stats_orders': 'Orders',
+'admin.stats_revenue': 'Revenue',
+'admin.stats_items_sold': 'Items Sold',
+'admin.stats_customers': 'Customers',
+'admin.stats_avg_check': 'Average Check',
+'admin.stats_popular_products': '🍪 Popular Products',
+'admin.stats_name': 'Name',
+'admin.stats_qty': 'Qty',
+'admin.stats_in_orders': 'In Orders',
+'admin.stats_name_email': 'Name / Email',
+'admin.stats_sum': 'Sum',
+'admin.reviews_title': '💬 User Reviews',
+'blog.top_nav': 'BLOG',
+'blog.back_to_blog': 'Back to blog',
+'blog.loading': 'Loading...',
+'blog.title': 'Blog',
+'blog.all_posts': 'All posts',
+'blog.read_more': 'Read more',
+'blog.no_posts': 'No posts yet',
+'blog.back_to_list': '← Back to list',
+'blog.latest_news': 'Our latest news',
+'blog.subtitle': 'Here you can read about our latest events, achievements, and discover new homemade delicious recipes',
+'blog.partner_title': 'Become a partner',
+'blog.partner_subtitle': 'Fill out the form and we will provide you with an interesting commercial offer',
+'blog.partner_name': 'First name, Last name',
+'blog.partner_company': 'Company',
+'blog.partner_phone': 'Phone number',
+'blog.partner_email': 'Email',
+'blog.partner_submit': 'Submit',
+'blog.learn_more': 'Learn more about us',
+'blog.hashtag': '#EVERYONELOVESAMI',
+'cabinet.title': 'My Account',
+'cabinet.notifications': '🔔 Notifications',
+'cabinet.orders': '📦 My Orders',
+'cabinet.settings': '⚙️ Settings',
+'cabinet.role_buyer': 'Customer',
+'cabinet.role_admin': 'Administrator',
+'cabinet.logout': 'Logout',
+'cabinet.label_name': 'Name',
+'cabinet.label_phone': 'Phone',
+'cabinet.edit_btn': 'Edit',
+'cabinet.save_btn': 'Save',
+'cabinet.no_notifications': 'No new notifications',
+'cabinet.no_orders': 'You have no orders yet',
+'cabinet.go_catalog': 'Go to catalog',
+'cabinet.order_status_pending': '🕐 Received',
+'cabinet.order_status_processing': '🔄 Processing',
+'cabinet.order_status_shipped': '📦 Shipped',
+'cabinet.order_status_delivered': '✅ Delivered',
+'cabinet.order_status_cancelled': '❌ Cancelled',
+'cabinet.loading': 'Loading...',
+'cart.title': 'Checkout',
+'cart.promo_title': '🎁 Promo code',
+'cart.promo_placeholder': 'Enter code (e.g. AMI10)',
+'cart.promo_apply': 'Apply',
+'cart.discount_label': 'Discount',
+'cart.total_label': 'Total:',
+'cart.buyer': 'Buyer',
+'cart.address': 'Address*',
+'cart.phone': 'Phone* (+375...)',
+'cart.name': 'Full name*',
+'cart.email': 'E-mail*',
+'cart.notes': 'Order notes',
+'cart.submit': 'Place order',
+'cart.review_title': '💬 Leave a review about the website',
+'cart.review_rating': 'Your rating:',
+'cart.review_text_label': 'Your review:',
+'cart.review_text_placeholder': 'Tell us about your experience using the website...',
+'cart.review_submit': 'Submit review',
+'cart.empty': 'Cart is empty',
+'cart.go_catalog': 'Go to catalog',
+'footer.address_full': 'Mogilev, Gabrovskaya Street, 43',
+'cart.title': 'Checkout',
+'cart.promo_title': '🎁 Promo code',
+'cart.promo_placeholder': 'Enter code (e.g. AMI10)',
+'cart.promo_apply': 'Apply',
+'cart.discount_label': 'Discount',
+'cart.total_label': 'Total:',
+'cart.buyer': 'Buyer',
+'cart.address': 'Address*',
+'cart.phone': 'Phone* (+375...)',
+'cart.name': 'Full name*',
+'cart.email': 'E-mail*',
+'cart.notes': 'Order notes',
+'cart.submit': 'Place order',
+'cart.review_title': '💬 Leave a review about the website',
+'cart.review_rating': 'Your rating:',
+'cart.review_text_label': 'Your review:',
+'cart.review_text_placeholder': 'Tell us about your experience using the website...',
+'cart.review_submit': 'Submit review',
+'cart.empty': 'Cart is empty',
+'cart.go_catalog': 'Go to catalog',
+'footer.address_full': 'Mogilev, Gabrovskaya Street, 43',
+'catalog.title': 'Catalog',
+'catalog.download': 'Download catalog .pdf',
+'catalog.filter_brand': 'Brand',
+'catalog.filter_type': 'Type',
+'catalog.filter_weight': 'Weight',
+'catalog.filter_ingredient': 'Ingredients',
+'catalog.filter_packqty': 'In pack',
+'catalog.recommended': 'YOU MAY ALSO LIKE',
+'catalog.qr_title': '📱 Product QR Code',
+'catalog.qr_download': '💾 Download PNG',
+'catalog.qr_print': '🖨️ Print',
+'catalog.qr_hint': 'Scan the code to access the product',
+'footer.address': 'Mogilev, Gabrovskaya st., 43',
+'favorites.title': 'Favorites',
+'favorites.count': 'Items in favorites:',
+'favorites.export': '📥 Export to file',
+'favorites.import': '📤 Import from file',
+'favorites.empty': 'No favorites yet',
+'favorites.go_catalog': 'Go to catalog',
+'favorites.added_to_cart': 'added to cart',
+'favorites.removed': 'Removed from favorites',
+'favorites.login_required': '⚠️ Please login to use favorites!',
+'favorites.export_success': '✅ Exported items:',
+'favorites.export_empty': 'Favorites are empty! Nothing to export.',
+'favorites.import_success': '✅ Import completed! Added:',
+'favorites.import_empty': 'No items found in file',
+'favorites.import_confirm': 'Import items to favorites?',
+'favorites.need_login': 'Please login',
+'auth.login_title': 'Login',
+'auth.email_placeholder': 'E-mail*',
+'auth.password_placeholder': 'Password*',
+'auth.role_user': 'Customer',
+'auth.role_admin': 'Administrator',
+'auth.login_btn': 'Login',
+'auth.no_account': "Don't have an account?",
+'auth.register_link': 'Register',
+'auth.continue_as_guest': 'Continue as guest',
+'auth.register_title': 'Registration',
+'auth.name_placeholder': 'Full name*',
+'auth.phone_placeholder': 'Phone* (+375...)',
+'auth.confirm_password_placeholder': 'Confirm password*',
+'auth.register_btn': 'Register',
+'auth.have_account': 'Already have an account?',
+'auth.login_link': 'Login',
+'partners.company_name': 'AMI Confectionery Factory',
+'partners.company_desc': ' is a major cookie manufacturer in Moldova.',
+'partners.main_goal_title': 'Our main goal',
+'partners.main_goal_text': '"To produce delicious cookies and bring joy and pleasure to everyone."',
+'partners.about_text': ' offers a wide range of products, fast wholesale delivery of confectionery, modern equipment and the opportunity to significantly expand the range of confectionery offered. We are supporters of innovation and continuous self-improvement, constantly introducing new technologies into production. We value and consider the opinions of our employees, partners and consumers at all stages of work. It is important for us to receive feedback and strive to improve our product.',
+'partners.quality_priority_1': 'Ensuring ',
+'partners.quality_priority_2': 'higher quality of products and services',
+'partners.quality_priority_3': ' is a priority direction of our work.',
+'partners.why_us_title': 'Why you should choose us',
+'partners.quality_title': 'We make quality products',
+'partners.quality_subtitle': 'Our certificates of compliance with standards',
+'partners.trust_title': 'They trust us',
+'partners.everywhere_title': 'AMI is everywhere',
+'partners.form_title': 'Become a partner',
+'partners.form_subtitle': 'Fill out the form and we will provide you with an interesting commercial offer',
+'partners.form_name': 'First name, Last name',
+'partners.form_company': 'Company',
+'partners.form_phone': 'Phone number',
+'partners.form_email': 'Email',
+'partners.form_submit': 'Submit',
+'auth.register_title': 'Registration',
+'auth.name_placeholder': 'Full name*',
+'auth.phone_placeholder': 'Phone* (+375...)',
+'auth.confirm_password_placeholder': 'Confirm password*',
+'auth.register_btn': 'Register',
+'auth.have_account': 'Already have an account?',
+'auth.login_link': 'Login',
+'auth.role_user': 'Customer',
+    },
+    
+    be: {
+      // Навігацыя
+      'nav.home': 'ГАЛОЎНАЯ',
+      'nav.catalog': 'КАТАЛОГ',
+      'nav.partners': 'ПАРТНЁРАМ',
+      'nav.blog': 'БЛОГ',
+      'nav.kids': 'ДЗЕЦЯМ',
+      'nav.cabinet': 'АСАБІСТЫ КАБІНЕТ',
+      
+      // Сайдбар
+      'sidebar.cart': 'Кошык',
+      'sidebar.favorites': 'Абранае',
+      'sidebar.phone': '+375294857777',
+      'sidebar.email': 'ami@mail.ru',
+      
+      // Галоўная старонка
+      'home.title': 'AMI — Твой салодкі сябар',
+      'home.catalog_btn': 'Каталог',
+      'home.tagline': 'Мы самыя смачныя',
+      'home.trust_title': 'Нам давяраюць',
+      
+      // Каталог
+      'catalog.title': 'Каталог',
+      'catalog.download': 'Спампаваць каталог .pdf',
+      'catalog.filter_brand': 'Брэнд',
+      'catalog.filter_type': 'Тып',
+      'catalog.filter_weight': 'Вага',
+      'catalog.filter_ingredient': 'Інгрэдыенты',
+      'catalog.filter_packqty': 'У пакаванні',
+      'catalog.add_to_cart': 'У кошык',
+      'catalog.login': 'Увайсці',
+      'catalog.view': '👁️ Прагляд',
+      'catalog.empty': 'Тавары не знойдзены',
+      'catalog.recommended': 'ВАМ МОЖА СПАДАБАЦЦА',
+      'catalog.qr_btn': '📱 QR',
+      'catalog.qr_title': '📱 QR-код тавару',
+      'catalog.qr_download': '💾 Спампаваць PNG',
+      'catalog.qr_print': '🖨️ Друк',
+      'catalog.qr_hint': 'Адскануйце код для хуткага доступу да тавару',
+      
+      // Кошык
+      'cart.title': 'Аформіць замову',
+      'cart.empty': 'Кошык пусты',
+      'cart.go_catalog': 'Перайсці ў каталог',
+      'cart.promo_title': '🎁 Прамокод',
+      'cart.promo_placeholder': 'Увядзіце код (напрыклад: AMI10)',
+      'cart.promo_apply': 'Ужыць',
+      'cart.total': 'Усяго:',
+      'cart.buyer': 'Пакупнік',
+      'cart.address': 'Адрас*',
+      'cart.phone': 'Тэлефон* (+375...)',
+      'cart.name': 'Імя і прозвішча*',
+      'cart.email': 'E-mail*',
+      'cart.notes': 'Заўвагі да замовы',
+      'cart.submit': 'Аформіць замову',
+      'cart.review_title': '💬 Пакінуць водгук пра працу сайта',
+      'cart.review_rating': 'Ваша ацэнка:',
+      'cart.review_text': 'Ваш водгук:',
+      'cart.review_submit': 'Адправіць водгук',
+      
+      // Абранае
+      'favorites.title': 'Абранае',
+      'favorites.empty': 'У абраным пакуль няма тавараў',
+      'favorites.go_catalog': 'Перайсці ў каталог',
+      'favorites.count': 'Тавараў у абраным:',
+      'favorites.export': '📥 Экспарт у файл',
+      'favorites.import': '📤 Імпарт з файла',
+      
+      // Кабінет
+      'cabinet.title': 'Асабісты кабінет',
+      'cabinet.notifications': '🔔 Апавяшчэнні',
+      'cabinet.orders': '📦 Мае замовы',
+      'cabinet.settings': '⚙️ Налады',
+      'cabinet.no_notifications': 'Няма новых апавяшчэнняў',
+      'cabinet.no_orders': 'У вас пакуль няма замоў',
+      
+      // Аўтарызацыя
+      'auth.login_title': 'Уваход',
+      'auth.register_title': 'Рэгістрацыя',
+      'auth.email': 'E-mail',
+      'auth.password': 'Пароль',
+      'auth.login_btn': 'Увайсці',
+      'auth.register_btn': 'Зарэгістравацца',
+      'auth.no_account': 'Няма акаўнта?',
+      'auth.register_link': 'Зарэгістравацца',
+      'auth.guest': 'Працягнуць як госць',
+      
+      // Адмінка
+      'admin.title': 'Панэль кіравання',
+      'admin.news': '📰 Навіны',
+      'admin.products': '🛍️ Тавары',
+      'admin.orders': '📦 Замовы',
+      'admin.users': '👥 Карыстальнікі',
+      'admin.stats': '📊 Статыстыка',
+      'admin.reviews': '💬 Водгукі',
+      'admin.logout': 'Выйсці',
+      'admin.on_site': '← На сайт',
+      
+      // Футер
+      'footer.sitemap': 'Карта сайта',
+      'footer.contacts': 'Кантакты',
+      'footer.year': 'AMI 2020',
+      'footer.privacy': 'Палітыка канфідэнцыяльнасці',
+      'footer.created': 'Created by be-adv.com',
+      
+      // Агульнае
+      'common.currency': 'руб.',
+      'common.in_stock': 'У наяўнасці',
+      'common.out_of_stock': 'Няма ў наяўнасці',
+      'common.pcs': 'шт.',
+      'admin.news_management': 'Кіраванне навінамі',
+'admin.add_news': 'Дадаць навіну',
+'admin.news_title_placeholder': 'Загаловак',
+'admin.news_content_placeholder': 'Тэкст навіны',
+'admin.news_image_placeholder': 'URL выявы',
+'admin.add': 'Дадаць',
+'admin.products_management': 'Кіраванне таварамі',
+'admin.add_product': 'Дадаць тавар',
+'admin.product_name_placeholder': 'Назва',
+'admin.product_price_placeholder': 'Цана',
+'admin.product_weight_placeholder': 'Вага',
+'admin.product_brand_placeholder': 'Брэнд',
+'admin.product_category_placeholder': 'Катэгорыя',
+'admin.product_image_placeholder': 'URL выявы',
+'admin.product_desc_placeholder': 'Апісанне',
+'admin.stats_title': '📊 Статыстыка продажаў',
+'admin.stats_period': 'Перыяд:',
+'admin.stats_all_time': 'Увесь час',
+'admin.stats_30_days': 'Апошнія 30 дзён',
+'admin.stats_7_days': 'Апошнія 7 дзён',
+'admin.stats_3_months': 'Апошнія 3 месяцы',
+'admin.stats_year': 'Апошні год',
+'admin.stats_refresh': '🔄 Абнавіць',
+'admin.stats_orders': 'Замоў',
+'admin.stats_revenue': 'Выручка',
+'admin.stats_items_sold': 'Тавараў прададзена',
+'admin.stats_customers': 'Пакупнікоў',
+'admin.stats_avg_check': 'Сярэдні чэк',
+'admin.stats_popular_products': '🍪 Папулярныя тавары',
+'admin.stats_name': 'Назва',
+'admin.stats_qty': 'Коль-ць',
+'admin.stats_in_orders': 'У замовах',
+'admin.stats_name_email': 'Імя / Email',
+'admin.stats_sum': 'Сума',
+'admin.reviews_title': '💬 Водгукі карыстальнікаў',
+
+'blog.top_nav': 'БЛОГ',
+'blog.back_to_blog': 'Назад да блога',
+'blog.loading': 'Загрузка...',
+'blog.title': 'Блог',
+'blog.all_posts': 'Усе запісы',
+'blog.read_more': 'Чытаць далей',
+'blog.no_posts': 'Пакуль няма запісаў',
+'blog.back_to_list': '← Вярнуцца да спісу',
+'blog.latest_news': 'Нашы апошнія навіны',
+'blog.subtitle': 'Тут вы можаце азнаёміцца з нашымі апошнімі падзеямі, дасягненнямі, а таксама даведацца новыя рэцэпты хатняга смачнага',
+'blog.partner_title': 'Хачу стаць партнёрам',
+'blog.partner_subtitle': 'Запоўніце форму і мы прадаставім вам цікавую камерцыйную прапанову',
+'blog.partner_name': 'Імя, прозвішча',
+'blog.partner_company': 'Кампанія',
+'blog.partner_phone': 'Нумар тэлефона',
+'blog.partner_email': 'Email',
+'blog.partner_submit': 'Адправіць',
+'blog.learn_more': 'Даведайцеся пра нас больш',
+'blog.hashtag': '#УСЕЛЮБЯЦЬAMI',
+'cabinet.title': 'Асабісты кабінет',
+'cabinet.notifications': '🔔 Апавяшчэнні',
+'cabinet.orders': '📦 Мае замовы',
+'cabinet.settings': '⚙️ Налады',
+'cabinet.role_buyer': 'Пакупнік',
+'cabinet.role_admin': 'Адміністратар',
+'cabinet.logout': 'Выйсці',
+'cabinet.label_name': 'Імя',
+'cabinet.label_phone': 'Тэлефон',
+'cabinet.edit_btn': 'Рэдагаваць',
+'cabinet.save_btn': 'Захаваць',
+'cabinet.no_notifications': 'Няма новых апавяшчэнняў',
+'cabinet.no_orders': 'У вас пакуль няма замоў',
+'cabinet.go_catalog': 'Перайсці ў каталог',
+'cabinet.order_status_pending': '🕐 Прынята',
+'cabinet.order_status_processing': '🔄 Апрацоўваецца',
+'cabinet.order_status_shipped': '📦 Адпраўлена',
+'cabinet.order_status_delivered': '✅ Дастаўлена',
+'cabinet.order_status_cancelled': '❌ Адменена',
+'cabinet.loading': 'Загрузка...',
+'cart.title': 'Аформіць замову',
+'cart.promo_title': '🎁 Прамокод',
+'cart.promo_placeholder': 'Увядзіце код (напрыклад: AMI10)',
+'cart.promo_apply': 'Ужыць',
+'cart.discount_label': 'Зніжка',
+'cart.total_label': 'Усяго:',
+'cart.buyer': 'Пакупнік',
+'cart.address': 'Адрас*',
+'cart.phone': 'Тэлефон* (+375...)',
+'cart.name': 'Імя і прозвішча*',
+'cart.email': 'E-mail*',
+'cart.notes': 'Заўвагі да замовы',
+'cart.submit': 'Аформіць замову',
+'cart.review_title': '💬 Пакінуць водгук пра працу сайта',
+'cart.review_rating': 'Ваша ацэнка:',
+'cart.review_text_label': 'Ваш водгук:',
+'cart.review_text_placeholder': 'Распавядзіце пра ваш вопыт выкарыстання сайта...',
+'cart.review_submit': 'Адправіць водгук',
+'cart.empty': 'Кошык пусты',
+'cart.go_catalog': 'Перайсці ў каталог',
+'footer.address_full': 'Магілёў, Габраўская вул., 43',
+'cart.title': 'Аформіць замову',
+'cart.promo_title': '🎁 Прамокод',
+'cart.promo_placeholder': 'Увядзіце код (напрыклад: AMI10)',
+'cart.promo_apply': 'Ужыць',
+'cart.discount_label': 'Зніжка',
+'cart.total_label': 'Усяго:',
+'cart.buyer': 'Пакупнік',
+'cart.address': 'Адрас*',
+'cart.phone': 'Тэлефон* (+375...)',
+'cart.name': 'Імя і прозвішча*',
+'cart.email': 'E-mail*',
+'cart.notes': 'Заўвагі да замовы',
+'cart.submit': 'Аформіць замову',
+'cart.review_title': '💬 Пакінуць водгук пра працу сайта',
+'cart.review_rating': 'Ваша ацэнка:',
+'cart.review_text_label': 'Ваш водгук:',
+'cart.review_text_placeholder': 'Распавядзіце пра ваш вопыт выкарыстання сайта...',
+'cart.review_submit': 'Адправіць водгук',
+'cart.empty': 'Кошык пусты',
+'cart.go_catalog': 'Перайсці ў каталог',
+'footer.address_full': 'Mogilev, Gabrovskaya Street, 43',
+'catalog.title': 'Каталог',
+'catalog.download': 'Спампаваць каталог .pdf',
+'catalog.filter_brand': 'Брэнд',
+'catalog.filter_type': 'Тып',
+'catalog.filter_weight': 'Вага',
+'catalog.filter_ingredient': 'Інгрэдыенты',
+'catalog.filter_packqty': 'У пакаванні',
+'catalog.recommended': 'ВАМ МОЖА СПАДАБАЦЦА',
+'catalog.qr_title': '📱 QR-код тавару',
+'catalog.qr_download': '💾 Спампаваць PNG',
+'catalog.qr_print': '🖨️ Друк',
+'catalog.qr_hint': 'Адскануйце код для хуткага доступу да тавару',
+'footer.address': 'Магілёў, Габроўская вул., 43',
+'favorites.title': 'Абранае',
+'favorites.count': 'Тавараў у абраным:',
+'favorites.export': '📥 Экспарт у файл',
+'favorites.import': '📤 Імпарт з файла',
+'favorites.empty': 'У абраным пакуль няма тавараў',
+'favorites.go_catalog': 'Перайсці ў каталог',
+'favorites.added_to_cart': 'дададзены ў кошык',
+'favorites.removed': 'Выдалена з абранага',
+'favorites.login_required': '⚠️ Для працы з абраным трэба ўвайсці!',
+'favorites.export_success': '✅ Экспартавана тавараў:',
+'favorites.export_empty': 'Абранае пустое! Няма чаго экспартаваць.',
+'favorites.import_success': '✅ Імпарт завершаны! Дададзена:',
+'favorites.import_empty': 'У файле не знойдзена тавараў',
+'favorites.import_confirm': 'Імпартаваць тавары ў абранае?',
+'favorites.need_login': 'Увайдзіце ў акаўнт',
+'auth.login_title': 'Уваход',
+'auth.email_placeholder': 'E-mail*',
+'auth.password_placeholder': 'Пароль*',
+'auth.role_user': 'Пакупнік',
+'auth.role_admin': 'Адміністратар',
+'auth.login_btn': 'Увайсці',
+'auth.no_account': 'Няма акаўнта?',
+'auth.register_link': 'Зарэгістравацца',
+'auth.continue_as_guest': 'Працягнуць як госць',
+'auth.register_title': 'Рэгістрацыя',
+'auth.name_placeholder': 'Імя і прозвішча*',
+'auth.phone_placeholder': 'Тэлефон* (+375...)',
+'auth.confirm_password_placeholder': 'Пацвердзіце пароль*',
+'auth.register_btn': 'Зарэгістравацца',
+'auth.have_account': 'Ужо ёсць акаўнт?',
+'auth.login_link': 'Увайсці',
+'partners.company_name': 'Кандытарская фабрыка «AMI»',
+'partners.company_desc': ' — гэта буйны вытворца пячэння ў Малдове.',
+'partners.main_goal_title': 'Наша галоўная мэта',
+'partners.main_goal_text': '"Выпускаць смачнае пячэнне, каб дарыць радасць і задавальненне кожнаму."',
+'partners.about_text': ' – гэта шырокі асартымент, аператыўныя аптовыя пастаўкі кандытарскіх вырабаў, сучаснае абсталяванне і магчымасць істотна пашырыць спектр прапануемых кандытарскіх вырабаў. Мы з\'яўляемся прыхільнікамі інавацый і пастаяннай працы над сабой, пастаянна ўкараняючы новыя тэхналогіі ў вытворчасць. Мы цэнім і ўлічваем меркаванне нашых супрацоўнікаў, партнёраў і спажыўцоў на ўсіх этапах працы. Для нас важна атрымліваць зваротную сувязь і старацца ўдасканальваць наш прадукт.',
+'partners.quality_priority_1': 'Забеспячэнне ',
+'partners.quality_priority_2': 'больш высокай якасці прадукцыі і абслугоўвання',
+'partners.quality_priority_3': ' з\'яўляецца прыярытэтным кірункам нашай працы.',
+'partners.why_us_title': 'Чаму вы павінны выбраць нас',
+'partners.quality_title': 'Мы робім якасную прадукцыю',
+'partners.quality_subtitle': 'Нашы сертыфікаты адпаведнасці стандартам',
+'partners.trust_title': 'Нам давяраюць',
+'partners.everywhere_title': 'AMI ўсюды',
+'partners.form_title': 'Хачу стаць партнёрам',
+'partners.form_subtitle': 'Запоўніце форму і мы прадаставім вам цікавую камерцыйную прапанову',
+'partners.form_name': 'Імя, прозвішча',
+'partners.form_company': 'Кампанія',
+'partners.form_phone': 'Нумар тэлефона',
+'partners.form_email': 'Email',
+'partners.form_submit': 'Адправіць',
+'auth.register_title': 'Рэгістрацыя',
+'auth.name_placeholder': 'Імя і прозвішча*',
+'auth.phone_placeholder': 'Тэлефон* (+375...)',
+'auth.confirm_password_placeholder': 'Пацвердзіце пароль*',
+'auth.register_btn': 'Зарэгістравацца',
+'auth.have_account': 'Ужо ёсць акаўнт?',
+'auth.login_link': 'Увайсці',
+'auth.role_user': 'Пакупнік',
+    }
+  };
+  
+  let currentLang = localStorage.getItem('ami-lang') || 'ru';
+  
+  // Получить перевод
+  function t(key) {
+    return translations[currentLang]?.[key] || translations.ru[key] || key;
+  }
+  
+  // Применить перевод ко всем элементам с data-i18n
+ function translatePage() {
+  // Перевод текстового содержимого
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const translation = t(key);
+    
+    // Для option внутри select — меняем textContent
+    if (el.tagName === 'OPTION') {
+      el.textContent = translation;
+    } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+      if (el.hasAttribute('data-i18n-placeholder')) {
+        el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+      }
+    } else {
+      el.textContent = translation;
+    }
+  });
+  
+  // Перевод placeholder
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    el.placeholder = t(key);
+  });
+  
+  // Перевод title
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const key = el.getAttribute('data-i18n-title');
+    el.title = t(key);
+  });
+}
+  
+  // Сменить язык
+function setLang(lang) {
+  if (!translations[lang]) {
+    console.error('Unsupported language:', lang);
+    return;
+  }
+  
+  currentLang = lang;
+  localStorage.setItem('ami-lang', lang);
+  document.documentElement.lang = lang;
+  
+  translatePage();
+  
+  // 🔥 Используем универсальную функцию
+  updateLangUI();
+  
+  // Генерируем событие для других модулей
+  window.dispatchEvent(new CustomEvent('languageChanged'));
+  
+  console.log(`🌐 Language changed to: ${lang}`);
+}
+
+// 🔥 Перерендер каталога при смене языка
+window.addEventListener('languageChanged', () => {
+  console.log('🌐 languageChanged event received!');
+  console.log('📍 Current language:', typeof I18n !== 'undefined' ? I18n.getLang() : 'unknown');
+  
+  // 🔥 Небольшая задержка, чтобы I18n успел обновиться
+  setTimeout(() => {
+    // Переводим статические элементы
+    if (typeof I18n !== 'undefined') {
+      I18n.translatePage();
+      console.log('✅ I18n.translatePage() called');
+    }
+    
+    // 🔥 Перерендериваем динамические элементы через CatalogApp
+    if (typeof CatalogApp !== 'undefined') {
+      console.log('✅ CatalogApp found, re-rendering...');
+      CatalogApp.renderFilters();
+      CatalogApp.renderProducts(CatalogApp.getFilteredProducts());
+      CatalogApp.renderRecommended();
+      console.log('✅ Catalog re-rendered');
+    } else {
+      console.error('❌ CatalogApp not found!');
+    }
+  }, 50); // 50ms задержка
+});
+  
+  // Получить текущий язык
+  function getLang() {
+    return currentLang;
+  }
+  
+  // Инициализация
+  function init() {
+  document.documentElement.lang = currentLang;
+  
+  // 🔥 Обработчики для переключателей языка (универсально)
+  document.querySelectorAll('[data-lang]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.getAttribute('data-lang');
+      if (lang) setLang(lang);
+    });
+  });
+  
+  // Обновляем активный язык в UI
+  updateLangUI();
+  
+  // Переводим страницу
+  translatePage();
+}
+
+// 🔥 НОВАЯ функция — обновляет UI переключателя языков
+function updateLangUI() {
+  document.querySelectorAll('[data-lang]').forEach(el => {
+    el.classList.remove('active', 'sidebar__lang--active');
+    el.classList.add('sidebar__lang--inactive');
+  });
+  const activeBtn = document.querySelector(`[data-lang="${currentLang}"]`);
+  if (activeBtn) {
+    activeBtn.classList.remove('sidebar__lang--inactive');
+    activeBtn.classList.add('active', 'sidebar__lang--active');
+  }
+}
+  // Автоинициализация после загрузки DOM
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  
+  return { t, setLang, getLang, translatePage, init };
+})();

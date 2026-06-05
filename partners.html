@@ -17,23 +17,23 @@
       <img class="sidebar__logo" src="img/logo-sidebar.png" alt="AMI Logo"/>
     </div>
     <nav class="sidebar__nav">
-      <a href="Main.html" class="sidebar__nav-item">ГЛАВНАЯ</a>
-      <a href="Catalog.html" class="sidebar__nav-item sidebar__nav-item--active">КАТАЛОГ</a>
-      <a href="partners.html" class="sidebar__nav-item">ПАРТНЕРАМ</a>
-      <a href="Blog.html" class="sidebar__nav-item">БЛОГ</a>
-      <a href="cabinet.html" class="sidebar__nav-item">ЛИЧНЫЙ КАБИНЕТ</a>
+      <a href="Main.html" class="sidebar__nav-item" data-i18n="nav.home">ГЛАВНАЯ</a>
+      <a href="Catalog.html" class="sidebar__nav-item sidebar__nav-item--active" data-i18n="nav.catalog">КАТАЛОГ</a>
+      <a href="partners.html" class="sidebar__nav-item" data-i18n="nav.partners">ПАРТНЕРАМ</a>
+      <a href="Blog.html" class="sidebar__nav-item" data-i18n="nav.blog">БЛОГ</a>
+      <a href="cabinet.html" class="sidebar__nav-item" data-i18n="nav.cabinet">ЛИЧНЫЙ КАБИНЕТ</a>
     </nav>
-    
 
     <div class="sidebar__contacts">
-      <div class="sidebar__phone">+373 00000000</div>
-      <div class="sidebar__email">ami@mail.ru</div>
+      <div class="sidebar__phone" data-i18n="sidebar.phone">+375294857777</div>
+      <div class="sidebar__email" data-i18n="sidebar.email">ami@mail.ru</div>
     </div>
 
+    <!-- 🔥 ИЗМЕНЁННЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ -->
     <div class="sidebar__langs">
-      <span class="sidebar__lang sidebar__lang--inactive">En</span>
-      <span class="sidebar__lang sidebar__lang--active">Ru</span>
-      <span class="sidebar__lang sidebar__lang--inactive">Ro</span>
+      <span class="sidebar__lang sidebar__lang--inactive" data-lang="en">En</span>
+      <span class="sidebar__lang sidebar__lang--active" data-lang="ru">Ru</span>
+      <span class="sidebar__lang sidebar__lang--inactive" data-lang="be">Be</span>
     </div>
 
     <div class="sidebar__social">
@@ -43,80 +43,64 @@
       <img src="img/Partners/VK.png" alt="VK" width="24" height="24"/>
     </div>
 
-
     <img class="sidebar__border" src="img/line-4.svg" alt=""/>
   </aside>
-
-
-  
 
   <!-- ===== MAIN PAGE ===== -->
   <div class="screen">
 
     <!-- HERO SECTION -->
     <section class="hero">
-  <div class="hero__slides">
-    <!-- Слайд 1 -->
-    <div class="hero__slide hero__slide--active">
-      <img class="hero__bg" src="img/Partners/sl1.jpg" alt="Слайд 1: фон"/>
-      
-    </div>
-    <!-- Слайд 2 -->
-    <div class="hero__slide">
-      <img class="hero__bg" src="img/Partners/sl2.jpg" alt="Слайд 2: фон"/>
-      
-    </div>
-    <!-- Слайд 3 -->
-    <div class="hero__slide">
-      <img class="hero__bg" src="img/Partners/sl3.png" alt="Слайд 3: фон"/>
-      
-    </div>
-    <!-- Слайд 4 -->
-    <div class="hero__slide">
-      <img class="hero__bg" src="img/Partners/sl4.jpg" alt="Слайд 4: фон"/>
-      
-    </div>
-    <!-- Слайд 5 -->
-    <div class="hero__slide">
-      <img class="hero__bg" src="img/Partners/sl5.png" alt="Слайд 5: фон"/>
-      
-    </div>
-  </div>
+      <div class="hero__slides">
+        <div class="hero__slide hero__slide--active">
+          <img class="hero__bg" src="img/Partners/sl1.jpg" alt="Слайд 1"/>
+        </div>
+        <div class="hero__slide">
+          <img class="hero__bg" src="img/Partners/sl2.jpg" alt="Слайд 2"/>
+        </div>
+        <div class="hero__slide">
+          <img class="hero__bg" src="img/Partners/sl3.png" alt="Слайд 3"/>
+        </div>
+        <div class="hero__slide">
+          <img class="hero__bg" src="img/Partners/sl4.jpg" alt="Слайд 4"/>
+        </div>
+        <div class="hero__slide">
+          <img class="hero__bg" src="img/Partners/sl5.png" alt="Слайд 5"/>
+        </div>
+      </div>
 
-  <!-- Arrow buttons -->
-  <button class="hero__arrow hero__arrow--left" id="prev" aria-label="Предыдущий слайд">&#8249;</button>
-  <button class="hero__arrow hero__arrow--right" id="next" aria-label="Следующий слайд">&#8250;</button>
+      <button class="hero__arrow hero__arrow--left" id="prev" aria-label="Предыдущий слайд">&#8249;</button>
+      <button class="hero__arrow hero__arrow--right" id="next" aria-label="Следующий слайд">&#8250;</button>
 
-  <!-- Slider dots -->
-  <div class="hero__dots">
-    <span class="hero__dot hero__dot--active" data-index="0"></span>
-    <span class="hero__dot" data-index="1"></span>
-    <span class="hero__dot" data-index="2"></span>
-    <span class="hero__dot" data-index="3"></span>
-    <span class="hero__dot" data-index="4"></span>
-  </div>
-</section>
+      <div class="hero__dots">
+        <span class="hero__dot hero__dot--active" data-index="0"></span>
+        <span class="hero__dot" data-index="1"></span>
+        <span class="hero__dot" data-index="2"></span>
+        <span class="hero__dot" data-index="3"></span>
+        <span class="hero__dot" data-index="4"></span>
+      </div>
+    </section>
 
     <!-- ABOUT TEXT -->
     <section class="about">
       <p class="about__text">
-        <strong class="about__bold">Кондитерская фабрика «AMI»</strong>
-        <span> — это крупный производитель печенья в Молдове.</span>
+        <strong class="about__bold" data-i18n="partners.company_name">Кондитерская фабрика «AMI»</strong>
+        <span data-i18n="partners.company_desc"> — это крупный производитель печенья в Молдове.</span>
       </p>
       <p class="about__text1">
-        <strong class="about__bold1">Наша главная цель</strong>
+        <strong class="about__bold1" data-i18n="partners.main_goal_title">Наша главная цель</strong>
       </p>
-      <p class="about__text2">
+      <p class="about__text2" data-i18n="partners.main_goal_text">
         "Выпускать вкусное печенье, чтобы дарить радость и удовольствие каждому."
       </p>
       <p class="about__text3">
         <strong class="about__bold2">«AMI»</strong>
-        <span> – это широкий ассортимент, оперативные оптовые поставки кондитерских изделий, современное оборудование и возможность существенно расширить спектр предлагаемых кондитерских изделий.&nbsp; Мы являемся сторонниками новаторства и постоянной работы над собой, постоянно внедряя новые технологии в производство.&nbsp; Мы ценим и учитываем мнение наших сотрудников, партнеров и потребителей на всех этапах работы. Для нас важно получать обратную связь и стараться совершенствовать наш продукт.</span>
+        <span data-i18n="partners.about_text"> – это широкий ассортимент, оперативные оптовые поставки кондитерских изделий, современное оборудование и возможность существенно расширить спектр предлагаемых кондитерских изделий. Мы являемся сторонниками новаторства и постоянной работы над собой, постоянно внедряя новые технологии в производство. Мы ценим и учитываем мнение наших сотрудников, партнеров и потребителей на всех этапах работы. Для нас важно получать обратную связь и стараться совершенствовать наш продукт.</span>
       </p>
       <p class="about__text4">
-        <span>Обеспечение более </span>
-        <strong class="about__bold3">высокого качества продукции и обслуживания</strong>
-        <span> является приоритетным направлением нашей работы.</span>
+        <span data-i18n="partners.quality_priority_1">Обеспечение более </span>
+        <strong class="about__bold3" data-i18n="partners.quality_priority_2">высокого качества продукции и обслуживания</strong>
+        <span data-i18n="partners.quality_priority_3"> является приоритетным направлением нашей работы.</span>
       </p>
     </section>
 
@@ -125,43 +109,33 @@
       <div class="why-us__bg"></div>
       <div class="why-us__bg-right"></div>
 
-      <h2 class="why-us__title">Почему вы должны выбрать нас</h2>
+      <h2 class="why-us__title" data-i18n="partners.why_us_title">Почему вы должны выбрать нас</h2>
 
       <div class="why-us__cards">
-        <!-- Card 1 -->
         <div class="why-us__card">
           <div class="why-us__card-icon-wrap">
             <img src="img/Partners/whyUs1.png" alt="" class="why-us__card-icon"/>
           </div>
-          <p class="why-us__card-label"> <br/> </p>
         </div>
-        <!-- Card 2 -->
         <div class="why-us__card">
           <div class="why-us__card-icon-wrap1">
             <img src="img/Partners/WhyUs2.png" alt="" class="why-us__card-icon"/>
           </div>
-          
         </div>
-        <!-- Card 3 -->
         <div class="why-us__card">
           <div class="why-us__card-icon-wrap2">
             <img src="img/Partners/WhyUs3.png" alt="" class="why-us__card-icon1"/>
           </div>
-          <p class="why-us__card-label"> <br/> </p>
         </div>
-        <!-- Card 4 -->
         <div class="why-us__card">
           <div class="why-us__card-icon-wrap3">
             <img src="img/Partners/WhyUs4.png" alt="" class="why-us__card-icon"/>
           </div>
-          <p class="why-us__card-label1"> <br/></p>
         </div>
-        <!-- Card 5 -->
         <div class="why-us__card">
           <div class="why-us__card-icon-wrap4">
             <img src="img/Partners/WhyUs5.png" alt="" class="why-us__card-icon"/>
           </div>
-          <p class="why-us__card-label"> <br/> </p>
         </div>
       </div>
     </section>
@@ -169,8 +143,8 @@
     <!-- QUALITY SECTION -->
     <section class="quality">
       <div class="quality__header">
-        <h2 class="quality__title">Мы делаем качественную продукцию</h2>
-        <p class="quality__subtitle">Наши сертификаты соответствия стандартам</p>
+        <h2 class="quality__title" data-i18n="partners.quality_title">Мы делаем качественную продукцию</h2>
+        <p class="quality__subtitle" data-i18n="partners.quality_subtitle">Наши сертификаты соответствия стандартам</p>
       </div>
 
       <div class="quality__certs">
@@ -183,14 +157,13 @@
 
     <!-- TRUST SECTION -->
     <section class="trust">
-      <h2 class="trust__title">Нам доверяют</h2>
+      <h2 class="trust__title" data-i18n="partners.trust_title">Нам доверяют</h2>
 
       <div class="trust__logos trust__logos--row1">
         <div class="trust__logo"><img src="img/Partners/plogo_organicshop.jpg" alt=""/></div>
         <div class="trust__logo"><img src="img/Partners/plogo_greenhouse.png" alt=""/></div>
         <div class="trust__logo"><img src="img/Partners/plogo_pure.jpg" alt=""/></div>
         <div class="trust__logo"><img src="img/Partners/plogo_organic2.jpg" alt=""/></div>
-        
       </div>
       <div class="trust__logos trust__logos--row2">
         <div class="trust__logo"><img src="img/Partners/plogo_coffee.jpg" alt=""/></div>
@@ -202,7 +175,7 @@
 
     <!-- AMI EVERYWHERE SECTION -->
     <section class="ami-everywhere">
-      <h2 class="ami-everywhere__title">AMI везде</h2>
+      <h2 class="ami-everywhere__title" data-i18n="partners.everywhere_title">AMI везде</h2>
 
       <div class="ami-everywhere__gallery">
         <img class="ami-everywhere__img ami-everywhere__img--1" src="img/Partners/AmiAll1.png" alt=""/>
@@ -217,99 +190,96 @@
     <section class="partner-form">
       <div class="partner-form__card">
         <div class="partner-form__header">
-          <h2 class="partner-form__title">Хочу стать партнером</h2>
-          <p class="partner-form__subtitle">Заполните&nbsp;&nbsp;форму и мы предоставим<br/>вам интересное коммерческое предложение</p>
+          <h2 class="partner-form__title" data-i18n="partners.form_title">Хочу стать партнером</h2>
+          <p class="partner-form__subtitle" data-i18n="partners.form_subtitle">Заполните форму и мы предоставим вам интересное коммерческое предложение</p>
         </div>
 
         <div class="partner-form__fields">
           <div class="partner-form__field">
-            <span class="partner-form__placeholder">Имя, фамилия</span>
+            <span class="partner-form__placeholder" data-i18n="partners.form_name">Имя, фамилия</span>
             <div class="partner-form__border"></div>
           </div>
           <div class="partner-form__field">
-            <span class="partner-form__placeholder">Компания</span>
+            <span class="partner-form__placeholder" data-i18n="partners.form_company">Компания</span>
             <div class="partner-form__border"></div>
           </div>
           <div class="partner-form__field">
-            <span class="partner-form__placeholder">Номер телефона</span>
+            <span class="partner-form__placeholder" data-i18n="partners.form_phone">Номер телефона</span>
             <div class="partner-form__border"></div>
           </div>
           <div class="partner-form__field">
-            <input class="partner-form__input" placeholder="Email" type="email"/>
+            <input class="partner-form__input" placeholder="Email" type="email" data-i18n-placeholder="partners.form_email"/>
             <div class="partner-form__border"></div>
           </div>
         </div>
 
-        <button class="partner-form__btn">Отправить</button>
+        <button class="partner-form__btn" data-i18n="partners.form_submit">Отправить</button>
       </div>
     </section>
 
     <!-- FOOTER -->
     <footer class="footer">
-  <div class="footer__inner">
-    <img class="footer__logo" src="img/bag.png" alt=""/>
-    <p class="footer__copy-year">AMI 2020</p>
+      <div class="footer__inner">
+        <img class="footer__logo" src="img/bag.png" alt=""/>
+        <p class="footer__copy-year" data-i18n="footer.year">AMI 2020</p>
 
-    <div class="footer__nav">
-      <div class="footer__nav-section">
-        <p class="footer__nav-heading">Карта сайта</p>
-        <img src="img/Partners/lineFooter.png" alt="" class="footer__nav-line"/>
-        <ul class="footer__nav-list">
-          <ul class="footer__nav-list">
-  <li><a href="Main.html" class="footer__nav-link">Каталог</a></li>
-  <li><a href="partners.html" class="footer__nav-link">Партнерам</a></li>
-  <li><a href="blog.html" class="footer__nav-link">Блог</a></li>
-  <li><a href="kids.html" class="footer__nav-link">For kids</a></li>
-  <li><a href="docs/catalog.pdf" class="footer__nav-link">Скачать каталог .pdf</a></li>
-</ul>
-        </ul>
+        <div class="footer__nav">
+          <div class="footer__nav-section">
+            <p class="footer__nav-heading" data-i18n="footer.sitemap">Карта сайта</p>
+            <img src="img/Partners/lineFooter.png" alt="" class="footer__nav-line"/>
+            <ul class="footer__nav-list">
+              <li><a href="Main.html" class="footer__nav-link" data-i18n="nav.catalog">Каталог</a></li>
+              <li><a href="partners.html" class="footer__nav-link" data-i18n="nav.partners">Партнерам</a></li>
+              <li><a href="blog.html" class="footer__nav-link" data-i18n="nav.blog">Блог</a></li>
+              <li><a href="kids.html" class="footer__nav-link" data-i18n="nav.kids">For kids</a></li>
+              <li><a href="docs/catalog.pdf" class="footer__nav-link" data-i18n="catalog.download">Скачать каталог .pdf</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__nav-section1">
+            <p class="footer__nav-heading" data-i18n="footer.contacts">Контакты</p>
+            <img src="img/Partners/lineFooter.png" alt="" class="footer__nav-line"/>
+            <ul class="footer__contacts-list">
+              <li class="footer__contact">
+                <img src="img/Partners/phoneFooter.png" alt="" width="16" height="16"/>
+                <span data-i18n="sidebar.phone">+375294857777</span>
+              </li>
+              <li class="footer__contact">
+                <img src="img/Partners/emailFooter.png" alt="" width="16" height="16"/>
+                <span data-i18n="sidebar.email">ami@mail.ru</span>
+              </li>
+              <li class="footer__contact">
+                <img src="img/Partners/locationFooter.png" alt="" width="16" height="16"/>
+                <span data-i18n="footer.address">Могилёв, Габровская ул., 43</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer__map-col">
+          <div class="footer__map">
+            <iframe 
+              src="https://yandex.ru/map-widget/v1/?um=constructor%3A6757509e11c89f72b929f1887470bc56819d056937c31c8a47f025aea712c852&amp;source=constructor" 
+              width="100%" 
+              height="100%" 
+              frameborder="0" 
+              allowfullscreen="true">
+            </iframe>
+          </div>
+        </div>
+
+        <img src="img/Partners/big-lineFooter.png" alt="" class="footer__divider"/>
+        <p class="footer__created" data-i18n="footer.created">Created by be-adv.com</p>
+        <p class="footer__confidance" data-i18n="footer.privacy">Политика конфиденциальности</p>
+        <img src="img/Partners/logo-sidebar.png" alt="" class="footer__corner-img"/>
       </div>
+    </footer>
 
-      <div class="footer__nav-section1">
-        <p class="footer__nav-heading">Контакты</p>
-        <img src="img/Partners/lineFooter.png" alt="" class="footer__nav-line"/>
-        <ul class="footer__contacts-list">
-          <li class="footer__contact">
-            <img src="img/Partners/phoneFooter.png" alt="" width="16" height="16"/>
-            <span>+373 00000000</span>
-          </li>
-          <li class="footer__contact">
-            <img src="img/Partners/emailFooter.png" alt="" width="16" height="16"/>
-            <span>ami@mail.ru</span>
-          </li>
-          <li class="footer__contact">
-            <img src="img/Partners/locationFooter.png" alt="" width="16" height="16"/>
-            <span>Могилёв, Габровская ул., 43</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- ✅ КАРТА (вместо промо-изображения, точно под размеры макета) -->
-    <div class="footer__map-col">
-      <div class="footer__map">
-        <iframe 
-          src="https://yandex.ru/map-widget/v1/?um=constructor%3A6757509e11c89f72b929f1887470bc56819d056937c31c8a47f025aea712c852&amp;source=constructor" 
-          width="100%" 
-          height="100%" 
-          frameborder="0" 
-          allowfullscreen="true">
-        </iframe>
-      </div>
-    </div>
-
-    
-
-    <img src="img/Partners/big-lineFooter.png" alt="" class="footer__divider"/>
-    <p class="footer__created">Created by be-adv.com</p>
-    <p class="footer__confidance">Политика конфиденциальности</p>
-    <img src="img/Partners/logo-sidebar.png" alt="" class="footer__corner-img"/>
   </div>
-</footer>
-
-  </div><!-- /.screen -->
 
   <script src="js/partners.js"></script>
+  <!-- 🔥 ПОДКЛЮЧЕНИЕ МОДУЛЯ ИНТЕРНАЦИОНАЛИЗАЦИИ -->
+  <script src="js/i18n.js"></script>
 
 </body>
 </html>

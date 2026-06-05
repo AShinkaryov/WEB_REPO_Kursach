@@ -25,9 +25,11 @@ async function loadUserProfile(session) {
     if (res.ok) {
       const user = await res.json();
       
-      document.getElementById('cabinet-username').textContent = user.name || user.fullName || 'Пользователь';
+      document.getElementById('cabinet-username').textContent = user.name || user.fullName || I18n.t('cabinet.default_user');
       document.getElementById('cabinet-useremail').textContent = user.email;
-      document.getElementById('cabinet-userrole').textContent = user.role === 'admin' ? 'Администратор' : 'Покупатель';
+      document.getElementById('cabinet-userrole').textContent = user.role === 'admin' 
+        ? I18n.t('cabinet.role_admin') 
+        : I18n.t('cabinet.role_buyer');
       
       // Заполнение полей профиля
       document.getElementById('profile-name').value = user.name || user.fullName || '';
@@ -55,9 +57,13 @@ async function loadUserOrders(userId) {
   return [];
 }
 
-// Форматирование даты
+// 🔥 Форматирование даты с учётом языка
 function formatDate(dateString) {
-  return new Date(dateString).toLocaleString('ru-RU', {
+  const lang = I18n ? I18n.getLang() : 'ru';
+  const localeMap = { ru: 'ru-RU', en: 'en-US', be: 'be-BY' };
+  const locale = localeMap[lang] || 'ru-RU';
+  
+  return new Date(dateString).toLocaleString(locale, {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -66,21 +72,39 @@ function formatDate(dateString) {
   });
 }
 
-// Статусы заказов
-const STATUS_LABELS = {
-  'pending': { label: '🕐 Принят', class: 'order-status--pending' },
-  'processing': { label: '🔄 Обрабатывается', class: 'order-status--processing' },
-  'shipped': { label: '📦 Отправлен', class: 'order-status--shipped' },
-  'delivered': { label: '✅ Доставлен', class: 'order-status--delivered' },
-  'cancelled': { label: '❌ Отменён', class: 'order-status--cancelled' }
-};
+// 🔥 Статусы заказов — функция, возвращающая переводы
+function getStatusLabels() {
+  return {
+    'pending': { 
+      label: I18n ? I18n.t('cabinet.order_status_pending') : '🕐 Принят', 
+      class: 'order-status--pending' 
+    },
+    'processing': { 
+      label: I18n ? I18n.t('cabinet.order_status_processing') : '🔄 Обрабатывается', 
+      class: 'order-status--processing' 
+    },
+    'shipped': { 
+      label: I18n ? I18n.t('cabinet.order_status_shipped') : '📦 Отправлен', 
+      class: 'order-status--shipped' 
+    },
+    'delivered': { 
+      label: I18n ? I18n.t('cabinet.order_status_delivered') : '✅ Доставлен', 
+      class: 'order-status--delivered' 
+    },
+    'cancelled': { 
+      label: I18n ? I18n.t('cabinet.order_status_cancelled') : '❌ Отменён', 
+      class: 'order-status--cancelled' 
+    }
+  };
+}
 
 // Рендер уведомлений
 function renderNotifications(orders) {
   const list = document.getElementById('notifications-list');
+  const STATUS_LABELS = getStatusLabels();
   
   if (!orders || orders.length === 0) {
-    list.innerHTML = '<div class="notification-empty">Нет новых уведомлений</div>';
+    list.innerHTML = `<div class="notification-empty">${I18n.t('cabinet.no_notifications')}</div>`;
     return;
   }
   
@@ -95,10 +119,10 @@ function renderNotifications(orders) {
       <div class="notification-item notification-item--info">
         <div class="notification-icon">📦</div>
         <div class="notification-body">
-          <div class="notification-title">Заказ #${order.id}</div>
+          <div class="notification-title">${I18n.t('cabinet.order_prefix')} #${order.id}</div>
           <div class="notification-text">
-            Статус изменён на: <strong>${status.label}</strong><br>
-            Сумма: ${order.totalPrice} ₽
+            ${I18n.t('cabinet.status_changed')}: <strong>${status.label}</strong><br>
+            ${I18n.t('cabinet.total_amount')}: ${order.totalPrice} ${I18n.t('common.currency')}
           </div>
           <div class="notification-date">${date}</div>
         </div>
@@ -110,13 +134,14 @@ function renderNotifications(orders) {
 // Рендер заказов
 function renderOrders(orders) {
   const list = document.getElementById('orders-list');
+  const STATUS_LABELS = getStatusLabels();
   
   if (!orders || orders.length === 0) {
     list.innerHTML = `
       <div class="orders-empty">
-        <p>У вас пока нет заказов</p>
+        <p>${I18n.t('cabinet.no_orders')}</p>
         <a href="catalog.html" class="btn-orange" style="display: inline-block; margin-top: 16px; padding: 10px 24px; background: #E8593A; color: #fff; text-decoration: none; border-radius: 6px;">
-          Перейти в каталог
+          ${I18n.t('cabinet.go_catalog')}
         </a>
       </div>`;
     return;
@@ -136,34 +161,34 @@ function renderOrders(orders) {
     return `
       <div class="order-card">
         <div class="order-header">
-          <div class="order-id">Заказ #${order.id}</div>
+          <div class="order-id">${I18n.t('cabinet.order_prefix')} #${order.id}</div>
           <span class="order-status ${status.class}">${status.label}</span>
         </div>
         
         <div class="order-details">
           <div class="order-detail">
-            <div class="order-detail-label">Дата заказа</div>
+            <div class="order-detail-label">${I18n.t('cabinet.order_date')}</div>
             <div>${date}</div>
           </div>
           <div class="order-detail">
-            <div class="order-detail-label">Адрес доставки</div>
-            <div>${order.customer?.address || 'Не указан'}</div>
+            <div class="order-detail-label">${I18n.t('cabinet.delivery_address')}</div>
+            <div>${order.customer?.address || I18n.t('cabinet.not_specified')}</div>
           </div>
           <div class="order-detail">
-            <div class="order-detail-label">Телефон</div>
-            <div>${order.customer?.phone || 'Не указан'}</div>
+            <div class="order-detail-label">${I18n.t('cabinet.label_phone')}</div>
+            <div>${order.customer?.phone || I18n.t('cabinet.not_specified')}</div>
           </div>
         </div>
         
         <div class="order-items">
           <div class="order-item">
-            <span>Товары:</span>
-            <span>${itemsText || 'Нет данных'}</span>
+            <span>${I18n.t('cabinet.products_label')}:</span>
+            <span>${itemsText || I18n.t('cabinet.no_data')}</span>
           </div>
         </div>
         
         <div class="order-total">
-          Итого: ${order.totalPrice} ₽
+          ${I18n.t('cabinet.total_label')}: ${order.totalPrice} ${I18n.t('common.currency')}
         </div>
       </div>
     `;
@@ -197,14 +222,27 @@ function setupProfileEdit() {
         input.classList.toggle('enabled', isEditing);
       });
       
-      editBtn.textContent = isEditing ? 'Сохранить' : 'Редактировать';
+      editBtn.textContent = isEditing 
+        ? I18n.t('cabinet.save_btn') 
+        : I18n.t('cabinet.edit_btn');
       
       if (!isEditing) {
         // Здесь можно добавить сохранение на сервер
-        alert('Функция сохранения в разработке');
+        alert(I18n.t('cabinet.save_in_development'));
       }
     });
   }
+}
+
+// 🔥 Функция полного перерендера страницы
+async function rerenderCabinet() {
+  const session = checkAuth();
+  if (!session) return;
+  
+  await loadUserProfile(session);
+  const orders = await loadUserOrders(session.id);
+  renderNotifications(orders);
+  renderOrders(orders);
 }
 
 // Инициализация
@@ -228,5 +266,11 @@ async function init() {
   setupLogout();
   setupProfileEdit();
 }
+
+// 🔥 Перерендер при смене языка
+window.addEventListener('languageChanged', async () => {
+  console.log('🌐 Перерендер кабинета из-за смены языка');
+  await rerenderCabinet();
+});
 
 document.addEventListener('DOMContentLoaded', init);

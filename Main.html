@@ -7,9 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -22,23 +21,22 @@
       <img class="sidebar__logo" src="img/logo-sidebar.png" alt="AMI Logo"/>
     </div>
     <nav class="sidebar__nav">
-      <a href="Catalog.html" class="sidebar__nav-item sidebar__nav-item--active">КАТАЛОГ</a>
-      <a href="partners.html" class="sidebar__nav-item">ПАРТНЕРАМ</a>
-      <a href="blog.html" class="sidebar__nav-item">БЛОГ</a>
-      <a href="cabinet.html" class="sidebar__nav-item">ЛИЧНЫЙ КАБИНЕТ</a>
-      
+      <a href="Catalog.html" class="sidebar__nav-item sidebar__nav-item--active" data-i18n="nav.catalog">КАТАЛОГ</a>
+      <a href="partners.html" class="sidebar__nav-item" data-i18n="nav.partners">ПАРТНЕРАМ</a>
+      <a href="blog.html" class="sidebar__nav-item" data-i18n="nav.blog">БЛОГ</a>
+      <a href="cabinet.html" class="sidebar__nav-item" data-i18n="nav.cabinet">ЛИЧНЫЙ КАБИНЕТ</a>
     </nav>
-    
 
     <div class="sidebar__contacts">
-      <div class="sidebar__phone">+373 00000000</div>
-      <div class="sidebar__email">ami@mail.ru</div>
+      <div class="sidebar__phone" data-i18n="sidebar.phone">+375294857777</div>
+      <div class="sidebar__email" data-i18n="sidebar.email">ami@mail.ru</div>
     </div>
 
+    <!-- 🔥 ИЗМЕНЁННЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ (Ro → Be) -->
     <div class="sidebar__langs">
-      <span class="sidebar__lang sidebar__lang--inactive">En</span>
-      <span class="sidebar__lang sidebar__lang--active">Ru</span>
-      <span class="sidebar__lang sidebar__lang--inactive">Ro</span>
+      <span class="sidebar__lang sidebar__lang--inactive" data-lang="en">En</span>
+      <span class="sidebar__lang sidebar__lang--active" data-lang="ru">Ru</span>
+      <span class="sidebar__lang sidebar__lang--inactive" data-lang="be">Be</span>
     </div>
 
     <div class="sidebar__social">
@@ -47,7 +45,6 @@
       <img src="img/Partners/FB.png" alt="Facebook" width="24" height="24"/>
       <img src="img/Partners/VK.png" alt="VK" width="24" height="24"/>
     </div>
-
 
     <img class="sidebar__border" src="img/line-4.svg" alt=""/>
   </aside>
@@ -74,7 +71,7 @@
       <button class="hero__arrow hero__arrow--right" id="next">&#8250;</button>
 
       <div class="hero__cta">
-        <a href="Catalog.html" class="btn-orange">Каталог</a>
+        <a href="Catalog.html" class="btn-orange" data-i18n="home.catalog_btn">Каталог</a>
       </div>
 
       <div class="hero__dots">
@@ -86,133 +83,65 @@
     </section>
 
     <section class="photo-grid">
-  <!-- Row 1: 2 широкие -->
-  <div class="photo-grid__item"><img src="img/photo1.jpg" alt="Dolce Dimneata"></div>
-  <div class="photo-grid__item"><img src="img/photo2.jpg" alt="Natura"></div>
-  
-  <!-- Row 2: 2 маленькие слева -->
-  <div class="photo-grid__item"><img src="img/photo3.png" alt="DINO"></div>
-  <div class="photo-grid__item"><img src="img/photo4.png" alt="Champion"></div>
-  
-  <!-- Высокая справа (занимает ряды 2 и 3) -->
-  <div class="photo-grid__item"><img src="img/photo2.jpg" alt="Galaxy"></div>
-  
-  <!-- Row 3: 2 маленькие слева -->
-  <div class="photo-grid__item"><img src="img/photo3.png" alt="Hrust"></div>
-  <div class="photo-grid__item"><img src="img/photo7.png" alt="Energy"></div>
-</section>
-    
+      <div class="photo-grid__item"><img src="img/photo1.jpg" alt="Dolce Dimneata"></div>
+      <div class="photo-grid__item"><img src="img/photo2.jpg" alt="Natura"></div>
+      <div class="photo-grid__item"><img src="img/photo3.png" alt="DINO"></div>
+      <div class="photo-grid__item"><img src="img/photo4.png" alt="Champion"></div>
+      <div class="photo-grid__item"><img src="img/photo2.jpg" alt="Galaxy"></div>
+      <div class="photo-grid__item"><img src="img/photo3.png" alt="Hrust"></div>
+      <div class="photo-grid__item"><img src="img/photo7.png" alt="Energy"></div>
+    </section>
 
     <!-- TAGLINE -->
     <div class="tagline">
-      <h2>Мы самые вкусные</h2>
+      <h2 data-i18n="home.tagline">Мы самые вкусные</h2>
     </div>
 
     <!-- FEATURES 4 ROWS - 8 PHOTOS -->
-<section class="features">
-
-  <!-- Row 1 -->
-  <div class="feat feat--green-left">
-    <div class="feat__photo">
-      <img src="img/feature1.png" alt="Качественные ингредиенты" />
-    </div>
-    <div class="feat__photo">
-      <img src="img/feature2.jpg" alt="2" />
-    </div>
-  </div>
-
-  <!-- Row 2 -->
-  <div class="feat feat--photo-left">
-    <div class="feat__photo">
-      <img src="img/feature.jpg" alt="Фото 3" />
-    </div>
-    <div class="feat__photo">
-      <img src="img/feature4.png" alt="Необходимые минералы" />
-    </div>
-  </div>
-
-  <!-- Row 3 -->
-  <div class="feat feat--green-left">
-    <div class="feat__photo">
-      <img src="img/feature5.png" alt="Подходит для детей" />
-    </div>
-    <div class="feat__photo">
-      <img src="img/feature6.jpg" alt="Фото 6" />
-    </div>
-  </div>
-
-  <!-- Row 4 -->
-  <div class="feat feat--photo-left">
-    <div class="feat__photo">
-      <img src="img/feature7.jpg" alt="Фото 7" />
-    </div>
-    <div class="feat__photo">
-      <img src="img/feature8.png" alt="Особый рецепт" />
-    </div>
-  </div>
-
-</section>
+    <section class="features">
+      <div class="feat feat--green-left">
+        <div class="feat__photo"><img src="img/feature1.png" alt="Качественные ингредиенты" /></div>
+        <div class="feat__photo"><img src="img/feature2.jpg" alt="2" /></div>
+      </div>
+      <div class="feat feat--photo-left">
+        <div class="feat__photo"><img src="img/feature.jpg" alt="Фото 3" /></div>
+        <div class="feat__photo"><img src="img/feature4.png" alt="Необходимые минералы" /></div>
+      </div>
+      <div class="feat feat--green-left">
+        <div class="feat__photo"><img src="img/feature5.png" alt="Подходит для детей" /></div>
+        <div class="feat__photo"><img src="img/feature6.jpg" alt="Фото 6" /></div>
+      </div>
+      <div class="feat feat--photo-left">
+        <div class="feat__photo"><img src="img/feature7.jpg" alt="Фото 7" /></div>
+        <div class="feat__photo"><img src="img/feature8.png" alt="Особый рецепт" /></div>
+      </div>
+    </section>
 
     <!-- NAM DOVERYAYUT -->
     <div class="trust-title">
-      <h2>Нам доверяют</h2>
+      <h2 data-i18n="home.trust_title">Нам доверяют</h2>
     </div>
 
     <!-- PARTNERS 8 logos in 4×2 grid -->
     <section class="partners">
-  <!-- Row 1 -->
-  <div class="plogo">
-    <div class="plogo__wrap">
-      <img src="img/plogo_organicshop.jpg" alt="Логотип партнера 1">
-    </div>
-  </div>
-  <div class="plogo">
-    <div class="plogo__wrap">
-      <img src="img/plogo_greenhouse.png" alt="Логотип партнера 2">
-    </div>
-  </div>
-  <div class="plogo">
-    <div class="plogo__wrap plogo__bordered">
-      <img src="img/plogo_pure.jpg" alt="Логотип партнера 3">
-    </div>
-  </div>
-  <div class="plogo">
-    <div class="plogo__wrap">
-      <img src="img/plogo_organic2.jpg" alt="Логотип партнера 4">
-    </div>
-  </div>
+      <div class="plogo"><div class="plogo__wrap"><img src="img/plogo_organicshop.jpg" alt="Логотип партнера 1"></div></div>
+      <div class="plogo"><div class="plogo__wrap"><img src="img/plogo_greenhouse.png" alt="Логотип партнера 2"></div></div>
+      <div class="plogo"><div class="plogo__wrap plogo__bordered"><img src="img/plogo_pure.jpg" alt="Логотип партнера 3"></div></div>
+      <div class="plogo"><div class="plogo__wrap"><img src="img/plogo_organic2.jpg" alt="Логотип партнера 4"></div></div>
+      <div class="plogo"><div class="plogo__wrap"><img src="img/plogo_coffee.jpg" alt="Логотип партнера 5"></div></div>
+      <div class="plogo"><div class="plogo__wrap"><img src="img/plogo_mrcoffee.jpg" alt="Логотип партнера 6"></div></div>
+      <div class="plogo"><div class="plogo__wrap"><img src="img/plogo_organicshop.jpg" alt="Логотип партнера 7"></div></div>
+      <div class="plogo plogo--active"><div class="plogo__wrap"><img src="img/plogo_organicshop.jpg" alt="Логотип партнера 8"></div></div>
+    </section>
 
-  <!-- Row 2 -->
-  <div class="plogo">
-    <div class="plogo__wrap">
-      <img src="img/plogo_coffee.jpg" alt="Логотип партнера 5">
-    </div>
-  </div>
-  <div class="plogo">
-    <div class="plogo__wrap">
-      <img src="img/plogo_mrcoffee.jpg" alt="Логотип партнера 6">
-    </div>
-  </div>
-  <div class="plogo">
-    <div class="plogo__wrap">
-      <img src="img/plogo_organicshop.jpg" alt="Логотип партнера 7">
-    </div>
-  </div>
-  <div class="plogo plogo--active">
-    <div class="plogo__wrap">
-      <img src="img/plogo_organicshop.jpg" alt="Логотип партнера 8">
-    </div>
-  </div>
-</section>
-
-    <!-- INSTAGRAM 3×2 grid ~1229×662 -->
+    <!-- INSTAGRAM 3×2 grid -->
     <section class="igrid">
       <div class="igrid__cell igrid__cell--ami-orange">
         <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=420&h=330&fit=crop" alt="ami promo" />
         <div class="igrid__ami-badge">
           <div class="igrid__logo-sm">
             <span>ami</span>
-            <small>Prietenul tău dulce</small>
+            <small data-i18n="home.slogan">Prietenul tău dulce</small>
           </div>
           <div class="igrid__ami-tag">ami</div>
         </div>
@@ -236,75 +165,75 @@
       </div>
     </section>
 
-    <!-- FOOTER 1920×456 -->
+    <!-- FOOTER -->
     <footer class="footer">
-  <div class="footer__inner">
-    
-    <div class="footer__grid">
-      
-      <div class="footer__section">
-        <p class="footer__nav-heading">Карта сайта</p>
-        <img src="img/Partners/lineFooter.png" alt="" class="footer__nav-line"/>
-        <ul class="footer__nav-list">
-          <li><a href="Main.html" class="footer__nav-link">Каталог</a></li>
-          <li><a href="partners.html" class="footer__nav-link">Партнерам</a></li>
-          <li><a href="blog.html" class="footer__nav-link">Блог</a></li>
-          <li><a href="kids.html" class="footer__nav-link">For kids</a></li>
-          <li><a href="docs/catalog.pdf" class="footer__nav-link">Скачать каталог .pdf</a></li>
-        </ul>
-      </div>
+      <div class="footer__inner">
+        <div class="footer__grid">
+          
+          <div class="footer__section">
+            <p class="footer__nav-heading" data-i18n="footer.sitemap">Карта сайта</p>
+            <img src="img/Partners/lineFooter.png" alt="" class="footer__nav-line"/>
+            <ul class="footer__nav-list">
+              <li><a href="Catalog.html" class="footer__nav-link" data-i18n="nav.catalog">Каталог</a></li>
+              <li><a href="partners.html" class="footer__nav-link" data-i18n="nav.partners">Партнерам</a></li>
+              <li><a href="blog.html" class="footer__nav-link" data-i18n="nav.blog">Блог</a></li>
+              <li><a href="kids.html" class="footer__nav-link" data-i18n="nav.kids">For kids</a></li>
+              <li><a href="docs/catalog.pdf" class="footer__nav-link" data-i18n="catalog.download">Скачать каталог .pdf</a></li>
+            </ul>
+          </div>
 
-      <div class="footer__section">
-        <p class="footer__nav-heading">Контакты</p>
-        <img src="img/Partners/lineFooter.png" alt="" class="footer__nav-line"/>
-        <ul class="footer__contacts-list">
-          <li class="footer__contact">
-            <img src="img/Partners/phoneFooter.png" alt="" width="16" height="16"/>
-            <span>+373 00000000</span>
-          </li>
-          <li class="footer__contact">
-            <img src="img/Partners/emailFooter.png" alt="" width="16" height="16"/>
-            <span>ami@mail.ru</span>
-          </li>
-          <li class="footer__contact">
-            <img src="img/Partners/locationFooter.png" alt="" width="16" height="16"/>
-            <span>Могилёв, Габровская ул., 43</span>
-          </li>
-        </ul>
-      </div>
+          <div class="footer__section">
+            <p class="footer__nav-heading" data-i18n="footer.contacts">Контакты</p>
+            <img src="img/Partners/lineFooter.png" alt="" class="footer__nav-line"/>
+            <ul class="footer__contacts-list">
+              <li class="footer__contact">
+                <img src="img/Partners/phoneFooter.png" alt="" width="16" height="16"/>
+                <span data-i18n="sidebar.phone">+375294857777</span>
+              </li>
+              <li class="footer__contact">
+                <img src="img/Partners/emailFooter.png" alt="" width="16" height="16"/>
+                <span data-i18n="sidebar.email">ami@mail.ru</span>
+              </li>
+              <li class="footer__contact">
+                <img src="img/Partners/locationFooter.png" alt="" width="16" height="16"/>
+                <span data-i18n="footer.address">Могилёв, Габровская ул., 43</span>
+              </li>
+            </ul>
+          </div>
 
-      <div class="footer__map-col">
-        <div class="footer__map">
-          <iframe 
-            src="https://yandex.ru/map-widget/v1/?um=constructor%3A6757509e11c89f72b929f1887470bc56819d056937c31c8a47f025aea712c852&amp;source=constructor" 
-            width="100%" 
-            height="100%" 
-            frameborder="0" 
-            allowfullscreen="true">
-          </iframe>
+          <div class="footer__map-col">
+            <div class="footer__map">
+              <iframe 
+                src="https://yandex.ru/map-widget/v1/?um=constructor%3A6757509e11c89f72b929f1887470bc56819d056937c31c8a47f025aea712c852&amp;source=constructor" 
+                width="100%" 
+                height="100%" 
+                frameborder="0" 
+                allowfullscreen="true">
+              </iframe>
+            </div>
+          </div>
         </div>
+
+        <div class="footer__divider-wrap">
+          <img src="img/Partners/big-lineFooter.png" alt="" class="footer__divider"/>
+        </div>
+
+        <div class="footer__bottom-bar">
+          <p class="footer__copy-year" data-i18n="footer.year">AMI 2026</p>
+          <p class="footer__confidance" data-i18n="footer.privacy">Политика конфиденциальности</p>
+          <p class="footer__created" data-i18n="footer.created">Created by be-adv.com</p>
+          <img src="img/Partners/logo-sidebar.png" alt="" class="footer__corner-img"/>
+        </div>
+
       </div>
-    </div>
-
-    <div class="footer__divider-wrap">
-      <img src="img/Partners/big-lineFooter.png" alt="" class="footer__divider"/>
-    </div>
-
-    <div class="footer__bottom-bar">
-      <p class="footer__copy-year">AMI 2026</p>
-      <p class="footer__confidance">Политика конфиденциальности</p>
-      <p class="footer__created">Created by be-adv.com</p>
-      <img src="img/Partners/logo-sidebar.png" alt="" class="footer__corner-img"/>
-    </div>
-
-  </div>
-</footer>
+    </footer>
 
   </main>
 </div>
 
 <script src="js/main.js"></script>
-
+<!-- 🔥 ПОДКЛЮЧЕНИЕ МОДУЛЯ ИНТЕРНАЦИОНАЛИЗАЦИИ -->
+<script src="js/i18n.js"></script>
 
 </body>
 </html>

@@ -17,24 +17,31 @@
     <img class="sidebar__logo" src="img/logo-sidebar.png" alt="AMI Logo"/>
   </div>
   <nav class="sidebar__nav">
-    <a href="Main.html" class="sidebar__nav-item">ГЛАВНАЯ</a>
-    <a href="Catalog.html" class="sidebar__nav-item">КАТАЛОГ</a>
-    <a href="partners.html" class="sidebar__nav-item">ПАРТНЕРАМ</a>
-    <a href="Blog.html" class="sidebar__nav-item">БЛОГ</a>
-    <a href="cabinet.html" class="sidebar__nav-item sidebar__nav-item--active">ЛИЧНЫЙ КАБИНЕТ</a>
+    <a href="Main.html" class="sidebar__nav-item" data-i18n="nav.home">ГЛАВНАЯ</a>
+    <a href="Catalog.html" class="sidebar__nav-item" data-i18n="nav.catalog">КАТАЛОГ</a>
+    <a href="partners.html" class="sidebar__nav-item" data-i18n="nav.partners">ПАРТНЕРАМ</a>
+    <a href="Blog.html" class="sidebar__nav-item" data-i18n="nav.blog">БЛОГ</a>
+    <a href="cabinet.html" class="sidebar__nav-item sidebar__nav-item--active" data-i18n="nav.cabinet">ЛИЧНЫЙ КАБИНЕТ</a>
   </nav>
+  
+  <!-- 🔥 ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ -->
+  <div class="admin-langs" style="padding: 10px 20px; display: flex; gap: 10px; justify-content: center;">
+    <span class="sidebar__lang sidebar__lang--inactive" data-lang="en" style="cursor: pointer; padding: 6px 12px; border: 1px solid #ddd; border-radius: 4px;">En</span>
+    <span class="sidebar__lang sidebar__lang--active" data-lang="ru" style="cursor: pointer; padding: 6px 12px; border: 1px solid #E8593A; border-radius: 4px; background: #E8593A; color: #fff;">Ru</span>
+    <span class="sidebar__lang sidebar__lang--inactive" data-lang="be" style="cursor: pointer; padding: 6px 12px; border: 1px solid #ddd; border-radius: 4px;">Be</span>
+  </div>
   
   <div class="sidebar__auth">
     <div class="user-info-card">
       <div class="user-info__avatar">👤</div>
       <div class="user-info__body">
         <div class="user-info__name" id="cabinet-username">Загрузка...</div>
-        <div class="user-info__role" id="cabinet-userrole">Покупатель</div>
+        <div class="user-info__role" id="cabinet-userrole" data-i18n="cabinet.role_buyer">Покупатель</div>
         <div class="user-info__email" id="cabinet-useremail">...</div>
       </div>
     </div>
     <button class="logout-btn" id="logout-btn">
-      <span>🚪</span><span>Выйти</span>
+      <span>🚪</span><span data-i18n="cabinet.logout">Выйти</span>
     </button>
   </div>
   
@@ -43,11 +50,11 @@
 
 <!-- MAIN CONTENT -->
 <main class="cabinet-main">
-  <h1 class="cabinet-title">Личный кабинет</h1>
+  <h1 class="cabinet-title" data-i18n="cabinet.title">Личный кабинет</h1>
   
   <!-- Уведомления -->
   <section class="notifications-section">
-    <h2 class="section-title">🔔 Уведомления</h2>
+    <h2 class="section-title" data-i18n="cabinet.notifications">🔔 Уведомления</h2>
     <div id="notifications-list" class="notifications-list">
       <!-- Загружаются через JS -->
     </div>
@@ -55,7 +62,7 @@
   
   <!-- История заказов -->
   <section class="orders-section">
-    <h2 class="section-title">📦 Мои заказы</h2>
+    <h2 class="section-title" data-i18n="cabinet.orders">📦 Мои заказы</h2>
     <div id="orders-list" class="orders-list">
       <!-- Загружаются через JS -->
     </div>
@@ -63,10 +70,10 @@
   
   <!-- Настройки профиля -->
   <section class="profile-section">
-    <h2 class="section-title">⚙️ Настройки</h2>
+    <h2 class="section-title" data-i18n="cabinet.settings">⚙️ Настройки</h2>
     <div class="profile-card">
       <div class="profile-field">
-        <label>Имя</label>
+        <label data-i18n="cabinet.label_name">Имя</label>
         <input type="text" id="profile-name" disabled/>
       </div>
       <div class="profile-field">
@@ -74,18 +81,17 @@
         <input type="email" id="profile-email" disabled/>
       </div>
       <div class="profile-field">
-        <label>Телефон</label>
+        <label data-i18n="cabinet.label_phone">Телефон</label>
         <input type="tel" id="profile-phone" disabled/>
       </div>
-      <button class="profile-edit-btn" id="profile-edit-btn">Редактировать</button>
+      <button class="profile-edit-btn" id="profile-edit-btn" data-i18n="cabinet.edit_btn">Редактировать</button>
     </div>
   </section>
 </main>
 
-
-
 <script src="js/cabinet.js"></script>
-<!-- Подключение версии для слабовидящих -->
+<!-- 🔥 ПОДКЛЮЧЕНИЕ МОДУЛЯ ИНТЕРНАЦИОНАЛИЗАЦИИ -->
+<script src="js/i18n.js"></script>
 
 </body>
 </html>

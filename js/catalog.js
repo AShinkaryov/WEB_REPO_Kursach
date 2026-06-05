@@ -54,12 +54,18 @@ const CatalogApp = (() => {
       init();
     } catch (error) {
       console.error('❌ Error loading catalog:', error);
-      showToast('Ошибка загрузки каталога');
+      showToast(typeof I18n !== 'undefined' ? I18n.t('catalog.load_error') : 'Ошибка загрузки каталога');
     }
   }
 
   function init() {
     console.log('🚀 Catalog initialized');
+    
+    // 🔥 Переводим страницу при инициализации
+    if (typeof I18n !== 'undefined') {
+      I18n.translatePage();
+    }
+    
     if (isAdmin()) document.body.classList.add('admin-mode');
     showCurrentUserDebug();
     renderCategories();
@@ -125,10 +131,16 @@ const CatalogApp = (() => {
         });
       }
     }
-    renderFilterSection('filter-types', 'Тип', filters.types || []);
-    renderFilterSection('filter-weights', 'Вес', filters.weights || []);
-    renderFilterSection('filter-ingredients', 'Ингредиенты', filters.ingredients || []);
-    renderFilterSection('filter-packqty', 'Количество в упаковке', filters.packQty || []);
+    // 🔥 ПЕРЕВЕДЁННЫЕ названия фильтров
+    const tType = typeof I18n !== 'undefined' ? I18n.t('catalog.filter_type') : 'Тип';
+    const tWeight = typeof I18n !== 'undefined' ? I18n.t('catalog.filter_weight') : 'Вес';
+    const tIngredient = typeof I18n !== 'undefined' ? I18n.t('catalog.filter_ingredient') : 'Ингредиенты';
+    const tPackqty = typeof I18n !== 'undefined' ? I18n.t('catalog.filter_packqty') : 'Количество в упаковке';
+    
+    renderFilterSection('filter-types', tType, filters.types || []);
+    renderFilterSection('filter-weights', tWeight, filters.weights || []);
+    renderFilterSection('filter-ingredients', tIngredient, filters.ingredients || []);
+    renderFilterSection('filter-packqty', tPackqty, filters.packQty || []);
     document.querySelectorAll('.filter-checkbox input').forEach(checkbox => {
       checkbox.addEventListener('change', handleFilterChange);
     });
@@ -223,46 +235,60 @@ const CatalogApp = (() => {
 
   /* ── Render Products ────────────────────────────────────── */
   function renderProducts(products) {
-  const grid = document.getElementById('products-grid');
-  if (!grid) return;
-  if (products.length === 0) {
-    grid.innerHTML = '<p class="products-empty">Товары не найдены</p>';
-    return;
-  }
-  const adminMode = isAdmin();
-  const guestMode = isGuest();
-  
-  grid.innerHTML = products.map(product => {
-    const isFav = isInFavorites(product.id);
-    // 🔥 Экранируем кавычки в названии
-    const safeName = product.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const grid = document.getElementById('products-grid');
+    if (!grid) return;
+    if (products.length === 0) {
+      const emptyText = typeof I18n !== 'undefined' ? I18n.t('catalog.empty') : 'Товары не найдены';
+      grid.innerHTML = `<p class="products-empty">${emptyText}</p>`;
+      return;
+    }
+    const adminMode = isAdmin();
+    const guestMode = isGuest();
+    const currency = typeof I18n !== 'undefined' ? I18n.t('common.currency') : '₽';
     
-    return `
+    grid.innerHTML = products.map(product => {
+      const isFav = isInFavorites(product.id);
+      const safeName = product.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      
+      // 🔥 Переведённые тексты кнопок
+      let addBtnText = typeof I18n !== 'undefined' ? I18n.t('catalog.add_to_cart') : 'В корзину';
+      let addBtnTitle = '';
+      if (adminMode) {
+        addBtnText = typeof I18n !== 'undefined' ? I18n.t('catalog.view_mode') : '👁️ Просмотр';
+        addBtnTitle = typeof I18n !== 'undefined' ? I18n.t('catalog.view_only') : 'Только просмотр';
+      } else if (guestMode) {
+        addBtnText = typeof I18n !== 'undefined' ? I18n.t('catalog.login') : 'Войти';
+      }
+      
+      const adminModeText = typeof I18n !== 'undefined' ? I18n.t('catalog.admin_mode') : 'Режим админа';
+      const toFavText = typeof I18n !== 'undefined' ? I18n.t('catalog.to_favorites') : 'В избранное';
+      const qrLabelText = typeof I18n !== 'undefined' ? I18n.t('catalog.qr_code') : 'QR-код';
+      const qrTitleText = typeof I18n !== 'undefined' ? I18n.t('catalog.show_qr') : 'Показать QR-код';
+      
+      return `
     <article class="product-card" data-id="${product.id}">
-      ${adminMode ? '<div class="admin-view-badge">⚙️ Режим админа</div>' : ''}
+      ${adminMode ? `<div class="admin-view-badge">⚙️ ${adminModeText}</div>` : ''}
       <div class="product-card__image-wrap">
         <img class="product-card__img" src="${product.image}" alt="${product.name}" />
         
-        <!-- 🔥 Контейнер для кнопок поверх изображения -->
         <div class="product-card__actions-overlay">
           <button class="product-card__favorite ${isFav ? 'product-card__favorite--active' : ''} ${adminMode ? 'product-card__favorite--disabled' : ''}" 
                   data-product-id="${product.id}"
                   ${adminMode ? 'disabled' : ''}
-                  aria-label="В избранное"
-                  title="В избранное">
+                  aria-label="${toFavText}"
+                  title="${toFavText}">
             <svg viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" 
                  stroke="currentColor" stroke-width="1.5" width="18" height="18">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
             </svg>
           </button>
           
-          <!-- 🔥 КНОПКА QR-КОДА -->
           <button class="product-card__qr" 
                   data-product-id="${product.id}"
                   data-product-name="${safeName}"
                   data-product-price="${product.price}"
-                  aria-label="QR-код"
-                  title="Показать QR-код">
+                  aria-label="${qrLabelText}"
+                  title="${qrTitleText}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
               <rect x="3" y="3" width="7" height="7" rx="1"/>
               <rect x="14" y="3" width="7" height="7" rx="1"/>
@@ -284,78 +310,84 @@ const CatalogApp = (() => {
           <span class="product-card__pack">${product.packQty}</span>
         </div>
         <div class="product-card__footer">
-          <span class="product-card__price">${product.price} ₽</span>
+          <span class="product-card__price">${product.price} ${currency}</span>
           <button class="product-card__add ${adminMode ? 'product-card__add--admin' : ''} ${guestMode ? 'product-card__add--disabled' : ''}" 
                   data-id="${product.id}" 
                   data-name="${product.name}" 
                   data-price="${product.price}"
-                  ${adminMode ? 'title="Только просмотр"' : ''}>
-            ${adminMode ? '👁️ Просмотр' : (guestMode ? 'Войти' : 'В корзину')}
+                  ${adminMode ? `title="${addBtnTitle}"` : ''}>
+            ${addBtnText}
           </button>
         </div>
       </div>
     </article>`;
-  }).join('');
+    }).join('');
 
-  // Обработчики для корзины
-  if (!adminMode) {
-    grid.querySelectorAll('.product-card__add').forEach(btn => {
+    // Обработчики для корзины
+    if (!adminMode) {
+      grid.querySelectorAll('.product-card__add').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          const name = btn.dataset.name;
+          const price = parseFloat(btn.dataset.price);
+          addToCart(id, name, price);
+        });
+      });
+    }
+    
+    // Обработчики для избранного
+    grid.querySelectorAll('.product-card__favorite').forEach(btn => {
+      if (!adminMode) {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.productId;
+          toggleFavorite(id);
+        });
+      }
+    });
+    
+    // Обработчики для QR-кнопок
+    grid.querySelectorAll('.product-card__qr').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const id = btn.dataset.id;
-        const name = btn.dataset.name;
+        e.preventDefault();
+        const id = btn.dataset.productId;
+        const name = btn.dataset.productName;
         const price = parseFloat(btn.dataset.price);
-        addToCart(id, name, price);
+        console.log('📱 QR click:', id, name, price);
+        showQRCode(id, name, price);
       });
     });
   }
-  
-  // Обработчики для избранного
-  grid.querySelectorAll('.product-card__favorite').forEach(btn => {
-    if (!adminMode) {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const id = btn.dataset.productId;
-        toggleFavorite(id);
-      });
-    }
-  });
-  
-  // 🔥 Обработчики для QR-кнопок
-  grid.querySelectorAll('.product-card__qr').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      e.preventDefault();
-      const id = btn.dataset.productId;
-      const name = btn.dataset.productName;
-      const price = parseFloat(btn.dataset.price);
-      console.log('📱 QR click:', id, name, price);
-      showQRCode(id, name, price);
-    });
-  });
-}
 
   function renderRecommended() {
     const grid = document.getElementById('recommended-grid');
     if (!grid) return;
     const adminMode = isAdmin();
+    const currency = typeof I18n !== 'undefined' ? I18n.t('common.currency') : '₽';
     const recommended = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 4);
-    grid.innerHTML = recommended.map(product => `
+    grid.innerHTML = recommended.map(product => {
+      const viewText = typeof I18n !== 'undefined' ? I18n.t('catalog.view_mode') : '👁️ Просмотр';
+      const cartText = typeof I18n !== 'undefined' ? I18n.t('catalog.add_to_cart') : 'В корзину';
+      const viewOnlyText = typeof I18n !== 'undefined' ? I18n.t('catalog.view_only') : 'Только просмотр';
+      const btnText = adminMode ? viewText : cartText;
+      return `
       <article class="recommended-card" data-id="${product.id}">
         <img class="recommended-card__img" src="${product.image}" alt="${product.name}" />
         <div class="recommended-card__body">
           <h4 class="recommended-card__title">${product.name}</h4>
-          <p class="recommended-card__price">${product.price} ₽</p>
+          <p class="recommended-card__price">${product.price} ${currency}</p>
           <button class="recommended-card__add ${adminMode ? 'recommended-card__add--admin' : ''}" 
                   data-id="${product.id}" 
                   data-name="${product.name}" 
                   data-price="${product.price}"
-                  ${adminMode ? 'title="Только просмотр"' : ''}>
-            ${adminMode ? '👁️ Просмотр' : 'В корзину'}
+                  ${adminMode ? `title="${viewOnlyText}"` : ''}>
+            ${btnText}
           </button>
         </div>
-      </article>
-    `).join('');
+      </article>`;
+    }).join('');
     if (!adminMode) {
       grid.querySelectorAll('.recommended-card__add').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -377,18 +409,23 @@ const CatalogApp = (() => {
   }
 
   function addToCart(id, name, price) {
+    const adminNoCart = typeof I18n !== 'undefined' ? I18n.t('catalog.admin_no_cart') : '⚙️ Администраторы не могут добавлять товары в корзину';
+    const loginReq = typeof I18n !== 'undefined' ? I18n.t('catalog.login_required') : '⚠️ Для добавления в корзину необходимо войти!';
+    const notFound = typeof I18n !== 'undefined' ? I18n.t('catalog.product_not_found') : 'Ошибка: товар не найден';
+    const added = typeof I18n !== 'undefined' ? I18n.t('catalog.added_to_cart') : 'добавлен в корзину';
+    
     if (isAdmin()) {
-      showToast('⚙️ Администраторы не могут добавлять товары в корзину');
+      showToast(adminNoCart);
       return;
     }
     if (isGuest()) {
-      showToast('⚠️ Для добавления в корзину необходимо войти!');
+      showToast(loginReq);
       setTimeout(() => { window.location.href = 'login.html'; }, 2000);
       return;
     }
     const product = allProducts.find(p => String(p.id) === String(id));
     if (!product) {
-      showToast('Ошибка: товар не найден');
+      showToast(notFound);
       return;
     }
     const cartKey = getCartKey();
@@ -404,7 +441,7 @@ const CatalogApp = (() => {
     }
     localStorage.setItem(cartKey, JSON.stringify(cart));
     updateCartBadge();
-    showToast(`${name} добавлен в корзину`);
+    showToast(`${name} ${added}`);
   }
 
   function updateCartBadge() {
@@ -423,12 +460,17 @@ const CatalogApp = (() => {
   }
 
   function toggleFavorite(id) {
+    const adminNoFav = typeof I18n !== 'undefined' ? I18n.t('catalog.admin_no_favorites') : '⚙️ Администраторы не могут добавлять товары в избранное';
+    const loginReqFav = typeof I18n !== 'undefined' ? I18n.t('catalog.login_required_fav') : '⚠️ Для добавления в избранное необходимо войти!';
+    const addedFav = typeof I18n !== 'undefined' ? I18n.t('catalog.added_to_favorites') : 'Добавлено в избранное';
+    const removedFav = typeof I18n !== 'undefined' ? I18n.t('catalog.removed_from_favorites') : 'Удалено из избранного';
+    
     if (isAdmin()) {
-      showToast('⚙️ Администраторы не могут добавлять товары в избранное');
+      showToast(adminNoFav);
       return;
     }
     if (isGuest()) {
-      showToast('⚠️ Для добавления в избранное необходимо войти!');
+      showToast(loginReqFav);
       setTimeout(() => { window.location.href = 'login.html'; }, 2000);
       return;
     }
@@ -438,10 +480,10 @@ const CatalogApp = (() => {
     const index = favorites.findIndex(favId => String(favId) === idStr);
     if (index === -1) {
       favorites.push(id);
-      showToast('Добавлено в избранное');
+      showToast(addedFav);
     } else {
       favorites.splice(index, 1);
-      showToast('Удалено из избранного');
+      showToast(removedFav);
     }
     localStorage.setItem(favoritesKey, JSON.stringify(favorites));
     updateFavoritesBadge();
@@ -482,9 +524,14 @@ const CatalogApp = (() => {
 
   fetchData();
 
+  // 🔥 ЭКСПОРТИРУЕМ функции для перерендера при смене языка
   return {
     addToCart, updateCartBadge, toggleFavorite,
-    isInFavorites, updateFavoritesBadge, renderFavoritesSection
+    isInFavorites, updateFavoritesBadge, renderFavoritesSection,
+    renderFilters,
+    renderProducts,
+    renderRecommended,
+    getFilteredProducts
   };
 })();
 
@@ -504,30 +551,25 @@ function showQRCode(productId, productName, productPrice) {
   
   if (!modal || !qrContainer) {
     console.error('❌ QR modal elements not found!');
-    alert('Ошибка: модальное окно не найдено');
+    alert(typeof I18n !== 'undefined' ? I18n.t('catalog.qr_modal_error') : 'Ошибка: модальное окно не найдено');
     return;
   }
   
-  // Очищаем предыдущий QR-код
   qrContainer.innerHTML = '';
-  
-  // Сохраняем данные текущего товара
   currentQRProduct = { id: productId, name: productName, price: productPrice };
   
-  // Формируем ссылку на товар (для сканирования)
   const productUrl = `${window.location.origin}/catalog.html?product=${productId}`;
-  
   console.log('🔗 Generating QR for URL:', productUrl);
   
-  // Проверяем, загрузилась ли библиотека
   if (typeof QRCode === 'undefined') {
     console.error('❌ QRCode library not loaded!');
-    qrContainer.innerHTML = '<p style="color:#e74c3c; padding: 20px;">Ошибка загрузки библиотеки QR-кодов<br><small>Проверьте подключение к интернету</small></p>';
+    const libErr = typeof I18n !== 'undefined' ? I18n.t('catalog.qr_library_error') : 'Ошибка загрузки библиотеки QR-кодов';
+    const checkNet = typeof I18n !== 'undefined' ? I18n.t('catalog.check_internet') : 'Проверьте подключение к интернету';
+    qrContainer.innerHTML = `<p style="color:#e74c3c; padding: 20px;">${libErr}<br><small>${checkNet}</small></p>`;
     modal.classList.add('qr-modal--active');
     return;
   }
   
-  // Генерируем QR-код
   try {
     new QRCode(qrContainer, {
       text: productUrl,
@@ -537,18 +579,17 @@ function showQRCode(productId, productName, productPrice) {
       colorLight: "#ffffff",
       correctLevel: QRCode.CorrectLevel.H
     });
-    
     console.log('✅ QR code generated successfully');
   } catch (err) {
     console.error('❌ Error generating QR:', err);
-    qrContainer.innerHTML = '<p style="color:#e74c3c;">Ошибка генерации QR-кода</p>';
+    const genErr = typeof I18n !== 'undefined' ? I18n.t('catalog.qr_gen_error') : 'Ошибка генерации QR-кода';
+    qrContainer.innerHTML = `<p style="color:#e74c3c;">${genErr}</p>`;
   }
   
-  // Заполняем информацию
   nameEl.textContent = productName;
-  priceEl.textContent = `${productPrice} ₽`;
+  const currency = typeof I18n !== 'undefined' ? I18n.t('common.currency') : '₽';
+  priceEl.textContent = `${productPrice} ${currency}`;
   
-  // Показываем модальное окно
   modal.classList.add('qr-modal--active');
   console.log('✅ Modal opened');
 }
@@ -565,7 +606,7 @@ function closeQRModal() {
 function downloadQR() {
   const canvas = document.querySelector('#qrcode-container canvas');
   if (!canvas) {
-    alert('QR-код ещё не сгенерирован');
+    alert(typeof I18n !== 'undefined' ? I18n.t('catalog.qr_not_generated') : 'QR-код ещё не сгенерирован');
     return;
   }
   
@@ -583,16 +624,20 @@ function printQR() {
   const canvas = document.querySelector('#qrcode-container canvas');
   if (!canvas) return;
   
+  const currency = typeof I18n !== 'undefined' ? I18n.t('common.currency') : '₽';
+  const printTitle = typeof I18n !== 'undefined' ? I18n.t('catalog.qr_print_title') : 'QR-код товара AMI';
+  const scanHint = typeof I18n !== 'undefined' ? I18n.t('catalog.qr_scan_hint') : 'Отсканируйте код для перехода к товару';
+  
   const printWindow = window.open('', '', 'width=400,height=500');
   const productInfo = currentQRProduct 
     ? `<h2 style="font-family:Arial;color:#E8593A;">${currentQRProduct.name}</h2>
-       <p style="font-size:20px;font-weight:bold;color:#E8593A;">${currentQRProduct.price} ₽</p>`
+       <p style="font-size:20px;font-weight:bold;color:#E8593A;">${currentQRProduct.price} ${currency}</p>`
     : '';
   
   printWindow.document.write(`
     <html>
       <head>
-        <title>QR-код товара AMI</title>
+        <title>${printTitle}</title>
         <style>
           body { text-align: center; padding: 30px; font-family: Arial, sans-serif; }
           .label { border: 2px dashed #ccc; padding: 20px; display: inline-block; border-radius: 12px; }
@@ -603,7 +648,7 @@ function printQR() {
           <h1 style="color:#E8593A;margin:0 0 10px;">AMI</h1>
           ${productInfo}
           <img src="${canvas.toDataURL()}" style="width:220px;height:220px;margin:15px 0;"/>
-          <p style="color:#666;font-size:12px;">Отсканируйте код для перехода к товару</p>
+          <p style="color:#666;font-size:12px;">${scanHint}</p>
         </div>
       </body>
     </html>
@@ -634,3 +679,25 @@ window.addEventListener('load', () => {
   }
 });
 
+// 🔥 Перерендер каталога при смене языка
+window.addEventListener('languageChanged', () => {
+  console.log('🌐 Перерендер каталога из-за смены языка');
+  console.log('📍 Current language:', typeof I18n !== 'undefined' ? I18n.getLang() : 'unknown');
+  
+  // Переводим статические элементы
+  if (typeof I18n !== 'undefined') {
+    I18n.translatePage();
+    console.log('✅ I18n.translatePage() вызван');
+  }
+  
+  // 🔥 Перерендериваем динамические элементы через CatalogApp
+  if (typeof CatalogApp !== 'undefined') {
+    console.log('✅ CatalogApp найден, перерендериваем...');
+    CatalogApp.renderFilters();
+    CatalogApp.renderProducts(CatalogApp.getFilteredProducts());
+    CatalogApp.renderRecommended();
+    console.log('✅ Каталог перерендерён');
+  } else {
+    console.error('❌ CatalogApp не найден!');
+  }
+});

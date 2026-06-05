@@ -13,38 +13,45 @@
     <img src="img/logo-sidebar.png" alt="AMI"/>
   </div>
   <nav class="admin-nav">
-    <a href="#news" class="admin-nav-item active">📰 Новости</a>
-    <a href="#products" class="admin-nav-item">🛍️ Товары</a>
-    <a href="#orders" class="admin-nav-item">📦 Заказы</a>
-    <a href="#users" class="admin-nav-item">👥 Пользователи</a>
-    <a href="#stats" class="admin-nav-item">📊 Статистика</a>
-    <a href="#reviews" class="admin-nav-item">💬 Отзывы</a>
-    <a href="catalog.html" class="admin-nav-item">← На сайт</a>
+    <a href="#news" class="admin-nav-item active" data-i18n="admin.news">📰 Новости</a>
+    <a href="#products" class="admin-nav-item" data-i18n="admin.products">🛍️ Товары</a>
+    <a href="#orders" class="admin-nav-item" data-i18n="admin.orders">📦 Заказы</a>
+    <a href="#users" class="admin-nav-item" data-i18n="admin.users">👥 Пользователи</a>
+    <a href="#stats" class="admin-nav-item" data-i18n="admin.stats">📊 Статистика</a>
+    <a href="#reviews" class="admin-nav-item" data-i18n="admin.reviews">💬 Отзывы</a>
+    <a href="catalog.html" class="admin-nav-item" data-i18n="admin.on_site">← На сайт</a>
   </nav>
+  
+  <!-- 🔥 ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ -->
+  <div class="admin-langs" style="padding: 20px; display: flex; gap: 10px; justify-content: center;">
+    <span class="sidebar__lang sidebar__lang--inactive" data-lang="en" style="cursor: pointer; padding: 6px 12px; border: 1px solid #ddd; border-radius: 4px;">En</span>
+    <span class="sidebar__lang sidebar__lang--active" data-lang="ru" style="cursor: pointer; padding: 6px 12px; border: 1px solid #E8593A; border-radius: 4px; background: #E8593A; color: #fff;">Ru</span>
+    <span class="sidebar__lang sidebar__lang--inactive" data-lang="be" style="cursor: pointer; padding: 6px 12px; border: 1px solid #ddd; border-radius: 4px;">Be</span>
+  </div>
 </aside>
 
 <main class="admin-main">
   <header class="admin-header">
-    <h1 class="admin-title">Панель управления</h1>
+    <h1 class="admin-title" data-i18n="admin.title">Панель управления</h1>
     <div class="admin-user">
       <span id="admin-name">Администратор</span>
-      <button onclick="auth.logout()" class="admin-logout">Выйти</button>
+      <button onclick="auth.logout()" class="admin-logout" data-i18n="admin.logout">Выйти</button>
     </div>
   </header>
 
   <!-- News Section -->
   <section id="news-section" class="admin-section">
-    <h2 class="admin-section-title">Управление новостями</h2>
+    <h2 class="admin-section-title" data-i18n="admin.news_management">Управление новостями</h2>
     
     <div class="admin-form-card">
-      <h3>Добавить новость</h3>
+      <h3 data-i18n="admin.add_news">Добавить новость</h3>
       <form id="news-form" class="admin-form">
-        <input type="text" id="news-title" placeholder="Заголовок" required class="admin-input"/>
-        <textarea id="news-content" placeholder="Текст новости" rows="5" required class="admin-textarea"></textarea>
+        <input type="text" id="news-title" placeholder="Заголовок" required class="admin-input" data-i18n-placeholder="admin.news_title_placeholder"/>
+        <textarea id="news-content" placeholder="Текст новости" rows="5" required class="admin-textarea" data-i18n-placeholder="admin.news_content_placeholder"></textarea>
         <input type="date" id="news-date" required class="admin-input"/>
-        <input type="text" id="news-image" placeholder="URL изображения" class="admin-input"/>
+        <input type="text" id="news-image" placeholder="URL изображения" class="admin-input" data-i18n-placeholder="admin.news_image_placeholder"/>
         <div class="admin-form-actions">
-          <button type="submit" class="admin-btn admin-btn--primary">Добавить</button>
+          <button type="submit" class="admin-btn admin-btn--primary" data-i18n="admin.add">Добавить</button>
         </div>
       </form>
     </div>
@@ -54,20 +61,20 @@
 
   <!-- Products Section -->
   <section id="products-section" class="admin-section" style="display:none;">
-    <h2 class="admin-section-title">Управление товарами</h2>
+    <h2 class="admin-section-title" data-i18n="admin.products_management">Управление товарами</h2>
     
     <div class="admin-form-card">
-      <h3>Добавить товар</h3>
+      <h3 data-i18n="admin.add_product">Добавить товар</h3>
       <form id="product-form" class="admin-form">
-        <input type="text" id="product-name" placeholder="Название" required class="admin-input"/>
-        <input type="number" id="product-price" placeholder="Цена" required class="admin-input"/>
-        <input type="text" id="product-weight" placeholder="Вес" class="admin-input"/>
-        <input type="text" id="product-brand" placeholder="Бренд" class="admin-input"/>
-        <input type="text" id="product-category" placeholder="Категория" class="admin-input"/>
-        <input type="text" id="product-image" placeholder="URL изображения" class="admin-input"/>
-        <textarea id="product-desc" placeholder="Описание" rows="3" class="admin-textarea"></textarea>
+        <input type="text" id="product-name" placeholder="Название" required class="admin-input" data-i18n-placeholder="admin.product_name_placeholder"/>
+        <input type="number" id="product-price" placeholder="Цена" required class="admin-input" data-i18n-placeholder="admin.product_price_placeholder"/>
+        <input type="text" id="product-weight" placeholder="Вес" class="admin-input" data-i18n-placeholder="admin.product_weight_placeholder"/>
+        <input type="text" id="product-brand" placeholder="Бренд" class="admin-input" data-i18n-placeholder="admin.product_brand_placeholder"/>
+        <input type="text" id="product-category" placeholder="Категория" class="admin-input" data-i18n-placeholder="admin.product_category_placeholder"/>
+        <input type="text" id="product-image" placeholder="URL изображения" class="admin-input" data-i18n-placeholder="admin.product_image_placeholder"/>
+        <textarea id="product-desc" placeholder="Описание" rows="3" class="admin-textarea" data-i18n-placeholder="admin.product_desc_placeholder"></textarea>
         <div class="admin-form-actions">
-          <button type="submit" class="admin-btn admin-btn--primary">Добавить</button>
+          <button type="submit" class="admin-btn admin-btn--primary" data-i18n="admin.add">Добавить</button>
         </div>
       </form>
     </div>
@@ -77,76 +84,88 @@
 
   <!-- Orders Section -->
   <section id="orders-section" class="admin-section" style="display:none;">
-    <h2 class="admin-section-title">Заказы</h2>
+    <h2 class="admin-section-title" data-i18n="admin.orders">Заказы</h2>
     <div class="admin-list" id="orders-list"></div>
   </section>
 
   <!-- Users Section -->
   <section id="users-section" class="admin-section" style="display:none;">
-    <h2 class="admin-section-title">Пользователи</h2>
+    <h2 class="admin-section-title" data-i18n="admin.users">Пользователи</h2>
     <div class="admin-list" id="users-list"></div>
   </section>
 
   <!-- Statistics Section -->
   <section id="stats-section" class="admin-section" style="display:none;">
-    <h2 class="admin-section-title">📊 Статистика продаж</h2>
+    <h2 class="admin-section-title" data-i18n="admin.stats_title">📊 Статистика продаж</h2>
 
     <div class="stats-filters">
-      <label>Период:
+      <label data-i18n="admin.stats_period">Период:
         <select id="stats-period">
-          <option value="all">Всё время</option>
-          <option value="30" selected>Последние 30 дней</option>
-          <option value="7">Последние 7 дней</option>
-          <option value="90">Последние 3 месяца</option>
-          <option value="365">Последний год</option>
+          <option value="all" data-i18n="admin.stats_all_time">Всё время</option>
+          <option value="30" selected data-i18n="admin.stats_30_days">Последние 30 дней</option>
+          <option value="7" data-i18n="admin.stats_7_days">Последние 7 дней</option>
+          <option value="90" data-i18n="admin.stats_3_months">Последние 3 месяца</option>
+          <option value="365" data-i18n="admin.stats_year">Последний год</option>
         </select>
       </label>
-      <button id="stats-refresh-btn" class="admin-btn admin-btn--primary">🔄 Обновить</button>
+      <button id="stats-refresh-btn" class="admin-btn admin-btn--primary" data-i18n="admin.stats_refresh">🔄 Обновить</button>
     </div>
 
     <div class="stats-grid">
       <div class="stat-card">
         <span class="stat-icon">📦</span>
-        <span class="stat-label">Заказов</span>
+        <span class="stat-label" data-i18n="admin.stats_orders">Заказов</span>
         <span class="stat-value" id="stat-orders">0</span>
       </div>
       <div class="stat-card">
         <span class="stat-icon">💰</span>
-        <span class="stat-label">Выручка</span>
+        <span class="stat-label" data-i18n="admin.stats_revenue">Выручка</span>
         <span class="stat-value" id="stat-revenue">0 ₽</span>
       </div>
       <div class="stat-card">
         <span class="stat-icon">🍪</span>
-        <span class="stat-label">Товаров продано</span>
+        <span class="stat-label" data-i18n="admin.stats_items_sold">Товаров продано</span>
         <span class="stat-value" id="stat-items">0</span>
       </div>
       <div class="stat-card">
         <span class="stat-icon">👥</span>
-        <span class="stat-label">Покупателей</span>
+        <span class="stat-label" data-i18n="admin.stats_customers">Покупателей</span>
         <span class="stat-value" id="stat-users">0</span>
       </div>
       <div class="stat-card">
         <span class="stat-icon">📈</span>
-        <span class="stat-label">Средний чек</span>
+        <span class="stat-label" data-i18n="admin.stats_avg_check">Средний чек</span>
         <span class="stat-value" id="stat-avg">0 ₽</span>
       </div>
     </div>
 
     <div class="stats-table-wrapper">
-      <h3>🍪 Популярные товары</h3>
+      <h3 data-i18n="admin.stats_popular_products">🍪 Популярные товары</h3>
       <table class="admin-table" id="products-stats-table">
         <thead>
-          <tr><th>#</th><th>Название</th><th>Кол-во</th><th>Выручка</th><th>В заказах</th></tr>
+          <tr>
+            <th>#</th>
+            <th data-i18n="admin.stats_name">Название</th>
+            <th data-i18n="admin.stats_qty">Кол-во</th>
+            <th data-i18n="admin.stats_revenue">Выручка</th>
+            <th data-i18n="admin.stats_in_orders">В заказах</th>
+          </tr>
         </thead>
         <tbody></tbody>
       </table>
     </div>
 
     <div class="stats-table-wrapper">
-      <h3>👥 Покупатели</h3>
+      <h3 data-i18n="admin.stats_customers">👥 Покупатели</h3>
       <table class="admin-table" id="users-stats-table">
         <thead>
-          <tr><th>#</th><th>Имя / Email</th><th>Заказов</th><th>Сумма</th><th>Средний чек</th></tr>
+          <tr>
+            <th>#</th>
+            <th data-i18n="admin.stats_name_email">Имя / Email</th>
+            <th data-i18n="admin.stats_orders">Заказов</th>
+            <th data-i18n="admin.stats_sum">Сумма</th>
+            <th data-i18n="admin.stats_avg_check">Средний чек</th>
+          </tr>
         </thead>
         <tbody></tbody>
       </table>
@@ -155,13 +174,15 @@
 
   <!-- Reviews Section -->
   <section id="reviews-section" class="admin-section" style="display:none;">
-    <h2 class="admin-section-title">💬 Отзывы пользователей</h2>
+    <h2 class="admin-section-title" data-i18n="admin.reviews_title">💬 Отзывы пользователей</h2>
     <div class="admin-list" id="reviews-list"></div>
   </section>
 </main>
 
 <script src="js/auth.js"></script>
 <script src="js/admin.js"></script>
+<!-- 🔥 ПОДКЛЮЧЕНИЕ МОДУЛЯ ИНТЕРНАЦИОНАЛИЗАЦИИ -->
+<script src="js/i18n.js"></script>
 
 </body>
 </html>
