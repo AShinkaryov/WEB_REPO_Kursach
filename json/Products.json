@@ -48,6 +48,19 @@
       "password": "123456",
       "role": "user",
       "createdAt": "2026-06-04T13:28:58.657Z"
+    },
+    {
+      "id": "PWc-KuxBAjc",
+      "name": "Шинкарёв Алексей Алексадрович",
+      "firstName": "Шинкарёв",
+      "lastName": "Алексей Алексадрович",
+      "email": "ert@gmail.com",
+      "phone": "+375 (33) 618-34-94",
+      "birthdate": "2007-03-30",
+      "nickname": "FastBerry520",
+      "password": "LeXa_30032007",
+      "role": "user",
+      "createdAt": "2026-06-05T16:36:04.047Z"
     }
   ],
   "categories": [
