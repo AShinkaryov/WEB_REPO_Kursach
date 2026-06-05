@@ -926,3 +926,15 @@
   color: #fff;
   font-weight: 700;
 }
+
+/* Глобальные правила для всех страниц */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
