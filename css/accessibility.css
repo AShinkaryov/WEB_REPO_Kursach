@@ -1,0 +1,382 @@
+/* ════════════════════════════════════════════════════════════
+   ВЕРСИЯ ДЛЯ СЛАБОВИДЯЩИХ
+   ════════════════════════════════════════════════════════════ */
+
+/* ══ ПАНЕЛЬ НАСТРОЕК ══ */
+.accessibility-panel {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  width: 380px;
+  height: 100vh;
+  background: #fff;
+  box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+  z-index: 100000;
+  padding: 30px 25px;
+  overflow-y: auto;
+  transition: right 0.3s ease;
+  font-family: "Manrope", sans-serif;
+}
+
+.accessibility-panel.open {
+  right: 0;
+}
+
+.accessibility-panel__close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.accessibility-panel__close:hover {
+  background: #e0e0e0;
+}
+
+.accessibility-panel__title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #333;
+  padding-right: 40px;
+}
+
+.accessibility-panel__section {
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.accessibility-panel__section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.accessibility-panel__options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.accessibility-panel__option {
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.accessibility-panel__option:hover {
+  border-color: #E8593A;
+  background: #fff5f2;
+}
+
+.accessibility-panel__option.active {
+  border-color: #E8593A;
+  background: #fff5f2;
+  font-weight: 600;
+}
+
+.accessibility-panel__option-icon {
+  font-size: 18px;
+}
+
+/* Кнопка открытия панели */
+.accessibility-btn {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #4a90d9;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(74, 144, 217, 0.4);
+  z-index: 99999;
+  transition: all 0.3s ease;
+}
+
+.accessibility-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(74, 144, 217, 0.6);
+}
+
+/* ════════════════════════════════════════════════════════════
+   РЕЖИМ СЛАБОВИДЯЩИХ — БАЗОВЫЕ СТИЛИ
+   ════════════════════════════════════════════════════════════ */
+
+body.accessibility-mode {
+  /* Базовые настройки шрифта */
+  font-size: var(--acc-font-size, 16px) !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important;
+  text-align: left !important;
+}
+
+/* Ширина строки не более 80 знаков */
+body.accessibility-mode p,
+body.accessibility-mode li,
+body.accessibility-mode td,
+body.accessibility-mode th,
+body.accessibility-mode span,
+body.accessibility-mode div,
+body.accessibility-mode h1,
+body.accessibility-mode h2,
+body.accessibility-mode h3,
+body.accessibility-mode h4,
+body.accessibility-mode h5,
+body.accessibility-mode h6 {
+  max-width: 80ch !important;
+}
+
+/* Межстрочный интервал минимум 1.5x кегля */
+body.accessibility-mode p,
+body.accessibility-mode li {
+  line-height: 1.6 !important;
+  margin-bottom: 2em !important;
+}
+
+/* Отступы между абзацами минимум 2x кегль */
+body.accessibility-mode p + p,
+body.accessibility-mode p + div,
+body.accessibility-mode div + p {
+  margin-top: 2em !important;
+}
+
+/* Заголовки */
+body.accessibility-mode h1 {
+  font-size: calc(var(--acc-font-size, 16px) * 2) !important;
+  margin-bottom: 1em !important;
+}
+
+body.accessibility-mode h2 {
+  font-size: calc(var(--acc-font-size, 16px) * 1.75) !important;
+  margin-bottom: 0.8em !important;
+}
+
+body.accessibility-mode h3 {
+  font-size: calc(var(--acc-font-size, 16px) * 1.5) !important;
+  margin-bottom: 0.6em !important;
+}
+
+/* Ссылки */
+body.accessibility-mode a {
+  text-decoration: underline !important;
+  font-weight: 600 !important;
+}
+
+body.accessibility-mode a:focus {
+  outline: 3px solid #ffcc00 !important;
+  outline-offset: 2px !important;
+}
+
+/* Кнопки */
+body.accessibility-mode button,
+body.accessibility-mode .btn,
+body.accessibility-mode input[type="button"],
+body.accessibility-mode input[type="submit"] {
+  padding: 12px 24px !important;
+  font-size: calc(var(--acc-font-size, 16px) * 1.1) !important;
+  border: 2px solid currentColor !important;
+  min-height: 44px !important;
+}
+
+/* Формы */
+body.accessibility-mode input,
+body.accessibility-mode textarea,
+body.accessibility-mode select {
+  font-size: calc(var(--acc-font-size, 16px) * 1.1) !important;
+  padding: 12px !important;
+  border: 2px solid currentColor !important;
+}
+
+/* Таблицы */
+body.accessibility-mode table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+}
+
+body.accessibility-mode th,
+body.accessibility-mode td {
+  padding: 12px !important;
+  border: 1px solid currentColor !important;
+  text-align: left !important;
+}
+
+/* Изображения */
+body.accessibility-mode img {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+body.accessibility-mode img:not([alt]),
+body.accessibility-mode img[alt=""] {
+  border: 2px dashed currentColor !important;
+  padding: 10px !important;
+}
+
+body.accessibility-mode img[alt]:not([alt=""])::after {
+  content: " [Изображение: " attr(alt) "] ";
+  display: block;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 5px;
+}
+
+/* Скрытие изображений */
+body.accessibility-mode.images-off img,
+body.accessibility-mode.images-off picture,
+body.accessibility-mode.images-off svg:not(.accessibility-icon) {
+  display: none !important;
+}
+
+body.accessibility-mode.images-off img[alt]:not([alt=""])::before {
+  content: "️ " attr(alt);
+  display: block;
+  padding: 15px;
+  border: 2px dashed currentColor;
+  background: rgba(128, 128, 128, 0.1);
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ЦВЕТОВЫЕ СХЕМЫ
+   ════════════════════════════════════════════════════════════ */
+
+/* Схема 1: Чёрный фон, белый текст */
+body.accessibility-mode.color-scheme-1 {
+  --acc-bg: #000000;
+  --acc-text: #ffffff;
+  --acc-link: #ffff00;
+  --acc-border: #ffffff;
+}
+
+/* Схема 2: Чёрный фон, зелёный текст */
+body.accessibility-mode.color-scheme-2 {
+  --acc-bg: #000000;
+  --acc-text: #00ff00;
+  --acc-link: #00ffff;
+  --acc-border: #00ff00;
+}
+
+/* Схема 3: Белый фон, чёрный текст */
+body.accessibility-mode.color-scheme-3 {
+  --acc-bg: #ffffff;
+  --acc-text: #000000;
+  --acc-link: #0000ff;
+  --acc-border: #000000;
+}
+
+/* Схема 4: Бежевый фон, коричневый текст */
+body.accessibility-mode.color-scheme-4 {
+  --acc-bg: #f5f5dc;
+  --acc-text: #654321;
+  --acc-link: #8b4513;
+  --acc-border: #654321;
+}
+
+/* Схема 5: Голубой фон, тёмно-синий текст */
+body.accessibility-mode.color-scheme-5 {
+  --acc-bg: #add8e6;
+  --acc-text: #00008b;
+  --acc-link: #0000cd;
+  --acc-border: #00008b;
+}
+
+/* Применение цветовых схем */
+body.accessibility-mode {
+  background: var(--acc-bg) !important;
+  color: var(--acc-text) !important;
+}
+
+body.accessibility-mode * {
+  background-color: var(--acc-bg) !important;
+  color: var(--acc-text) !important;
+  border-color: var(--acc-border) !important;
+}
+
+body.accessibility-mode a {
+  color: var(--acc-link) !important;
+}
+
+body.accessibility-mode button,
+body.accessibility-mode input,
+body.accessibility-mode textarea,
+body.accessibility-mode select {
+  background: var(--acc-bg) !important;
+  color: var(--acc-text) !important;
+  border-color: var(--acc-border) !important;
+}
+
+/* Исключения для кнопок действий */
+body.accessibility-mode .admin-btn--primary,
+body.accessibility-mode .auth-btn,
+body.accessibility-mode .product-card__add {
+  background: var(--acc-text) !important;
+  color: var(--acc-bg) !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   РАЗМЕРЫ ШРИФТА
+   ════════════════════════════════════════════════════════════ */
+
+body.accessibility-mode.font-size-1 {
+  --acc-font-size: 16px;
+}
+
+body.accessibility-mode.font-size-2 {
+  --acc-font-size: 20px;
+}
+
+body.accessibility-mode.font-size-3 {
+  --acc-font-size: 24px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   АДАПТИВНОСТЬ
+   ════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .accessibility-panel {
+    width: 100%;
+    right: -100%;
+  }
+  
+  body.accessibility-mode {
+    font-size: calc(var(--acc-font-size, 16px) * 0.9) !important;
+  }
+}
+
+/* Печать */
+@media print {
+  .accessibility-panel,
+  .accessibility-btn {
+    display: none !important;
+  }
+}
