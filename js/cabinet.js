@@ -274,3 +274,29 @@ window.addEventListener('languageChanged', async () => {
 });
 
 document.addEventListener('DOMContentLoaded', init);
+
+
+/* 🔥 ФУНКЦИЯ СБРОСА НАСТРОЕК */
+function resetSettings() {
+    const confirmed = confirm(
+        "⚠️ Внимание!\n\n" +
+        "Вы уверены, что хотите сбросить все настройки?\n\n" +
+        "Будет удалено:\n" +
+        "• Язык интерфейса\n" +
+        "• Цветовая тема (темная/светлая)\n" +
+        "• Корзина и избранное\n" +
+        "• Сессия (вы разлогинитесь)\n\n" +
+        "Продолжить?"
+    );
+
+    if (confirmed) {
+        // 1. Полная очистка localStorage
+        localStorage.clear();
+
+        // 2. Уведомление
+        alert("✅ Настройки успешно сброшены. Перенаправление на страницу входа...");
+
+        // 3. Перенаправление на страницу входа
+        window.location.href = 'login.html';
+    }
+}

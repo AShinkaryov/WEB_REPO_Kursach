@@ -247,7 +247,7 @@ textarea {
 .admin-nav-item.active,
 .sidebar__nav-item--active {
   background: var(--accent-red);
-  color: #fff;
+  color: #ffffff;
 }
 
 /* Границы */

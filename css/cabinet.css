@@ -486,3 +486,53 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Стили для кнопки сброса настроек */
+.cabinet-settings-section {
+    margin-top: 40px;
+    padding: 24px;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.settings-title {
+    font-family: "Manrope", sans-serif;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.settings-desc {
+    font-family: "Manrope", sans-serif;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.btn-reset-storage {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: #e74c3c; /* Красный цвет */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: "Manrope", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-reset-storage:hover {
+    background: #c0392b; /* Темно-красный при наведении */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+
