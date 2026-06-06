@@ -1,3 +1,7 @@
+/**
+ * AMI Catalog Page — с пагинацией, фильтрами и интернационализацией
+ */
+
 const CatalogApp = (() => {
   let allProducts = [];
   let categories = [];
@@ -6,6 +10,10 @@ const CatalogApp = (() => {
   let activeFilters = {
     brands: [], types: [], weights: [], ingredients: [], packQty: []
   };
+  
+  // 📄 Переменные для пагинации
+  let currentPage = 1;
+  const ITEMS_PER_PAGE = 6;
 
   function isAdmin() {
     const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
@@ -51,6 +59,9 @@ const CatalogApp = (() => {
       categories = await categoriesRes.json();
       filters = await filtersRes.json();
       console.log('✅ Loaded products:', allProducts.length);
+      
+      // 📄 Инициализация пагинации
+      initPagination();
       init();
     } catch (error) {
       console.error('❌ Error loading catalog:', error);
@@ -61,7 +72,6 @@ const CatalogApp = (() => {
   function init() {
     console.log('🚀 Catalog initialized');
     
-    // 🔥 Переводим страницу при инициализации
     if (typeof I18n !== 'undefined') {
       I18n.translatePage();
     }
@@ -70,7 +80,7 @@ const CatalogApp = (() => {
     showCurrentUserDebug();
     renderCategories();
     renderFilters();
-    renderProducts(getFilteredProducts());
+    loadAndRenderProducts();
     renderRecommended();
     renderFavoritesSection();
     updateCartBadge();
@@ -82,6 +92,162 @@ const CatalogApp = (() => {
     if (window.auth && window.auth.updateUserInterface) {
       window.auth.updateUserInterface();
     }
+    
+    // 📄 Настраиваем делегирование событий
+    setupProductEvents();
+  }
+
+  /* ── 📄 ПАГИНАЦИЯ ────────────────────────────────────── */
+  function initPagination() {
+    renderPagination();
+  }
+
+  function renderPagination() {
+    const container = document.getElementById('pagination');
+    if (!container) return;
+    
+    const filtered = getFilteredProducts();
+    const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+    
+    if (totalPages <= 1) {
+      container.innerHTML = '';
+      container.style.display = 'none';
+      return;
+    }
+    
+    container.style.display = 'flex';
+    
+    let html = '';
+    
+    // Кнопка "Назад"
+    html += `
+      <button class="pagination__btn pagination__btn--arrow ${currentPage === 1 ? 'pagination__btn--disabled' : ''}" 
+              onclick="CatalogApp.goToPage(${currentPage - 1})" 
+              ${currentPage === 1 ? 'disabled' : ''}
+              aria-label="Предыдущая">
+        ‹
+      </button>
+    `;
+    
+    // Номера страниц
+    const pages = getVisiblePages(currentPage, totalPages);
+    pages.forEach(page => {
+      if (page === 'ellipsis') {
+        html += `<span class="pagination__btn pagination__btn--disabled">...</span>`;
+      } else {
+        const isActive = page === currentPage;
+        html += `
+          <button class="pagination__btn ${isActive ? 'pagination__btn--active' : ''}" 
+                  onclick="CatalogApp.goToPage(${page})"
+                  aria-label="Страница ${page}"
+                  ${isActive ? 'aria-current="page"' : ''}>
+            ${page}
+          </button>
+        `;
+      }
+    });
+    
+    // Кнопка "Вперед"
+    html += `
+      <button class="pagination__btn pagination__btn--arrow ${currentPage === totalPages ? 'pagination__btn--disabled' : ''}" 
+              onclick="CatalogApp.goToPage(${currentPage + 1})" 
+              ${currentPage === totalPages ? 'disabled' : ''}
+              aria-label="Следующая">
+        ›
+      </button>
+    `;
+    
+    // Информация
+    const start = (currentPage - 1) * ITEMS_PER_PAGE + 1;
+    const end = Math.min(currentPage * ITEMS_PER_PAGE, filtered.length);
+    html += `<span class="pagination__info">${start}–${end} из ${filtered.length}</span>`;
+    
+    container.innerHTML = html;
+  }
+
+  function getVisiblePages(current, total) {
+    const pages = [];
+    const delta = 2;
+    
+    for (let i = 1; i <= total; i++) {
+      if (i === 1 || i === total || (i >= current - delta && i <= current + delta)) {
+        pages.push(i);
+      } else if (pages[pages.length - 1] !== 'ellipsis') {
+        pages.push('ellipsis');
+      }
+    }
+    return pages;
+  }
+
+  function goToPage(page) {
+    const filtered = getFilteredProducts();
+    const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+    
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    
+    currentPage = page;
+    loadAndRenderProducts();
+    renderPagination();
+    
+    // Плавная прокрутка к началу каталога
+    const catalogBody = document.querySelector('.catalog-body');
+    if (catalogBody) {
+      catalogBody.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function loadAndRenderProducts() {
+    const filtered = getFilteredProducts();
+    
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const end = start + ITEMS_PER_PAGE;
+    const paginated = filtered.slice(start, end);
+    
+    renderProducts(paginated);
+    renderPagination();
+  }
+
+  /* ── 🔥 ДЕЛЕГИРОВАНИЕ СОБЫТИЙ ─────────────────────────── */
+  function setupProductEvents() {
+    const grid = document.getElementById('products-grid');
+    if (!grid) return;
+    
+    const adminMode = isAdmin();
+    
+    // ОДИН обработчик на весь grid
+    grid.addEventListener('click', (e) => {
+      // КОРЗИНА
+      const addToCartBtn = e.target.closest('.product-card__add');
+      if (addToCartBtn && !adminMode) {
+        e.stopPropagation();
+        const id = addToCartBtn.dataset.id;
+        const name = addToCartBtn.dataset.name;
+        const price = parseFloat(addToCartBtn.dataset.price);
+        addToCart(id, name, price);
+        return;
+      }
+      
+      // ИЗБРАННОЕ
+      const favBtn = e.target.closest('.product-card__favorite');
+      if (favBtn && !adminMode) {
+        e.stopPropagation();
+        const id = favBtn.dataset.productId;
+        toggleFavorite(id);
+        return;
+      }
+      
+      // QR-КОД
+      const qrBtn = e.target.closest('.product-card__qr');
+      if (qrBtn) {
+        e.stopPropagation();
+        e.preventDefault();
+        const id = qrBtn.dataset.productId;
+        const name = qrBtn.dataset.productName;
+        const price = parseFloat(qrBtn.dataset.price);
+        showQRCode(id, name, price);
+        return;
+      }
+    });
   }
 
   function renderCategories() {
@@ -99,7 +265,8 @@ const CatalogApp = (() => {
         tabsContainer.querySelectorAll('.catalog-tab').forEach(t => {
           t.classList.toggle('catalog-tab--active', t.dataset.category === activeCategory);
         });
-        renderProducts(getFilteredProducts());
+        currentPage = 1; // 📄 Сброс на 1 страницу
+        loadAndRenderProducts();
       });
     });
   }
@@ -131,7 +298,6 @@ const CatalogApp = (() => {
         });
       }
     }
-    // 🔥 ПЕРЕВЕДЁННЫЕ названия фильтров
     const tType = typeof I18n !== 'undefined' ? I18n.t('catalog.filter_type') : 'Тип';
     const tWeight = typeof I18n !== 'undefined' ? I18n.t('catalog.filter_weight') : 'Вес';
     const tIngredient = typeof I18n !== 'undefined' ? I18n.t('catalog.filter_ingredient') : 'Ингредиенты';
@@ -148,7 +314,7 @@ const CatalogApp = (() => {
 
   function renderFilterSection(containerId, title, items) {
     const container = document.getElementById(containerId);
-    if (!container || !items.length) return;
+    if (!container || !items || items.length === 0) return;
     container.innerHTML = `
       <div class="filter-section__head">
         <span>${title}</span>
@@ -189,12 +355,14 @@ const CatalogApp = (() => {
     } else {
       activeFilters[filterType] = activeFilters[filterType].filter(v => v !== value);
     }
+    currentPage = 1; // 📄 Сброс на 1 страницу
     renderActiveFilters();
-    renderProducts(getFilteredProducts());
+    loadAndRenderProducts();
   }
 
   function getFilteredProducts() {
     return allProducts.filter(product => {
+      if (!product) return false;
       if (activeCategory !== 'all' && product.category !== activeCategory) return false;
       if (activeFilters.brands.length && !activeFilters.brands.includes(product.brand)) return false;
       if (activeFilters.types.length && !activeFilters.types.includes(product.type)) return false;
@@ -227,8 +395,9 @@ const CatalogApp = (() => {
         activeFilters[type] = activeFilters[type].filter(v => v !== value);
         const checkbox = document.querySelector(`input[data-filter-type="${type}"][value="${value}"]`);
         if (checkbox) checkbox.checked = false;
+        currentPage = 1; // 📄 Сброс на 1 страницу
         renderActiveFilters();
-        renderProducts(getFilteredProducts());
+        loadAndRenderProducts();
       });
     });
   }
@@ -237,25 +406,31 @@ const CatalogApp = (() => {
   function renderProducts(products) {
     const grid = document.getElementById('products-grid');
     if (!grid) return;
+    
     if (products.length === 0) {
       const emptyText = typeof I18n !== 'undefined' ? I18n.t('catalog.empty') : 'Товары не найдены';
       grid.innerHTML = `<p class="products-empty">${emptyText}</p>`;
       return;
     }
+    
     const adminMode = isAdmin();
     const guestMode = isGuest();
     const currency = typeof I18n !== 'undefined' ? I18n.t('common.currency') : '₽';
     
     grid.innerHTML = products.map(product => {
-      const isFav = isInFavorites(product.id);
-      const safeName = product.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      if (!product || !product.name) return '';
       
-      // 🔥 Переведённые тексты кнопок
+      const isFav = isInFavorites(product.id);
+      const safeName = (product.name || 'Без названия').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const safeBrand = product.brand || '';
+      const safePackQty = product.packQty || '';
+      const safeWeight = product.weight || '';
+      const safePrice = typeof product.price === 'number' ? product.price : 0;
+      const safeImage = product.image || '';
+      
       let addBtnText = typeof I18n !== 'undefined' ? I18n.t('catalog.add_to_cart') : 'В корзину';
-      let addBtnTitle = '';
       if (adminMode) {
         addBtnText = typeof I18n !== 'undefined' ? I18n.t('catalog.view_mode') : '👁️ Просмотр';
-        addBtnTitle = typeof I18n !== 'undefined' ? I18n.t('catalog.view_only') : 'Только просмотр';
       } else if (guestMode) {
         addBtnText = typeof I18n !== 'undefined' ? I18n.t('catalog.login') : 'Войти';
       }
@@ -263,20 +438,21 @@ const CatalogApp = (() => {
       const adminModeText = typeof I18n !== 'undefined' ? I18n.t('catalog.admin_mode') : 'Режим админа';
       const toFavText = typeof I18n !== 'undefined' ? I18n.t('catalog.to_favorites') : 'В избранное';
       const qrLabelText = typeof I18n !== 'undefined' ? I18n.t('catalog.qr_code') : 'QR-код';
-      const qrTitleText = typeof I18n !== 'undefined' ? I18n.t('catalog.show_qr') : 'Показать QR-код';
       
       return `
     <article class="product-card" data-id="${product.id}">
       ${adminMode ? `<div class="admin-view-badge">⚙️ ${adminModeText}</div>` : ''}
       <div class="product-card__image-wrap">
-        <img class="product-card__img" src="${product.image}" alt="${product.name}" />
+        <img class="product-card__img" src="${safeImage}" alt="${safeName}" 
+             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22157%22 height=%22132%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22157%22 height=%22132%22/%3E%3C/svg%3E'"/>
         
         <div class="product-card__actions-overlay">
           <button class="product-card__favorite ${isFav ? 'product-card__favorite--active' : ''} ${adminMode ? 'product-card__favorite--disabled' : ''}" 
                   data-product-id="${product.id}"
                   ${adminMode ? 'disabled' : ''}
                   aria-label="${toFavText}"
-                  title="${toFavText}">
+                  title="${toFavText}"
+                  type="button">
             <svg viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" 
                  stroke="currentColor" stroke-width="1.5" width="18" height="18">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
@@ -286,9 +462,10 @@ const CatalogApp = (() => {
           <button class="product-card__qr" 
                   data-product-id="${product.id}"
                   data-product-name="${safeName}"
-                  data-product-price="${product.price}"
+                  data-product-price="${safePrice}"
                   aria-label="${qrLabelText}"
-                  title="${qrTitleText}">
+                  title="${qrLabelText}"
+                  type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
               <rect x="3" y="3" width="7" height="7" rx="1"/>
               <rect x="14" y="3" width="7" height="7" rx="1"/>
@@ -303,62 +480,27 @@ const CatalogApp = (() => {
       </div>
       
       <div class="product-card__body">
-        <h3 class="product-card__title">${product.name}</h3>
-        <p class="product-card__weight">${product.weight}</p>
+        <h3 class="product-card__title">${safeName}</h3>
+        <p class="product-card__weight">${safeWeight}</p>
         <div class="product-card__meta">
-          <span class="product-card__brand">${product.brand}</span>
-          <span class="product-card__pack">${product.packQty}</span>
+          <span class="product-card__brand">${safeBrand}</span>
+          <span class="product-card__pack">${safePackQty}</span>
         </div>
         <div class="product-card__footer">
-          <span class="product-card__price">${product.price} ${currency}</span>
+          <span class="product-card__price">${safePrice} ${currency}</span>
           <button class="product-card__add ${adminMode ? 'product-card__add--admin' : ''} ${guestMode ? 'product-card__add--disabled' : ''}" 
                   data-id="${product.id}" 
-                  data-name="${product.name}" 
-                  data-price="${product.price}"
-                  ${adminMode ? `title="${addBtnTitle}"` : ''}>
+                  data-name="${safeName}" 
+                  data-price="${safePrice}"
+                  type="button">
             ${addBtnText}
           </button>
         </div>
       </div>
     </article>`;
-    }).join('');
+    }).filter(Boolean).join('');
 
-    // Обработчики для корзины
-    if (!adminMode) {
-      grid.querySelectorAll('.product-card__add').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const id = btn.dataset.id;
-          const name = btn.dataset.name;
-          const price = parseFloat(btn.dataset.price);
-          addToCart(id, name, price);
-        });
-      });
-    }
-    
-    // Обработчики для избранного
-    grid.querySelectorAll('.product-card__favorite').forEach(btn => {
-      if (!adminMode) {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const id = btn.dataset.productId;
-          toggleFavorite(id);
-        });
-      }
-    });
-    
-    // Обработчики для QR-кнопок
-    grid.querySelectorAll('.product-card__qr').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        const id = btn.dataset.productId;
-        const name = btn.dataset.productName;
-        const price = parseFloat(btn.dataset.price);
-        console.log('📱 QR click:', id, name, price);
-        showQRCode(id, name, price);
-      });
-    });
+    // 📄 Обработчики через делегирование в setupProductEvents()
   }
 
   function renderRecommended() {
@@ -368,35 +510,41 @@ const CatalogApp = (() => {
     const currency = typeof I18n !== 'undefined' ? I18n.t('common.currency') : '₽';
     const recommended = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 4);
     grid.innerHTML = recommended.map(product => {
+      if (!product) return '';
       const viewText = typeof I18n !== 'undefined' ? I18n.t('catalog.view_mode') : '👁️ Просмотр';
       const cartText = typeof I18n !== 'undefined' ? I18n.t('catalog.add_to_cart') : 'В корзину';
       const viewOnlyText = typeof I18n !== 'undefined' ? I18n.t('catalog.view_only') : 'Только просмотр';
       const btnText = adminMode ? viewText : cartText;
+      const safeName = (product.name || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const safePrice = typeof product.price === 'number' ? product.price : 0;
       return `
       <article class="recommended-card" data-id="${product.id}">
-        <img class="recommended-card__img" src="${product.image}" alt="${product.name}" />
+        <img class="recommended-card__img" src="${product.image || ''}" alt="${safeName}" 
+             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22157%22 height=%22132%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22157%22 height=%22132%22/%3E%3C/svg%3E'"/>
         <div class="recommended-card__body">
-          <h4 class="recommended-card__title">${product.name}</h4>
-          <p class="recommended-card__price">${product.price} ${currency}</p>
+          <h4 class="recommended-card__title">${safeName}</h4>
+          <p class="recommended-card__price">${safePrice} ${currency}</p>
           <button class="recommended-card__add ${adminMode ? 'recommended-card__add--admin' : ''}" 
                   data-id="${product.id}" 
-                  data-name="${product.name}" 
-                  data-price="${product.price}"
-                  ${adminMode ? `title="${viewOnlyText}"` : ''}>
+                  data-name="${safeName}" 
+                  data-price="${safePrice}"
+                  type="button">
             ${btnText}
           </button>
         </div>
       </article>`;
-    }).join('');
+    }).filter(Boolean).join('');
+    
     if (!adminMode) {
-      grid.querySelectorAll('.recommended-card__add').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+      grid.addEventListener('click', (e) => {
+        const btn = e.target.closest('.recommended-card__add');
+        if (btn) {
           e.stopPropagation();
           const id = btn.dataset.id;
           const name = btn.dataset.name;
           const price = parseFloat(btn.dataset.price);
           addToCart(id, name, price);
-        });
+        }
       });
     }
   }
@@ -441,7 +589,7 @@ const CatalogApp = (() => {
     }
     localStorage.setItem(cartKey, JSON.stringify(cart));
     updateCartBadge();
-    showToast(`${name} ${added}`);
+    showToast(`${name || 'Товар'} ${added}`);
   }
 
   function updateCartBadge() {
@@ -488,7 +636,7 @@ const CatalogApp = (() => {
     localStorage.setItem(favoritesKey, JSON.stringify(favorites));
     updateFavoritesBadge();
     if (allProducts.length > 0) {
-      renderProducts(getFilteredProducts());
+      loadAndRenderProducts();
       renderRecommended();
       renderFavoritesSection();
     }
@@ -524,14 +672,15 @@ const CatalogApp = (() => {
 
   fetchData();
 
-  // 🔥 ЭКСПОРТИРУЕМ функции для перерендера при смене языка
   return {
     addToCart, updateCartBadge, toggleFavorite,
     isInFavorites, updateFavoritesBadge, renderFavoritesSection,
     renderFilters,
     renderProducts,
     renderRecommended,
-    getFilteredProducts
+    getFilteredProducts,
+    goToPage,
+    loadAndRenderProducts
   };
 })();
 
@@ -556,7 +705,7 @@ function showQRCode(productId, productName, productPrice) {
   }
   
   qrContainer.innerHTML = '';
-  currentQRProduct = { id: productId, name: productName, price: productPrice };
+  currentQRProduct = { id: productId, name: productName || '', price: productPrice || 0 };
   
   const productUrl = `${window.location.origin}/catalog.html?product=${productId}`;
   console.log('🔗 Generating QR for URL:', productUrl);
@@ -586,9 +735,9 @@ function showQRCode(productId, productName, productPrice) {
     qrContainer.innerHTML = `<p style="color:#e74c3c;">${genErr}</p>`;
   }
   
-  nameEl.textContent = productName;
+  nameEl.textContent = productName || '';
   const currency = typeof I18n !== 'undefined' ? I18n.t('common.currency') : '₽';
-  priceEl.textContent = `${productPrice} ${currency}`;
+  priceEl.textContent = `${productPrice || 0} ${currency}`;
   
   modal.classList.add('qr-modal--active');
   console.log('✅ Modal opened');
@@ -612,7 +761,7 @@ function downloadQR() {
   
   const link = document.createElement('a');
   const fileName = currentQRProduct 
-    ? `qr-ami-${currentQRProduct.id}-${currentQRProduct.name.replace(/\s+/g, '_')}.png`
+    ? `qr-ami-${currentQRProduct.id}-${(currentQRProduct.name || 'product').replace(/\s+/g, '_')}.png`
     : `qr-product-${Date.now()}.png`;
   link.download = fileName;
   link.href = canvas.toDataURL('image/png');
@@ -630,8 +779,8 @@ function printQR() {
   
   const printWindow = window.open('', '', 'width=400,height=500');
   const productInfo = currentQRProduct 
-    ? `<h2 style="font-family:Arial;color:#E8593A;">${currentQRProduct.name}</h2>
-       <p style="font-size:20px;font-weight:bold;color:#E8593A;">${currentQRProduct.price} ${currency}</p>`
+    ? `<h2 style="font-family:Arial;color:#E8593A;">${currentQRProduct.name || ''}</h2>
+       <p style="font-size:20px;font-weight:bold;color:#E8593A;">${currentQRProduct.price || 0} ${currency}</p>`
     : '';
   
   printWindow.document.write(`
@@ -660,7 +809,6 @@ function printQR() {
   }, 300);
 }
 
-// Закрытие модального окна по клику на фон или Escape
 document.addEventListener('click', (e) => {
   const modal = document.getElementById('qr-modal');
   if (e.target === modal) closeQRModal();
@@ -670,7 +818,6 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeQRModal();
 });
 
-// Проверка загрузки библиотеки при старте
 window.addEventListener('load', () => {
   if (typeof QRCode !== 'undefined') {
     console.log('✅ QRCode library loaded successfully');
@@ -684,17 +831,15 @@ window.addEventListener('languageChanged', () => {
   console.log('🌐 Перерендер каталога из-за смены языка');
   console.log('📍 Current language:', typeof I18n !== 'undefined' ? I18n.getLang() : 'unknown');
   
-  // Переводим статические элементы
   if (typeof I18n !== 'undefined') {
     I18n.translatePage();
     console.log('✅ I18n.translatePage() вызван');
   }
   
-  // 🔥 Перерендериваем динамические элементы через CatalogApp
   if (typeof CatalogApp !== 'undefined') {
     console.log('✅ CatalogApp найден, перерендериваем...');
     CatalogApp.renderFilters();
-    CatalogApp.renderProducts(CatalogApp.getFilteredProducts());
+    CatalogApp.loadAndRenderProducts();
     CatalogApp.renderRecommended();
     console.log('✅ Каталог перерендерён');
   } else {
