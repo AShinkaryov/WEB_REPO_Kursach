@@ -35,6 +35,13 @@
 
 <main class="admin-main">
   <header class="admin-header">
+    <!-- 🔥 КНОПКА БУРГЕР-МЕНЮ -->
+    <button class="admin-burger" id="admin-burger" type="button" aria-label="Открыть меню">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
     <h1 class="admin-title" data-i18n="admin.title">Панель управления</h1>
     <div class="admin-user">
       <span id="admin-name">Администратор</span>
@@ -182,9 +189,12 @@
   </section>
 </main>
 
+<!-- 🔥 ОВЕРЛЕЙ ДЛЯ ЗАТЕМНЕНИЯ ФОНА ПРИ ОТКРЫТОМ МЕНЮ -->
+<div class="admin-overlay" id="admin-overlay"></div>
+
+<!-- 🔥 СКРИПТЫ -->
 <script src="js/auth.js"></script>
 <script src="js/admin.js"></script>
-<!-- 🔥 ПОДКЛЮЧЕНИЕ МОДУЛЯ ИНТЕРНАЦИОНАЛИЗАЦИИ -->
 <script src="js/i18n.js"></script>
 <script src="js/theme.js"></script>
 <script src="js/accessibility.js"></script>

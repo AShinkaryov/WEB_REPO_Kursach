@@ -728,3 +728,38 @@ window.adminPanel = {
   markReviewAsRead,
   deleteReview
 };
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const burger = document.getElementById('admin-burger');
+  const sidebar = document.querySelector('.admin-sidebar');
+  const overlay = document.getElementById('admin-overlay');
+
+  if (burger && sidebar) {
+    // Открытие/закрытие по клику на бургер
+    burger.addEventListener('click', () => {
+      sidebar.classList.toggle('admin-sidebar--open');
+      burger.classList.toggle('active');
+      overlay.classList.toggle('active');
+    });
+
+    // Закрытие по клику на затемнённый фон
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('admin-sidebar--open');
+      burger.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+
+    // Закрытие при клике на пункт меню (опционально, для удобства)
+    sidebar.querySelectorAll('.admin-nav-item').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 1000) {
+          sidebar.classList.remove('admin-sidebar--open');
+          burger.classList.remove('active');
+          overlay.classList.remove('active');
+        }
+      });
+    });
+  }
+});
