@@ -328,6 +328,14 @@ const I18n = (() => {
 'auth.login_link': 'Войти',
 'auth.role_user': 'Покупатель',
 'auth.role_admin': 'Администратор',
+'cabinet.order_prefix': 'Заказ №',
+'cabinet.order_date': 'Дата заказа:',
+'cabinet.delivery_address': 'Адрес доставки:',
+'cabinet.products_label': 'Товары:',
+'cabinet.total_label': 'Итого',
+'cabinet.status_sent': 'Отправлен',
+'cabinet.status_cancelled': 'Отменён',
+'cabinet.status_delivered': 'Доставлен',
     },
     
     en: {
@@ -652,6 +660,14 @@ const I18n = (() => {
 'auth.login_link': 'Login',
 'auth.role_user': 'Customer',
 'auth.role_admin': 'Administrator',
+'cabinet.order_prefix': 'Order #',
+'cabinet.order_date': 'Order Date:',
+'cabinet.delivery_address': 'Delivery Address:',
+'cabinet.products_label': 'Products:',
+'cabinet.total_label': 'Total',
+'cabinet.status_sent': 'Sent',
+'cabinet.status_cancelled': 'Cancelled',
+'cabinet.status_delivered': 'Delivered',
     },
     
     be: {
@@ -977,6 +993,14 @@ const I18n = (() => {
 'auth.login_link': 'Увайсці',
 'auth.role_user': 'Пакупнік',
 'auth.role_admin': 'Адміністратар',
+'cabinet.order_prefix': 'Заказ №',
+'cabinet.order_date': 'Дата замовы:',
+'cabinet.delivery_address': 'Адрас дастаўкі:',
+'cabinet.products_label': 'Тавары:',
+'cabinet.total_label': 'Усяго',
+'cabinet.status_sent': 'Адпраўлены',
+'cabinet.status_cancelled': 'Адменены',
+'cabinet.status_delivered': 'Дастаўлены',
     }
   };
   
