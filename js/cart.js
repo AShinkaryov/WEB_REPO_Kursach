@@ -11,7 +11,7 @@ window.addEventListener('languageChanged', () => {
 
 /* ── Глобальные константы ───────────────────────────────── */
 const PROMO_API = 'http://localhost:3001/promoCodes';
-const ORDERS_API = 'http://localhost:3002/orders';
+const ORDERS_API = 'http://localhost:3001/orders';
 const REVIEWS_API = 'http://localhost:3001/reviews';
 
 /* ── Получение ключа корзины ────────────────────────────── */

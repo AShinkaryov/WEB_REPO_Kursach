@@ -113,7 +113,7 @@ async function handleNewsSubmit(e) {
   localStorage.setItem('ami-news', JSON.stringify(news));
 
   try {
-    await fetch('http://localhost:3000/news', {
+    await fetch('http://localhost:3001/news', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newsItem)
@@ -132,7 +132,7 @@ async function loadNews() {
   if (!list) return;
 
   try {
-    const res = await fetch('http://localhost:3000/news');
+    const res = await fetch('http://localhost:3001/news');
     const news = await res.json();
     
     list.innerHTML = news.map(item => `
@@ -157,7 +157,7 @@ async function deleteNews(id) {
   if (!confirm('Удалить эту новость?')) return;
 
   try {
-    await fetch(`http://localhost:3000/news/${id}`, {
+    await fetch(`http://localhost:3001/news/${id}`, {
       method: 'DELETE'
     });
     loadNews();
@@ -284,7 +284,7 @@ async function loadOrders() {
   if (!list) return;
 
   try {
-    const res = await fetch('http://localhost:3002/orders');
+    const res = await fetch('http://localhost:3001/orders');
     
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
@@ -390,7 +390,7 @@ async function loadOrders() {
 
 async function changeOrderStatus(orderId, newStatus) {
   try {
-    const orderRes = await fetch(`http://localhost:3002/orders/${orderId}`);
+    const orderRes = await fetch(`http://localhost:3001/orders/${orderId}`);
     
     if (!orderRes.ok) {
       throw new Error(`Заказ не найден: ${orderRes.status}`);
@@ -398,7 +398,7 @@ async function changeOrderStatus(orderId, newStatus) {
     
     const order = await orderRes.json();
     
-    const response = await fetch(`http://localhost:3002/orders/${orderId}`, {
+    const response = await fetch(`http://localhost:3001/orders/${orderId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: newStatus })
@@ -445,7 +445,7 @@ async function deleteOrder(orderId) {
   if (!confirm('Удалить заказ #' + orderId + '?')) return;
   
   try {
-    const response = await fetch(`http://localhost:3002/orders/${orderId}`, {
+    const response = await fetch(`http://localhost:3001/orders/${orderId}`, {
       method: 'DELETE'
     });
     
@@ -489,7 +489,7 @@ async function loadStats() {
   const period = document.getElementById('stats-period')?.value || 'all';
   
   try {
-    const res = await fetch('http://localhost:3002/orders');
+    const res = await fetch('http://localhost:3001/orders');
     if (!res.ok) throw new Error('Не удалось загрузить заказы');
     
     let orders = await res.json();

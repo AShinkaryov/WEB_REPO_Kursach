@@ -92,7 +92,7 @@ button { cursor: pointer; border: none; background: none; padding: 0; font-famil
 /* cart icon below nav */
 .sidebar__cart {
     position: absolute;
-    top: 440px;
+    top: 422px;
     left: 119px;
     display: flex;
     align-items: center;
@@ -1380,7 +1380,7 @@ button { cursor: pointer; border: none; background: none; padding: 0; font-famil
 /* ========== ПАНЕЛЬ АВТОРИЗАЦИИ В САЙДБАРЕ ========== */
 .sidebar__auth {
     padding: 0 20px;
-    margin-top: 489px;
+    margin-top: 456px;
     display: flex;
     flex-direction: column;
     gap: 12px;

@@ -3,7 +3,7 @@
  */
 
 // API endpoints
-const API_ORDERS = 'http://localhost:3002/orders';
+const API_ORDERS = 'http://localhost:3001/orders';
 const API_USERS = 'http://localhost:3001/users';
 
 // Проверка авторизации

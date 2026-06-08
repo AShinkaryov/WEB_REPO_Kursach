@@ -11,8 +11,8 @@ const NewsApp = (() => {
   /* ── Fetch ──────────────────────────────────────────────── */
   async function fetchNews() {
     const [newsRes, catsRes] = await Promise.all([
-      fetch('http://localhost:3000/news'),
-      fetch('http://localhost:3000/categories')
+      fetch('http://localhost:3001/news'),
+      fetch('http://localhost:3001/categories')
     ]);
 
     if (!newsRes.ok || !catsRes.ok) {

@@ -1,4 +1,396 @@
 {
+  "products": [
+    {
+      "id": "1",
+      "name": "Печенье сахарное «DINO» с изюмом",
+      "weight": "300 г",
+      "category": "pechenye",
+      "brand": "dino",
+      "type": "Сахарное",
+      "ingredient": "Изюм",
+      "packQty": "12 шт",
+      "stock": 93,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 45
+    },
+    {
+      "id": "2",
+      "name": "Печенье овсяное «Galaxy» с орехами",
+      "weight": "400 г",
+      "category": "pechenye",
+      "brand": "galaxy",
+      "type": "Овсяное",
+      "ingredient": "Орехи",
+      "packQty": "6 шт",
+      "stock": 122,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 52
+    },
+    {
+      "id": "3",
+      "name": "Печенье шоколадное «Champion»",
+      "weight": "200 г",
+      "category": "pechenye",
+      "brand": "champion",
+      "type": "Шоколадное",
+      "ingredient": "Шоколад",
+      "packQty": "24 шт",
+      "stock": 148,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 39
+    },
+    {
+      "id": "4",
+      "name": "Печенье-крекер «Power» ванильный",
+      "weight": "150 г",
+      "category": "pechenye",
+      "brand": "power",
+      "type": "Крекер",
+      "ingredient": "Ваниль",
+      "packQty": "48 шт",
+      "stock": 150,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 33
+    },
+    {
+      "id": "5",
+      "name": "Печенье сдобное «Dolce Dimineața» кокос",
+      "weight": "500 г",
+      "category": "pechenye",
+      "brand": "dolce-dimineata",
+      "type": "Сдобное",
+      "ingredient": "Кокос",
+      "packQty": "12 шт",
+      "stock": 112,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 65
+    },
+    {
+      "id": "6",
+      "name": "Печенье сахарное «Energy» классик",
+      "weight": "300 г",
+      "category": "pechenye",
+      "brand": "energy",
+      "type": "Сахарное",
+      "ingredient": "Ваниль",
+      "packQty": "12 шт",
+      "stock": 139,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 29
+    },
+    {
+      "id": "7",
+      "name": "Печенье овсяное «DINO» крупный изюм",
+      "weight": "1 кг",
+      "category": "pechenye",
+      "brand": "dino",
+      "type": "Овсяное",
+      "ingredient": "Изюм",
+      "packQty": "6 шт",
+      "stock": 45,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 89
+    },
+    {
+      "id": "8",
+      "name": "Мармелад жевательный «DINO» микс ягоды",
+      "weight": "200 г",
+      "category": "marmelad",
+      "brand": "dino",
+      "type": "Сахарное",
+      "ingredient": "Ваниль",
+      "packQty": "24 шт",
+      "stock": 116,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 42
+    },
+    {
+      "id": "9",
+      "name": "Мармелад фруктовый «Galaxy» с ореховой крошкой",
+      "weight": "300 г",
+      "category": "marmelad",
+      "brand": "galaxy",
+      "type": "Сдобное",
+      "ingredient": "Орехи",
+      "packQty": "12 шт",
+      "stock": 84,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 56
+    },
+    {
+      "id": "10",
+      "name": "Мармеладные дольки «Dolce Dimineața» лимон-кокос",
+      "weight": "400 г",
+      "category": "marmelad",
+      "brand": "dolce-dimineata",
+      "type": "Сахарное",
+      "ingredient": "Кокос",
+      "packQty": "12 шт",
+      "stock": 95,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjfrVUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 62
+    },
+    {
+      "id": "11",
+      "name": "Мармелад жевательный «Energy» кислый микс",
+      "weight": "150 г",
+      "category": "marmelad",
+      "brand": "energy",
+      "type": "Крекер",
+      "ingredient": "Ваниль",
+      "packQty": "48 шт",
+      "stock": 200,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 35
+    },
+    {
+      "id": "12",
+      "name": "Мармелад шоколадный «Champion» премиум",
+      "weight": "300 г",
+      "category": "marmelad",
+      "brand": "champion",
+      "type": "Шоколадное",
+      "ingredient": "Шоколад",
+      "packQty": "6 шт",
+      "stock": 74,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 48
+    },
+    {
+      "id": "13",
+      "name": "Мармелад жевательный «Power» изюмный",
+      "weight": "200 г",
+      "category": "marmelad",
+      "brand": "power",
+      "type": "Овсяное",
+      "ingredient": "Изюм",
+      "packQty": "24 шт",
+      "stock": 110,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 39
+    },
+    {
+      "id": "14",
+      "name": "Маршмеллоу «DINO» ванильный мини",
+      "weight": "150 г",
+      "category": "marshmellow",
+      "brand": "dino",
+      "type": "Сахарное",
+      "ingredient": "Ваниль",
+      "packQty": "12 шт",
+      "stock": 160,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 38
+    },
+    {
+      "id": "15",
+      "name": "Маршмеллоу «Galaxy» в шоколадной глазури",
+      "weight": "300 г",
+      "category": "marshmellow",
+      "brand": "galaxy",
+      "type": "Шоколадное",
+      "ingredient": "Шоколад",
+      "packQty": "6 шт",
+      "stock": 145,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 55
+    },
+    {
+      "id": "16",
+      "name": "Маршмеллоу «Power» кокосовый десерт",
+      "weight": "200 г",
+      "category": "marshmellow",
+      "brand": "power",
+      "type": "Сдобное",
+      "ingredient": "Кокос",
+      "packQty": "24 шт",
+      "stock": 130,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 44
+    },
+    {
+      "id": "17",
+      "name": "Маршмеллоу «Dolce Dimineața» с изюмом",
+      "weight": "400 г",
+      "category": "marshmellow",
+      "brand": "dolce-dimineata",
+      "type": "Овсяное",
+      "ingredient": "Изюм",
+      "packQty": "12 шт",
+      "stock": 87,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 68
+    },
+    {
+      "id": "18",
+      "name": "Маршмеллоу «Energy» фруктовый хруст",
+      "weight": "200 г",
+      "category": "marshmellow",
+      "brand": "energy",
+      "type": "Крекер",
+      "ingredient": "Ваниль",
+      "packQty": "48 шт",
+      "stock": 175,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 37
+    },
+    {
+      "id": "19",
+      "name": "Шоколад молочный «Galaxy» с орехом",
+      "weight": "200 г",
+      "category": "shokolad",
+      "brand": "galaxy",
+      "type": "Сдобное",
+      "ingredient": "Орехи",
+      "packQty": "24 шт",
+      "stock": 150,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 72
+    },
+    {
+      "id": "20",
+      "name": "Шоколад темный «DINO» с изюмом",
+      "weight": "150 г",
+      "category": "shokolad",
+      "brand": "dino",
+      "type": "Овсяное",
+      "ingredient": "Изюм",
+      "packQty": "12 шт",
+      "stock": 115,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 58
+    },
+    {
+      "id": "21",
+      "name": "Шоколад белый «Dolce Dimineața» кокосовый бар",
+      "weight": "200 г",
+      "category": "shokolad",
+      "brand": "dolce-dimineata",
+      "type": "Сахарное",
+      "ingredient": "Кокос",
+      "packQty": "6 шт",
+      "stock": 90,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 78
+    },
+    {
+      "id": "22",
+      "name": "Шоколад экстрачерный «Power» с ванилью",
+      "weight": "150 г",
+      "category": "shokolad",
+      "brand": "power",
+      "type": "Крекер",
+      "ingredient": "Ваниль",
+      "packQty": "48 шт",
+      "stock": 129,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 60
+    },
+    {
+      "id": "23",
+      "name": "Шоколад горький «Energy» тонизирующий",
+      "weight": "300 г",
+      "category": "shokolad",
+      "brand": "energy",
+      "type": "Шоколадное",
+      "ingredient": "Шоколад",
+      "packQty": "12 шт",
+      "stock": 105,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 85
+    },
+    {
+      "id": "24",
+      "name": "Шоколад молочный «Champion» спорт",
+      "weight": "200 г",
+      "category": "shokolad",
+      "brand": "champion",
+      "type": "Сдобное",
+      "ingredient": "Орехи",
+      "packQty": "24 шт",
+      "stock": 142,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 69
+    },
+    {
+      "id": "25",
+      "name": "Вафли хрустящие «DINO» шоколадные",
+      "weight": "300 г",
+      "category": "vafli",
+      "brand": "dino",
+      "type": "Шоколадное",
+      "ingredient": "Шоколад",
+      "packQty": "12 шт",
+      "stock": 150,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 46
+    },
+    {
+      "id": "26",
+      "name": "Вафли нежные «Galaxy» с ванилью",
+      "weight": "200 г",
+      "category": "vafli",
+      "brand": "galaxy",
+      "type": "Сахарное",
+      "ingredient": "Ваниль",
+      "packQty": "24 шт",
+      "stock": 138,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 38
+    },
+    {
+      "id": "27",
+      "name": "Вафельные тортики «Dolce Dimineața» с орехами",
+      "weight": "500 г",
+      "category": "vafli",
+      "brand": "dolce-dimineata",
+      "type": "Сдобное",
+      "ingredient": "Орехи",
+      "packQty": "6 шт",
+      "stock": 92,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 74
+    },
+    {
+      "id": "28",
+      "name": "Вафли легкие «Power» кокосовый крем",
+      "weight": "150 г",
+      "category": "vafli",
+      "brand": "power",
+      "type": "Крекер",
+      "ingredient": "Кокос",
+      "packQty": "48 шт",
+      "stock": 159,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 32
+    },
+    {
+      "id": "29",
+      "name": "Вафли витаминизированные «Energy» изюмные",
+      "weight": "200 г",
+      "category": "vafli",
+      "brand": "energy",
+      "type": "Овсяное",
+      "ingredient": "Изюм",
+      "packQty": "24 шт",
+      "stock": 117,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 41
+    },
+    {
+      "id": "30",
+      "name": "Вафли «Champion» семейная упаковка",
+      "weight": "1 кг",
+      "category": "vafli",
+      "brand": "champion",
+      "type": "Сахарное",
+      "ingredient": "Ваниль",
+      "packQty": "6 шт",
+      "stock": 50,
+      "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+      "price": 82
+    }
+  ],
   "orders": [
     {
       "userId": "nFFKjgMAQ7w",
@@ -599,7 +991,324 @@
       ],
       "notes": "2121321",
       "id": "IoT6dR4JMqU"
+    },
+    {
+      "userId": "aqlyhikFwco",
+      "userName": "Алексей Шинкарёв",
+      "userEmail": "sinkareval@gmail.com",
+      "customer": {
+        "name": "Алексей Шинкарёв",
+        "phone": "+375445654321",
+        "address": "укпукпп",
+        "email": "sinkareval@gmail.com"
+      },
+      "orderDate": "2026-06-08T02:13:40.112Z",
+      "status": "shipped",
+      "subtotal": 305,
+      "discount": 30.5,
+      "totalPrice": 274.5,
+      "promoCode": "AMI10",
+      "items": [
+        {
+          "productId": "2",
+          "name": "Печенье овсяное «Galaxy» с орехами",
+          "quantity": 5,
+          "price": 52,
+          "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+          "weight": "400 г"
+        },
+        {
+          "productId": "1",
+          "name": "Печенье сахарное «DINO» с изюмом",
+          "quantity": 1,
+          "price": 45,
+          "image": "https://yandex-images.clstorage.net/R9Vb73z66/c733e13aP/z7_e705F5NESWlKqp01iPxgSmWC4VRSpO--6pMEMfTTXE0wNos8pfpWWdyUbMrf7qSq5ybizrTWyGS7apFt-5pKyg_4vSJ3NEk4Dho59Cg9YR6kVtAAczSvy3pTZ5dD5Cv7V8XM60Jd0kncMay-Th7lKUHSo0jxsLjDbskS6k6eHu87f0tEFNZrmf6p3lQI_LLfxcIygnCj_e7MNyUVkZWYSQdnbhhyDUNLrrFcXepslgiCZHO4sUCaYK5rQ0mvvo2_Cm0bBbdU6wlcWB92Cv7wXJbyEmJgUg_u7cRGtpPGSRm31F5Zou5Dyx6B3byr_Hao42WzieChehPuW0Nbrr5vfsuOGlektAqLHDp9lkmNIx0VA5AAQxNMbaxkZwQRRtjYBwfM6_CNs5js8Y7dagwniNFksMqCo2oA7JvzaAwsjvwKvHiXNUR7SSypbkXbzQL95_OSMIAD3d0v9oRGkNRJmoZkbrkQTCDabpEtzKie57oxFIAJocOIY-w7U2pv_g19yA_LNIVW6oi8iZ-VmA2hH9QAAoLyo0wMngZEBtGES5iEF-8oko_TWkwTn4_4jlbroAWAeMGiOsK9ahDJnV0-DSn9SJaH9btY7AqtFBress7kAOIiI3J9bO7G9DUzJhqJxLXt-1NsISiu8d2feL4WiSLV0knCEtrh_9uQuB1sXK_53cokNfQoesyqn2e5rABf9CPDIuDwDxzfZVV20WZ62nV0_3oADhNrDEMtjNuN5TgjpwLbYqCo0WyJIWn97-8vCjwLBHSm2Xks6my2el8wrqcQURCS803sjdZmRBDGqWiUpF9JIh0i6o9ynfyaP6U60lSzqoLQyPMsmvHLHh-_fSjduVYlhMi5btqMp0nco0_VUgAAUTHsPzxk5ASShKp6lHT_OHDvQ4uckdw9Oc7kOkLmkPrCgajw_RhC-I6_7O37j7un5RYpmey5vVd6bwCMBvBSQuFQX-zuRQZWA",
+          "weight": "300 г"
+        }
+      ],
+      "notes": "",
+      "id": "uP1J_e3C3rY"
     }
   ],
+  "news": [
+    {
+      "id": "1",
+      "title": "Новый вид печенья",
+      "date": "06.10.2020",
+      "dateISO": "2020-10-06",
+      "category": "новое",
+      "tags": [
+        "новое",
+        "печенье"
+      ],
+      "preview": "Значимость этих проблем настолько очевидна, что базовый вектор развития требует от нас анализа позиций.",
+      "image": "https://img.freepik.com/free-photo/front-view-different-tasty-biscuits-light-dark-surface_140725-103214.jpg?semt=ais_hybrid",
+      "content": "Мы рады представить наш новый вид печенья — хрустящий, ароматный и невероятно вкусный! Этот продукт создавался нашей командой технологов на протяжении нескольких месяцев. Мы тестировали десятки рецептур, чтобы добиться идеального баланса вкуса и текстуры.\n\nНовое печенье уже поступило в продажу в наших магазинах-партнёрах по всей Молдове. Оно доступно в трёх вкусовых вариантах: классическое сливочное, шоколадное и ванильное с орехами.\n\nМы убеждены, что качество нашей продукции — это главный приоритет. Именно поэтому мы используем только натуральные ингредиенты без искусственных добавок и консервантов.",
+      "featured": true
+    },
+    {
+      "id": "2",
+      "title": "Мы открыли новый магазин, добавили новые рецепты",
+      "date": "06.10.2020",
+      "dateISO": "2020-10-06",
+      "category": "события",
+      "tags": [
+        "события",
+        "магазиныami"
+      ],
+      "preview": "Значимость этих проблем настолько очевидна, что базовый вектор развития требует от нас анализа позиций.",
+      "image": "https://avatars.mds.yandex.net/i?id=a10f2ead3c90853b9b634a3bb5dc87e6_l-5260797-images-thumbs&n=13",
+      "content": "Мы с гордостью объявляем об открытии нашего нового фирменного магазина в центре Кишинёва! Теперь жители столицы могут ещё ближе познакомиться с нашей продукцией и приобрести любимые сладости.\n\nВ магазине представлен полный ассортимент кондитерских изделий фабрики «AMI», а также эксклюзивные позиции, доступные только в наших фирменных точках продаж.\n\nКроме того, мы обновили раздел рецептов на нашем сайте — теперь там доступно более 50 домашних рецептов с использованием нашего печенья. Готовьте вкусно вместе с AMI!",
+      "featured": false
+    },
+    {
+      "id": "3",
+      "title": "Новый вид печенья",
+      "date": "06.10.2020",
+      "dateISO": "2020-10-06",
+      "category": "печенье",
+      "tags": [
+        "печенье",
+        "новое"
+      ],
+      "preview": "Значимость этих проблем настолько очевидна, что базовый вектор развития требует от нас анализа позиций.",
+      "image": "https://png.pngtree.com/thumb_back/fh260/background/20231102/pngtree-detailed-shot-showcasing-the-delectable-texture-of-biscuit-cookies-image_13758352.png",
+      "content": "Линейка наших кондитерских изделий продолжает расширяться. На этот раз мы представляем печенье с натуральными наполнителями: черника, малина и абрикос. Фруктовые начинки закупаются у местных фермеров, что гарантирует свежесть и высокое качество.\n\nПродукт прошёл все необходимые сертификационные проверки и соответствует европейским стандартам качества. Мы заботимся о здоровье наших потребителей и стараемся сделать сладкое ещё и полезным.\n\nНайдите новинку на полках магазинов-партнёров уже сегодня!",
+      "featured": false
+    },
+    {
+      "id": "4",
+      "title": "Новый вид печенья",
+      "date": "06.10.2020",
+      "dateISO": "2020-10-06",
+      "category": "рецепты",
+      "tags": [
+        "рецепты",
+        "печенье"
+      ],
+      "preview": "Рецепт домашнего печенья от наших технологов — просто, быстро и невероятно вкусно для всей семьи.",
+      "image": "https://i.ytimg.com/vi/j6Ac9Iehn-g/maxresdefault.jpg",
+      "content": "Делимся с вами фирменным рецептом от технологов фабрики «AMI»! Это простой рецепт домашнего печенья, который вы можете приготовить вместе с детьми.\n\nВам понадобится: 200г сливочного масла, 150г сахара, 2 яйца, 300г муки, щепотка соли и ванилин по вкусу. Смешайте все ингредиенты, раскатайте тесто толщиной 5 мм, вырежьте формочками и выпекайте при 180°C 12–15 минут.\n\nГотовое печенье украсьте глазурью или просто посыпьте сахарной пудрой. Приятного аппетита!",
+      "featured": false
+    },
+    {
+      "id": "5",
+      "title": "Новый вид печенья",
+      "date": "06.10.2020",
+      "dateISO": "2020-10-06",
+      "category": "праздники",
+      "tags": [
+        "праздники",
+        "события"
+      ],
+      "preview": "Готовимся к праздникам вместе с AMI — специальные подарочные наборы уже в продаже.",
+      "image": "https://png.pngtree.com/thumb_back/fw800/background/20230612/pngtree-pile-of-cookies-and-chocolate-dipped-biscuits-image_2919846.jpg",
+      "content": "Праздники — особое время, и мы в AMI хотим сделать его ещё слаще! К новогодним и рождественским праздникам мы подготовили специальные подарочные наборы с нашим печеньем.\n\nВ набор входят: три вида печенья в красивой подарочной коробке, фирменная открытка и купон на скидку для следующей покупки. Отличный подарок для близких, коллег и деловых партнёров!\n\nПодарочные наборы доступны ограниченным тиражом — успейте сделать заказ до 20 декабря.",
+      "featured": false
+    },
+    {
+      "id": "6",
+      "title": "Еще один новый магазин!",
+      "date": "06.10.2020",
+      "dateISO": "2020-10-06",
+      "category": "магазиныami",
+      "tags": [
+        "магазиныami",
+        "события"
+      ],
+      "preview": "Расширяем сеть присутствия AMI — теперь наша продукция доступна ещё в 15 новых точках продаж.",
+      "image": "https://tm.okis.ru/store/0/9/5/95/IMG_2703.JPG",
+      "content": "Сеть магазинов-партнёров AMI продолжает расти! В этом квартале мы подписали договоры о сотрудничестве с 15 новыми торговыми точками по всей Молдове.\n\nТеперь наша продукция доступна не только в крупных супермаркетах, но и в небольших локальных магазинах в районных центрах. Мы стремимся к тому, чтобы вкусное печенье AMI было доступно каждому жителю страны.\n\nПолный список магазинов, где можно купить нашу продукцию, доступен на сайте в разделе «Где купить».",
+      "featured": false
+    },
+    {
+      "id": "g5OXu2dm_vo",
+      "title": "Новый магазин",
+      "content": "Открываем",
+      "date": "2026-06-08",
+      "image": "https://www.nonsolobudino.it/cache/media/2023/02/pane_e_pasticceria_1920x1080_5656.jpg/9cf0055307dfbfdca77741fe9df2061c.jpg"
+    }
+  ],
+  "categories": [
+    {
+      "id": "all",
+      "label": "#новое",
+      "filter": null
+    },
+    {
+      "id": "печенье",
+      "label": "#печенье",
+      "filter": "печенье"
+    },
+    {
+      "id": "события",
+      "label": "#события",
+      "filter": "события"
+    },
+    {
+      "id": "праздники",
+      "label": "#праздники",
+      "filter": "праздники"
+    },
+    {
+      "id": "рецепты",
+      "label": "#рецепты",
+      "filter": "рецепты"
+    },
+    {
+      "id": "магазиныami",
+      "label": "#магазиныami",
+      "filter": "магазиныami"
+    }
+  ],
+  "reviews": [
+    {
+      "userId": "aqlyhikFwco",
+      "userName": "Алексей Шинкарёв",
+      "userEmail": "sinkareval@gmail.com",
+      "rating": 5,
+      "text": "рнррраркркрркр",
+      "date": "2026-06-08T02:13:48.484Z",
+      "status": "read",
+      "id": "Xxk3F4USe_0"
+    }
+  ],
+  "promoCodes": [
+    {
+      "id": "1",
+      "code": "AMI10",
+      "type": "percent",
+      "value": 10,
+      "minOrder": 0,
+      "maxUses": 100,
+      "usedCount": 8,
+      "active": true
+    },
+    {
+      "id": "2",
+      "code": "WELCOME",
+      "type": "fixed",
+      "value": 50,
+      "minOrder": 200,
+      "maxUses": 50,
+      "usedCount": 0,
+      "active": true
+    }
+  ],
+  "users": [
+    {
+      "id": "nFFKjgMAQ7w",
+      "name": "Павел Федоров",
+      "email": "PavelF@gmail.com",
+      "phone": "+375338544333",
+      "password": "123456",
+      "role": "user",
+      "createdAt": "2026-06-04T12:29:46.948Z"
+    },
+    {
+      "id": "admin-001",
+      "name": "Администратор",
+      "email": "admin@ami.md",
+      "phone": "+37330000001",
+      "password": "Admin123!",
+      "role": "admin",
+      "createdAt": "2026-06-04T10:00:00Z"
+    },
+    {
+      "id": "aqlyhikFwco",
+      "name": "Алексей Шинкарёв",
+      "email": "sinkareval@gmail.com",
+      "phone": "+375336183494",
+      "password": "123456",
+      "role": "user",
+      "createdAt": "2026-06-04T13:28:58.657Z"
+    },
+    {
+      "id": "PWc-KuxBAjc",
+      "name": "Шинкарёв Алексей Алексадрович",
+      "firstName": "Шинкарёв",
+      "lastName": "Алексей Алексадрович",
+      "email": "ert@gmail.com",
+      "phone": "+375 (33) 618-34-94",
+      "birthdate": "2007-03-30",
+      "nickname": "FastBerry520",
+      "password": "LeXa_30032007",
+      "role": "user",
+      "createdAt": "2026-06-05T16:36:04.047Z"
+    },
+    {
+      "id": "vpP9mDTt74c",
+      "name": "Чесноков Антон Владимирович",
+      "firstName": "Чесноков",
+      "lastName": "Антон Владимирович",
+      "email": "chesnok@gmail.com",
+      "phone": "+375 (44) 657-58-81",
+      "birthdate": "2007-03-30",
+      "nickname": "CalmSugar493",
+      "password": "^7vJkKvT@4JT",
+      "role": "user",
+      "createdAt": "2026-06-08T02:20:06.688Z"
+    }
+  ],
+  "filters": {
+    "brands": [
+      {
+        "value": "all",
+        "label": "Вся продукция"
+      },
+      {
+        "value": "dolce-dimineata",
+        "label": "Dolce Dimineața"
+      },
+      {
+        "value": "power",
+        "label": "Power"
+      },
+      {
+        "value": "dino",
+        "label": "DINO"
+      },
+      {
+        "value": "champion",
+        "label": "Champion"
+      },
+      {
+        "value": "energy",
+        "label": "Energy"
+      },
+      {
+        "value": "galaxy",
+        "label": "Galaxy"
+      }
+    ],
+    "types": [
+      "Сахарное",
+      "Овсяное",
+      "Шоколадное",
+      "Крекер",
+      "Сдобное"
+    ],
+    "weights": [
+      "150 г",
+      "200 г",
+      "300 г",
+      "400 г",
+      "500 г",
+      "1 кг"
+    ],
+    "ingredients": [
+      "Изюм",
+      "Орехи",
+      "Шоколад",
+      "Ваниль",
+      "Кокос"
+    ],
+    "packQty": [
+      "6 шт",
+      "12 шт",
+      "24 шт",
+      "48 шт"
+    ]
+  },
   "$schema": "./node_modules/json-server/schema.json"
 }

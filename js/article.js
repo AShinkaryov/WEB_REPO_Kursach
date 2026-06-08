@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   try {
-    console.log('📡 Fetching from http://localhost:3000/news...');
-    const response = await fetch('http://localhost:3000/news');
+    console.log('📡 Fetching from http://localhost:3001/news...');
+    const response = await fetch('http://localhost:3001/news');
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         💡 Убедитесь, что:<br>
         1. json-server запущен (порт 3000)<br>
         2. В News.json есть новость с id=${articleId}<br>
-        3. Откройте http://localhost:3000/news в браузере
+        3. Откройте http://localhost:3001/news в браузере
       </p>
     `;
   }

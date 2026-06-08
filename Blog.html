@@ -13,7 +13,15 @@
   <link rel="stylesheet" href="css/preloader.css">
 </head>
 <body>
+<!-- Burger Menu Button -->
+<button class="sidebar__burger" id="sidebarBurger" aria-label="Меню">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
 
+<!-- Overlay -->
+<div class="sidebar__overlay" id="sidebarOverlay"></div>
   <!-- ===== FIXED SIDEBAR MENU ===== -->
   <aside class="sidebar">
     <div class="sidebar__logo-wrap">
@@ -45,7 +53,7 @@
       <img src="img/Partners/VK.png" alt="VK" width="24" height="24"/>
     </div>
 
-    <img class="sidebar__copy" src="img/bag.png" alt="copy"/>
+   
     <img class="sidebar__border" src="img/line-4.svg" alt=""/>
   </aside>
 
@@ -172,8 +180,8 @@
               <li><a href="Main.html" class="footer__nav-link" data-i18n="nav.catalog">Каталог</a></li>
               <li><a href="partners.html" class="footer__nav-link" data-i18n="nav.partners">Партнерам</a></li>
               <li><a href="blog.html" class="footer__nav-link" data-i18n="nav.blog">Блог</a></li>
-              <li><a href="kids.html" class="footer__nav-link" data-i18n="nav.kids">For kids</a></li>
-              <li><a href="docs/catalog.pdf" class="footer__nav-link" data-i18n="catalog.download">Скачать каталог .pdf</a></li>
+              
+              
             </ul>
           </div>
 
@@ -224,5 +232,44 @@
 <script src="js/theme.js"></script>
 <script src="js/accessibility.js"></script>
 <script src="js/preloader.js"></script>
+<script>
+  // Burger menu functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const burger = document.getElementById('sidebarBurger');
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    if (burger && sidebar && overlay) {
+      function toggleMenu() {
+        sidebar.classList.toggle('sidebar--open');
+        burger.classList.toggle('active');
+        overlay.classList.toggle('active');
+        document.body.style.overflow = sidebar.classList.contains('sidebar--open') ? 'hidden' : '';
+      }
+
+      burger.addEventListener('click', toggleMenu);
+      overlay.addEventListener('click', toggleMenu);
+
+      // Close menu when clicking on nav items
+      sidebar.querySelectorAll('.sidebar__nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+          if (window.innerWidth <= 1500) {
+            toggleMenu();
+          }
+        });
+      });
+
+      // Close on resize
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 1500) {
+          sidebar.classList.remove('sidebar--open');
+          burger.classList.remove('active');
+          overlay.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+    }
+  });
+</script>
 </body>
 </html>
