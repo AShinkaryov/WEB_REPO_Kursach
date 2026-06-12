@@ -605,3 +605,14 @@ document.addEventListener('DOMContentLoaded', () => {
     reviewForm.addEventListener('submit', submitReview);
   }
 });
+
+// В submitReview() добавьте:
+const userOrders = await fetch(`http://localhost:3001/orders?userId=${session.id}`);
+const orders = await userOrders.json();
+const hasPurchased = orders.some(order => 
+  order.items.some(item => item.productId === selectedProductId)
+);
+if (!hasPurchased) {
+  showMessage('Вы должны купить товар, чтобы оставить отзыв');
+  return;
+}
