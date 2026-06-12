@@ -72,3 +72,26 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollTopBtn.classList.toggle('scroll-top-btn--visible', window.scrollY > 500);
   });
 });
+
+/* ── Parallax эффект ───────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  const parallaxSection = document.getElementById('parallax-section');
+  if (!parallaxSection) return;
+
+  const layers = parallaxSection.querySelectorAll('.parallax-layer');
+  
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const sectionTop = parallaxSection.offsetTop;
+    const relativeScroll = scrolled - sectionTop;
+    
+    // Проверяем, видна ли секция
+    if (relativeScroll > -500 && relativeScroll < window.innerHeight + 500) {
+      layers.forEach(layer => {
+        const speed = parseFloat(layer.dataset.speed) || 0.5;
+        const yPos = -(relativeScroll * speed);
+        layer.style.transform = `translateY(${yPos}px)`;
+      });
+    }
+  });
+});
