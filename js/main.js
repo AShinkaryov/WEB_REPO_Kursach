@@ -41,3 +41,34 @@ document.addEventListener('DOMContentLoaded', () => {
     video.addEventListener('click', toggleVideo);
   }
 });
+
+/* ── Плавная прокрутка к разделам ──────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  // Прокрутка по клику на ссылки с якорями
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      
+      const target = document.querySelector(targetId);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Кнопки "Наверх"
+  const scrollTopBtn = document.createElement('button');
+  scrollTopBtn.className = 'scroll-top-btn';
+  scrollTopBtn.innerHTML = '↑';
+  scrollTopBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.body.appendChild(scrollTopBtn);
+
+  window.addEventListener('scroll', () => {
+    scrollTopBtn.classList.toggle('scroll-top-btn--visible', window.scrollY > 500);
+  });
+});

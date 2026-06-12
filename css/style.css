@@ -1081,3 +1081,52 @@ html, body {
     font-size: 24px;
   }
 }
+
+/* ========== ПЛАВНАЯ ПРОКРУТКА ========== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ссылки на разделы */
+.scrollTo-section {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.scrollTo-section:hover {
+  color: var(--accent-red, #E8593A);
+}
+
+/* ========== КНОПКА НАВЕРХ ========== */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 160px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--accent-red, #E8593A);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+  z-index: 9998;
+  box-shadow: 0 4px 12px rgba(232, 89, 58, 0.4);
+}
+
+.scroll-top-btn--visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.scroll-top-btn:hover {
+  background: var(--accent-red-hover, #d44a2e);
+  transform: translateY(-3px);
+}
