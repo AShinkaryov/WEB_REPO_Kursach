@@ -1207,9 +1207,9 @@
     },
     {
       "id": "admin-001",
-      "name": "Администратор",
+      "name": "АдминистраторAMI",
       "email": "admin@ami.md",
-      "phone": "+37330000001",
+      "phone": "+375336183494",
       "password": "Admin123!",
       "role": "admin",
       "createdAt": "2026-06-04T10:00:00Z"

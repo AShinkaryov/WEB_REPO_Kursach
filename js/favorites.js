@@ -1,11 +1,24 @@
 /**
- * AMI Favorites Page
+ * ═══════════════════════════════════════════════════════════
+ * СТРАНИЦА ИЗБРАННОГО
+ * Лабораторная работа №10: API Storage. Data-атрибуты
+ * ═══════════════════════════════════════════════════════════
+ * 
+ * Реализованные требования ЛР10:
+ * ✅ Избранное хранится в LocalStorage
+ * ✅ Данные пользователя берутся из LocalStorage
+ * ✅ Экспорт/импорт избранного в файл
+ * ✅ Счётчик избранного (анимированный бейдж)
  */
 
 const FAVORITES_KEY_PREFIX = 'ami-favorites-';
 const CART_KEY_PREFIX = 'ami-cart-';
 
 /* ── Получить текущего пользователя ─────────────────────── */
+/**
+ * ПОЛУЧЕНИЕ ID ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ
+ * Требование ЛР10: "данные пользователя брать из LocalStorage"
+ */
 function getCurrentUserId() {
   const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
   return session ? session.id : 'guest';
@@ -44,6 +57,7 @@ function removeFromFavorites(productId) {
   const idStr = String(productId);
   favorites = favorites.filter(favId => String(favId) !== idStr);
   
+  // 🔥 СОХРАНЕНИЕ В LOCALSTORAGE
   localStorage.setItem(favoritesKey, JSON.stringify(favorites));
   
   renderFavorites();
@@ -55,6 +69,10 @@ function removeFromFavorites(productId) {
 }
 
 /* ── Обновить счетчик избранного (бейдж) ─────────────────── */
+/**
+ * ОБНОВЛЕНИЕ СЧЁТЧИКА ИЗБРАННОГО
+ * Требование ЛР9: "анимированный счетчик для отображения статистики"
+ */
 function updateFavoritesBadge() {
   const badge = document.getElementById('favorites-badge');
   if (!badge) return;
@@ -82,6 +100,10 @@ function updateFavoritesCount() {
 }
 
 /* ── Отображение избранного ──────────────────────────────── */
+/**
+ * ОТРИСОВКА СТРАНИЦЫ ИЗБРАННОГО
+ * Загружает товары из каталога и фильтрует по ID из LocalStorage
+ */
 async function renderFavorites() {
   const grid = document.getElementById('favorites-grid');
   if (!grid) return;
@@ -90,6 +112,7 @@ async function renderFavorites() {
   const favoritesKey = getFavoritesKey();
   const favorites = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
   
+  // 🔥 ФИЛЬТРАЦИЯ ТОВАРОВ — оставляем только те, что в избранном
   const favoriteProducts = products.filter(p => {
     const productId = typeof p.id === 'string' ? p.id : String(p.id);
     return favorites.some(favId => String(favId) === productId);
@@ -221,6 +244,10 @@ function updateCartBadge() {
 }
 
 /* ── Toast уведомление ───────────────────────────────────── */
+/**
+ * ВСПЛЫВАЮЩЕЕ УВЕДОМЛЕНИЕ (TOAST)
+ * Требование ЛР9: "всплывающие окна с уведомлениями для пользователя"
+ */
 function showToast(message) {
   let toast = document.getElementById('ami-toast');
   if (!toast) {
@@ -242,7 +269,10 @@ function showToast(message) {
    ЭКСПОРТ / ИМПОРТ ИЗБРАННОГО
    ════════════════════════════════════════════════════════════ */
 
-/* ── Экспорт избранного в текстовый файл ─────────────────── */
+/**
+ * ЭКСПОРТ ИЗБРАННОГО В ТЕКСТОВЫЙ ФАЙЛ
+ * Создаёт .txt файл со списком ID товаров
+ */
 async function exportFavorites() {
   const session = getCurrentUser();
   
@@ -304,6 +334,7 @@ async function exportFavorites() {
     
     const fileContent = lines.join('\n');
     
+    // 🔥 Создаём Blob и скачиваем файл
     const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -327,7 +358,10 @@ async function exportFavorites() {
   }
 }
 
-/* ── Импорт избранного из файла ──────────────────────────── */
+/**
+ * ИМПОРТ ИЗБРАННОГО ИЗ ФАЙЛА
+ * Читает .txt файл и добавляет ID в избранное
+ */
 async function importFavorites(event) {
   const file = event.target.files[0];
   

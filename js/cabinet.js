@@ -9,29 +9,28 @@ const API_USERS = 'http://localhost:3001/users';
 // Проверка авторизации
 function checkAuth() {
   const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
-  
   if (!session) {
     window.location.href = 'login.html';
     return null;
   }
-  
   return session;
 }
 
-// Загрузка данных пользователя
+// 🔥 ЗАГРУЗКА ДАННЫХ ПОЛЬЗОВАТЕЛЯ
 async function loadUserProfile(session) {
   try {
     const res = await fetch(`${API_USERS}/${session.id}`);
     if (res.ok) {
       const user = await res.json();
       
+      // Обновляем отображение
       document.getElementById('cabinet-username').textContent = user.name || user.fullName || I18n.t('cabinet.default_user');
       document.getElementById('cabinet-useremail').textContent = user.email;
       document.getElementById('cabinet-userrole').textContent = user.role === 'admin' 
         ? I18n.t('cabinet.role_admin') 
         : I18n.t('cabinet.role_buyer');
       
-      // Заполнение полей профиля
+      // Заполняем поля профиля
       document.getElementById('profile-name').value = user.name || user.fullName || '';
       document.getElementById('profile-email').value = user.email || '';
       document.getElementById('profile-phone').value = user.phone || '';
@@ -153,7 +152,6 @@ function renderOrders(orders) {
   list.innerHTML = sorted.map(order => {
     const status = STATUS_LABELS[order.status] || STATUS_LABELS['pending'];
     const date = formatDate(order.orderDate);
-    
     const itemsText = (order.items || []).map(item => 
       `${item.name} × ${item.quantity}`
     ).join(', ');
@@ -164,7 +162,6 @@ function renderOrders(orders) {
           <div class="order-id">${I18n.t('cabinet.order_prefix')} #${order.id}</div>
           <span class="order-status ${status.class}">${status.label}</span>
         </div>
-        
         <div class="order-details">
           <div class="order-detail">
             <div class="order-detail-label">${I18n.t('cabinet.order_date')}</div>
@@ -179,20 +176,120 @@ function renderOrders(orders) {
             <div>${order.customer?.phone || I18n.t('cabinet.not_specified')}</div>
           </div>
         </div>
-        
         <div class="order-items">
           <div class="order-item">
             <span>${I18n.t('cabinet.products_label')}:</span>
             <span>${itemsText || I18n.t('cabinet.no_data')}</span>
           </div>
         </div>
-        
         <div class="order-total">
           ${I18n.t('cabinet.total_label')}: ${order.totalPrice} ${I18n.t('common.currency')}
         </div>
       </div>
     `;
   }).join('');
+}
+
+// 🔥 ОБРАБОТЧИК РЕДАКТИРОВАНИЯ ПРОФИЛЯ
+function setupProfileEdit() {
+  const editBtn = document.getElementById('profile-edit-btn');
+  const inputs = document.querySelectorAll('.profile-field input');
+  const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
+  
+  if (!editBtn || !session) return;
+  
+  let isEditing = false;
+  
+  editBtn.addEventListener('click', async () => {
+    if (!isEditing) {
+      // 🔥 ВКЛЮЧАЕМ РЕЖИМ РЕДАКТИРОВАНИЯ
+      isEditing = true;
+      editBtn.textContent = I18n.t('cabinet.save_btn') || 'Сохранить';
+      editBtn.style.background = '#27ae60'; // Зелёный цвет
+      
+      inputs.forEach(input => {
+        input.disabled = false;
+        input.classList.add('enabled');
+        input.style.background = '#fff';
+        input.style.borderColor = '#E8593A';
+      });
+      
+    } else {
+      // 🔥 СОХРАНЯЕМ ИЗМЕНЕНИЯ
+      const updatedData = {
+        name: document.getElementById('profile-name').value.trim(),
+        email: document.getElementById('profile-email').value.trim(),
+        phone: document.getElementById('profile-phone').value.trim()
+      };
+      
+      // Валидация
+      if (!updatedData.name) {
+        alert(I18n.t('cabinet.error_name_required') || 'Введите имя');
+        return;
+      }
+      
+      if (!updatedData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(updatedData.email)) {
+        alert(I18n.t('cabinet.error_email_invalid') || 'Введите корректный email');
+        return;
+      }
+      
+      try {
+        // 🔥 ОТПРАВЛЯЕМ НА СЕРВЕР (PATCH запрос)
+        const response = await fetch(`${API_USERS}/${session.id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(updatedData)
+        });
+        
+        if (response.ok) {
+          const updatedUser = await response.json();
+          console.log('✅ Профиль обновлён:', updatedUser);
+          
+          // 🔥 ОБНОВЛЯЕМ СЕССИЮ В LOCALSTORAGE
+          const newSession = {
+            ...session,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            phone: updatedUser.phone
+          };
+          localStorage.setItem('ami-session', JSON.stringify(newSession));
+          
+          // 🔥 ОБНОВЛЯЕМ ОТОБРАЖЕНИЕ
+          document.getElementById('cabinet-username').textContent = updatedUser.name;
+          document.getElementById('cabinet-useremail').textContent = updatedUser.email;
+          
+          // 🔥 ВЫКЛЮЧАЕМ РЕЖИМ РЕДАКТИРОВАНИЯ
+          isEditing = false;
+          editBtn.textContent = I18n.t('cabinet.edit_btn') || 'Редактировать';
+          editBtn.style.background = ''; // Возвращаем исходный цвет
+          
+          inputs.forEach(input => {
+            input.disabled = true;
+            input.classList.remove('enabled');
+            input.style.background = '';
+            input.style.borderColor = '';
+          });
+          
+          // 🔥 УВЕДОМЛЕНИЕ ОБ УСПЕХЕ
+          alert(I18n.t('cabinet.profile_saved') || '✅ Профиль успешно обновлён!');
+          
+          // 🔥 ОБНОВЛЯЕМ UI В САЙДБАРЕ (если есть)
+          if (window.auth && window.auth.updateUserInterface) {
+            window.auth.updateUserInterface();
+          }
+          
+        } else {
+          throw new Error('Ошибка сервера');
+        }
+        
+      } catch (error) {
+        console.error('❌ Ошибка сохранения:', error);
+        alert(I18n.t('cabinet.error_save') || '❌ Ошибка при сохранении. Попробуйте позже.');
+      }
+    }
+  });
 }
 
 // Обработчик выхода
@@ -206,35 +303,7 @@ function setupLogout() {
   }
 }
 
-// Обработчик редактирования профиля (заглушка)
-function setupProfileEdit() {
-  const editBtn = document.getElementById('profile-edit-btn');
-  const inputs = document.querySelectorAll('.profile-field input');
-  
-  if (editBtn) {
-    let isEditing = false;
-    
-    editBtn.addEventListener('click', () => {
-      isEditing = !isEditing;
-      
-      inputs.forEach(input => {
-        input.disabled = !isEditing;
-        input.classList.toggle('enabled', isEditing);
-      });
-      
-      editBtn.textContent = isEditing 
-        ? I18n.t('cabinet.save_btn') 
-        : I18n.t('cabinet.edit_btn');
-      
-      if (!isEditing) {
-        // Здесь можно добавить сохранение на сервер
-        alert(I18n.t('cabinet.save_in_development'));
-      }
-    });
-  }
-}
-
-// 🔥 Функция полного перерендера страницы
+// 🔥 ФУНКЦИЯ ПОЛНОГО ПЕРЕРЕНДЕРА СТРАНИЦЫ
 async function rerenderCabinet() {
   const session = checkAuth();
   if (!session) return;
@@ -258,13 +327,12 @@ async function init() {
   // Загрузка и рендер заказов
   const orders = await loadUserOrders(session.id);
   console.log('📦 Orders loaded:', orders.length);
-  
   renderNotifications(orders);
   renderOrders(orders);
   
   // Настройка обработчиков
   setupLogout();
-  setupProfileEdit();
+  setupProfileEdit(); // 🔥 Добавляем редактирование
 }
 
 // 🔥 Перерендер при смене языка
@@ -275,28 +343,27 @@ window.addEventListener('languageChanged', async () => {
 
 document.addEventListener('DOMContentLoaded', init);
 
-
 /* 🔥 ФУНКЦИЯ СБРОСА НАСТРОЕК */
 function resetSettings() {
-    const confirmed = confirm(
-        "⚠️ Внимание!\n\n" +
-        "Вы уверены, что хотите сбросить все настройки?\n\n" +
-        "Будет удалено:\n" +
-        "• Язык интерфейса\n" +
-        "• Цветовая тема (темная/светлая)\n" +
-        "• Корзина и избранное\n" +
-        "• Сессия (вы разлогинитесь)\n\n" +
-        "Продолжить?"
-    );
-
-    if (confirmed) {
-        // 1. Полная очистка localStorage
-        localStorage.clear();
-
-        // 2. Уведомление
-        alert("✅ Настройки успешно сброшены. Перенаправление на страницу входа...");
-
-        // 3. Перенаправление на страницу входа
-        window.location.href = 'login.html';
-    }
+  const confirmed = confirm(
+    "⚠️ Внимание!\n\n" +
+    "Вы уверены, что хотите сбросить все настройки?\n" +
+    "Будет удалено:\n" +
+    "• Язык интерфейса\n" +
+    "• Цветовая тема (темная/светлая)\n" +
+    "• Корзина и избранное\n" +
+    "• Сессия (вы разлогинитесь)\n\n" +
+    "Продолжить?"
+  );
+  
+  if (confirmed) {
+    // 1. Полная очистка localStorage
+    localStorage.clear();
+    
+    // 2. Уведомление
+    alert("✅ Настройки успешно сброшены. Перенаправление на страницу входа...");
+    
+    // 3. Перенаправление на страницу входа
+    window.location.href = 'login.html';
+  }
 }

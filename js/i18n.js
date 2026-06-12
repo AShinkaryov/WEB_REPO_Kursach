@@ -336,6 +336,12 @@ const I18n = (() => {
 'cabinet.status_sent': 'Отправлен',
 'cabinet.status_cancelled': 'Отменён',
 'cabinet.status_delivered': 'Доставлен',
+'cabinet.edit_btn': 'Редактировать',
+'cabinet.save_btn': 'Сохранить',
+'cabinet.profile_saved': '✅ Профиль успешно обновлён!',
+'cabinet.error_name_required': 'Введите имя',
+'cabinet.error_email_invalid': 'Введите корректный email',
+'cabinet.error_save': '❌ Ошибка при сохранении. Попробуйте позже.',
     },
     
     en: {
@@ -668,6 +674,12 @@ const I18n = (() => {
 'cabinet.status_sent': 'Sent',
 'cabinet.status_cancelled': 'Cancelled',
 'cabinet.status_delivered': 'Delivered',
+'cabinet.edit_btn': 'Edit',
+'cabinet.save_btn': 'Save',
+'cabinet.profile_saved': '✅ Profile successfully updated!',
+'cabinet.error_name_required': 'Please enter your name',
+'cabinet.error_email_invalid': 'Please enter a valid email',
+'cabinet.error_save': '❌ Error saving. Please try again later.',
     },
     
     be: {
@@ -1001,132 +1013,177 @@ const I18n = (() => {
 'cabinet.status_sent': 'Адпраўлены',
 'cabinet.status_cancelled': 'Адменены',
 'cabinet.status_delivered': 'Дастаўлены',
+'cabinet.edit_btn': 'Рэдагаваць',
+'cabinet.save_btn': 'Захаваць',
+'cabinet.profile_saved': '✅ Профіль паспяхова абноўлены!',
+'cabinet.error_name_required': 'Увядзіце імя',
+'cabinet.error_email_invalid': 'Увядзіце карэктны email',
+'cabinet.error_save': '❌ Памылка пры захаванні. Паспрабуйце пазней.',
     }
   };
   
+ // Текущий язык — загружаем из localStorage или 'ru' по умолчанию
   let currentLang = localStorage.getItem('ami-lang') || 'ru';
   
-  // Получить перевод
+  /**
+   * ПОЛУЧЕНИЕ ПЕРЕВОДА ПО КЛЮЧУ
+   * @param {string} key — ключ перевода (например, 'nav.catalog')
+   * @returns {string} — переведённая строка или ключ, если перевода нет
+   * 
+   * Приоритет: текущий язык → русский → сам ключ
+   */
   function t(key) {
     return translations[currentLang]?.[key] || translations.ru[key] || key;
   }
   
-  // Применить перевод ко всем элементам с data-i18n
- function translatePage() {
-  // Перевод текстового содержимого
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    const translation = t(key);
-    
-    // Для option внутри select — меняем textContent
-    if (el.tagName === 'OPTION') {
-      el.textContent = translation;
-    } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-      if (el.hasAttribute('data-i18n-placeholder')) {
-        el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+  /**
+   * ПРИМЕНЕНИЕ ПЕРЕВОДА КО ВСЕМ ЭЛЕМЕНТАМ С data-i18n
+   * "находим все элементы, содержащие data-атрибут [data-i18n]"
+   * 
+   * Алгоритм:
+   * 1. Находим все элементы с атрибутом data-i18n
+   * 2. Для каждого элемента получаем ключ из dataset.i18n
+   * 3. Подставляем перевод через textContent
+   */
+  function translatePage() {
+    // 🔥 Перевод текстового содержимого
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const translation = t(key);
+      
+      // Для option внутри select — меняем textContent
+      if (el.tagName === 'OPTION') {
+        el.textContent = translation;
+      } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        // Для input/textarea — проверяем наличие data-i18n-placeholder
+        if (el.hasAttribute('data-i18n-placeholder')) {
+          el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+        }
+      } else {
+        el.textContent = translation;
       }
-    } else {
-      el.textContent = translation;
-    }
-  });
-  
-  // Перевод placeholder
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-    const key = el.getAttribute('data-i18n-placeholder');
-    el.placeholder = t(key);
-  });
-  
-  // Перевод title
-  document.querySelectorAll('[data-i18n-title]').forEach(el => {
-    const key = el.getAttribute('data-i18n-title');
-    el.title = t(key);
-  });
-}
-  
-  // Сменить язык
-function setLang(lang) {
-  if (!translations[lang]) {
-    console.error('Unsupported language:', lang);
-    return;
+    });
+    
+    // 🔥 Перевод placeholder'ов (отдельный атрибут)
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      el.placeholder = t(key);
+    });
+    
+    // 🔥 Перевод title (подсказки при наведении)
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+      const key = el.getAttribute('data-i18n-title');
+      el.title = t(key);
+    });
   }
   
-  currentLang = lang;
-  localStorage.setItem('ami-lang', lang);
-  document.documentElement.lang = lang;
-  
-  translatePage();
-  
-  // 🔥 Используем универсальную функцию
-  updateLangUI();
-  
-  // Генерируем событие для других модулей
-  window.dispatchEvent(new CustomEvent('languageChanged'));
-  
-  console.log(`🌐 Language changed to: ${lang}`);
-}
-
-// 🔥 Перерендер каталога при смене языка
-window.addEventListener('languageChanged', () => {
-  console.log('🌐 languageChanged event received!');
-  console.log('📍 Current language:', typeof I18n !== 'undefined' ? I18n.getLang() : 'unknown');
-  
-  // 🔥 Небольшая задержка, чтобы I18n успел обновиться
-  setTimeout(() => {
-    // Переводим статические элементы
-    if (typeof I18n !== 'undefined') {
-      I18n.translatePage();
-      console.log('✅ I18n.translatePage() called');
+  /**
+   * СМЕНА ЯЗЫКА
+   * @param {string} lang — код языка ('ru', 'en', 'be')
+   * 
+   * Требование ЛР10: "сохранение пользовательских настроек в LocalStorage"
+   */
+  function setLang(lang) {
+    if (!translations[lang]) {
+      console.error('Unsupported language:', lang);
+      return;
     }
     
-    // 🔥 Перерендериваем динамические элементы через CatalogApp
-    if (typeof CatalogApp !== 'undefined') {
-      console.log('✅ CatalogApp found, re-rendering...');
-      CatalogApp.renderFilters();
-      CatalogApp.renderProducts(CatalogApp.getFilteredProducts());
-      CatalogApp.renderRecommended();
-      console.log('✅ Catalog re-rendered');
-    } else {
-      console.error('❌ CatalogApp not found!');
-    }
-  }, 50); // 50ms задержка
-});
+    currentLang = lang;
+    
+    // 🔥 СОХРАНЕНИЕ В LOCALSTORAGE (требование ЛР10)
+    localStorage.setItem('ami-lang', lang);
+    
+    // Меняем атрибут lang у <html> для доступности
+    document.documentElement.lang = lang;
+    
+    // Применяем переводы ко всей странице
+    translatePage();
+    
+    // Обновляем UI переключателя (подсветка активного)
+    updateLangUI();
+    
+    // 🔥 СОБЫТИЕ для других модулей (каталог, корзина и т.д.)
+    // Они должны перерисоваться с новыми переводами
+    window.dispatchEvent(new CustomEvent('languageChanged'));
+    
+    console.log(`🌐 Language changed to: ${lang}`);
+  }
+
+  /**
+   * ОБРАБОТЧИК СОБЫТИЯ languageChanged
+   * Перерендеривает динамический контент (каталог, корзина)
+   */
+  window.addEventListener('languageChanged', () => {
+    console.log('🌐 languageChanged event received!');
+    
+    // Небольшая задержка, чтобы I18n успел обновиться
+    setTimeout(() => {
+      // Переводим статические элементы
+      if (typeof I18n !== 'undefined') {
+        I18n.translatePage();
+      }
+      
+      // 🔥 Перерендериваем динамические элементы через CatalogApp
+      if (typeof CatalogApp !== 'undefined') {
+        CatalogApp.renderFilters();
+        CatalogApp.renderProducts(CatalogApp.getFilteredProducts());
+        CatalogApp.renderRecommended();
+      }
+    }, 50); // 50ms задержка
+  });
   
-  // Получить текущий язык
+  /**
+   * ПОЛУЧЕНИЕ ТЕКУЩЕГО ЯЗЫКА
+   */
   function getLang() {
     return currentLang;
   }
   
-  // Инициализация
+  /**
+   * ИНИЦИАЛИЗАЦИЯ МОДУЛЯ
+   * Требование ЛР10: "при загрузке и обновлении страницы автоматически 
+   * применяются настройки, выставленные пользователем в предыдущем сеансе"
+   */
   function init() {
-  document.documentElement.lang = currentLang;
-  
-  // 🔥 Обработчики для переключателей языка (универсально)
-  document.querySelectorAll('[data-lang]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const lang = btn.getAttribute('data-lang');
-      if (lang) setLang(lang);
+    document.documentElement.lang = currentLang;
+    
+    // 🔥 Обработчики для переключателей языка
+    // Ищем все элементы с data-lang="en/ru/be"
+    document.querySelectorAll('[data-lang]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.getAttribute('data-lang');
+        if (lang) setLang(lang);
+      });
     });
-  });
-  
-  // Обновляем активный язык в UI
-  updateLangUI();
-  
-  // Переводим страницу
-  translatePage();
-}
-
-// 🔥 НОВАЯ функция — обновляет UI переключателя языков
-function updateLangUI() {
-  document.querySelectorAll('[data-lang]').forEach(el => {
-    el.classList.remove('active', 'sidebar__lang--active');
-    el.classList.add('sidebar__lang--inactive');
-  });
-  const activeBtn = document.querySelector(`[data-lang="${currentLang}"]`);
-  if (activeBtn) {
-    activeBtn.classList.remove('sidebar__lang--inactive');
-    activeBtn.classList.add('active', 'sidebar__lang--active');
+    
+    // Обновляем активный язык в UI
+    updateLangUI();
+    
+    // Переводим страницу при загрузке
+    translatePage();
   }
-}
+
+  /**
+   * ОБНОВЛЕНИЕ UI ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКОВ
+   * Требование ЛР10: "надписи en или ru, соответствующие текущему языку, 
+   * становятся активными (выделяются стилем)"
+   */
+  function updateLangUI() {
+    // Снимаем active со всех кнопок
+    document.querySelectorAll('[data-lang]').forEach(el => {
+      el.classList.remove('active', 'sidebar__lang--active');
+      el.classList.add('sidebar__lang--inactive');
+    });
+    
+    // Ставим active на текущий язык
+    const activeBtn = document.querySelector(`[data-lang="${currentLang}"]`);
+    if (activeBtn) {
+      activeBtn.classList.remove('sidebar__lang--inactive');
+      activeBtn.classList.add('active', 'sidebar__lang--active');
+    }
+  }
+  
   // Автоинициализация после загрузки DOM
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
@@ -1134,5 +1191,6 @@ function updateLangUI() {
     init();
   }
   
+  // Экспорт публичных методов (Module Pattern)
   return { t, setLang, getLang, translatePage, init };
 })();

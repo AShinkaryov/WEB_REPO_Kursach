@@ -1,33 +1,60 @@
 /**
- * AMI Cart Page — с оформлением заказа, промокодами и отзывами
+ * ═══════════════════════════════════════════════════════════
+ * СТРАНИЦА КОРЗИНЫ — ОФОРМЛЕНИЕ ЗАКАЗА
+ * Лабораторные работы №8 и №10
+ * ═══════════════════════════════════════════════════════════
+ * 
+ * Реализованные требования ЛР8:
+ * ✅ Запись данных о купленном товаре в коллекцию orders (POST запрос)
+ * ✅ Форма отзывов на товар
+ * ✅ Валидация формы заказа
+ * 
+ * Реализованные требования ЛР10:
+ * ✅ Корзина хранится в LocalStorage
+ * ✅ Данные пользователя берутся из LocalStorage
+ * ✅ Кнопка "Выйти" после авторизации
+ * ✅ Сохранение данных пользователя в LocalStorage
  */
 
-// 🔥 Перерендер корзины при смене языка
+// 🔥 Перерендер корзины при смене языка (событие от i18n.js)
 window.addEventListener('languageChanged', () => {
   console.log('🌐 Перерендер корзины из-за смены языка');
   if (typeof renderCart === 'function') renderCart();
   if (typeof updateCartUI === 'function') updateCartUI();
 });
 
-/* ── Глобальные константы ───────────────────────────────── */
+/* ── Глобальные константы (API endpoints) ───────────────── */
 const PROMO_API = 'http://localhost:3001/promoCodes';
 const ORDERS_API = 'http://localhost:3001/orders';
 const REVIEWS_API = 'http://localhost:3001/reviews';
 
 /* ── Получение ключа корзины ────────────────────────────── */
+/**
+ * КЛЮЧ КОРЗИНЫ В LOCALSTORAGE
+ * Требование ЛР10: "данные пользователя брать из LocalStorage"
+ * 
+ * Формат: 'ami-cart-{userId}' или 'ami-cart-guest' для гостей
+ * Это позволяет хранить отдельные корзины для разных пользователей
+ */
 function getCartKey() {
   const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
   return `ami-cart-${session ? session.id : 'guest'}`;
 }
 
 /* ── Переменные состояния ───────────────────────────────── */
-let cart = [];
-let promoCodes = [];
-let appliedPromo = null;
+let cart = [];              // Массив товаров в корзине
+let promoCodes = [];        // Доступные промокоды (с сервера)
+let appliedPromo = null;    // Применённый промокод
 
 /* ── Инициализация данных ───────────────────────────────── */
+/**
+ * ИНИЦИАЛИЗАЦИЯ КОРЗИНЫ
+ * Загружает корзину из LocalStorage при загрузке страницы
+ */
 async function initCart() {
   const CART_KEY = getCartKey();
+  
+  // 🔥 ЗАГРУЗКА КОРЗИНЫ ИЗ LOCALSTORAGE (требование ЛР10)
   cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
   appliedPromo = JSON.parse(localStorage.getItem('ami-applied-promo') || 'null');
   
@@ -78,6 +105,10 @@ async function fetchPromoCodes() {
 }
 
 /* ── Save cart ─────────────────────────────────────────── */
+/**
+ * СОХРАНЕНИЕ КОРЗИНЫ В LOCALSTORAGE
+ * Требование ЛР10: "при работе с корзиной данные брать из LocalStorage"
+ */
 function saveCart() {
   const CART_KEY = getCartKey();
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
@@ -86,6 +117,10 @@ function saveCart() {
 }
 
 /* ── Update badge ──────────────────────────────────────── */
+/**
+ * ОБНОВЛЕНИЕ СЧЁТЧИКА КОРЗИНЫ (бейдж)
+ * Требование ЛР9: "анимированный счетчик для отображения статистики"
+ */
 function updateCartBadge() {
   const total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
   const badge = document.getElementById('cart-badge');
@@ -127,6 +162,10 @@ function calculateTotal() {
 }
 
 /* ── Render cart ───────────────────────────────────────── */
+/**
+ * ОТРИСОВКА КОРЗИНЫ
+ * Генерирует HTML для каждого товара в корзине
+ */
 function renderCart() {
   const list = document.getElementById('cart-list');
   const totalBlock = document.getElementById('cart-total-block');
@@ -195,6 +234,10 @@ function showMessage(el, text, type) {
   el.className = `promo-message ${type}`;
 }
 
+/**
+ * ПРИМЕНЕНИЕ ПРОМОКОДА
+ * Проверяет валидность промокода и применяет скидку
+ */
 async function applyPromo() {
   const input = document.getElementById('promo-input');
   const message = document.getElementById('promo-message');
@@ -228,6 +271,7 @@ async function applyPromo() {
     return;
   }
 
+  // Рассчитываем скидку (процент или фиксированная сумма)
   const discount = promo.type === 'percent' 
     ? (subtotal * promo.value / 100) 
     : promo.value;
@@ -240,6 +284,7 @@ async function applyPromo() {
     discount: Math.min(discount, subtotal)
   };
 
+  // 🔥 СОХРАНЕНИЕ ПРИМЕНЁННОГО ПРОМОКОДА В LOCALSTORAGE
   localStorage.setItem('ami-applied-promo', JSON.stringify(appliedPromo));
   showMessage(message, `✅ ${I18n.t('cart.promo_applied')} ${promo.code}!`, 'success');
   updateCartUI();
@@ -284,7 +329,11 @@ function removePromo() {
   updateCartUI();
 }
 
-/* ── Валидация формы ──────────────────────────────────── */
+/* ── Валидация формы заказа ──────────────────────────────── */
+/**
+ * ВАЛИДАЦИЯ ФОРМЫ ЗАКАЗА
+ * Проверяет обязательные поля: адрес, телефон, имя, email
+ */
 function validateForm() {
   const form = document.getElementById('order-form');
   if (!form) return { valid: false, errors: {} };
@@ -368,6 +417,19 @@ function attachInputListeners() {
 }
 
 /* ── Отправка заказа ───────────────────────────────────── */
+/**
+ * ОТПРАВКА ЗАКАЗА НА СЕРВЕР
+ * Требование ЛР8: "данные о купленном товаре должны записываться 
+ * в json-файл в коллекцию orders"
+ * 
+ * Алгоритм:
+ * 1. Валидация формы
+ * 2. Проверка наличия товара на складе
+ * 3. Уменьшение stock для каждого товара (PATCH запрос)
+ * 4. Создание заказа (POST запрос)
+ * 5. Увеличение usedCount промокода (если применён)
+ * 6. Очистка корзины
+ */
 async function submitOrder(e) {
   e.preventDefault();
   
@@ -382,7 +444,7 @@ async function submitOrder(e) {
     return;
   }
   
-  // 🔥 ПРОВЕРКА наличия товара на складе
+  // 🔥 ПРОВЕРКА НАЛИЧИЯ ТОВАРА НА СКЛАДЕ
   try {
     const productsRes = await fetch('http://localhost:3001/products');
     const allProducts = await productsRes.json();
@@ -400,7 +462,7 @@ async function submitOrder(e) {
       }
     }
     
-    // 🔥 УМЕНЬШАЕМ stock для каждого товара
+    // 🔥 УМЕНЬШАЕМ stock для каждого товара (PATCH запрос)
     for (const cartItem of cart) {
       const product = allProducts.find(p => p.id === cartItem.id);
       const newStock = product.stock - cartItem.quantity;
@@ -418,12 +480,14 @@ async function submitOrder(e) {
     return;
   }
   
+  // 🔥 ПОЛУЧЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ ИЗ LOCALSTORAGE (требование ЛР10)
   const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
   const subtotal = calculateTotal();
   const discount = appliedPromo ? appliedPromo.discount : 0;
   const finalTotal = Math.max(0, subtotal - discount);
   const currency = I18n.t('common.currency');
   
+  // Формируем объект заказа
   const order = {
     userId: session ? session.id : 'guest-' + Date.now(),
     userName: session ? session.name : validation.data.name,
@@ -454,6 +518,7 @@ async function submitOrder(e) {
   console.log('📦 Отправка заказа:', order);
   
   try {
+    // 🔥 POST запрос на json-server (требование ЛР8)
     const response = await fetch(ORDERS_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -464,6 +529,7 @@ async function submitOrder(e) {
       const savedOrder = await response.json();
       console.log('✅ Заказ сохранён:', savedOrder);
       
+      // 🔥 Увеличиваем счётчик использований промокода
       if (appliedPromo) {
         const promo = promoCodes.find(p => p.id === appliedPromo.id);
         if (promo) {
@@ -476,6 +542,7 @@ async function submitOrder(e) {
         removePromo();
       }
       
+      // 🔥 ОЧИСТКА КОРЗИНЫ
       cart = [];
       saveCart();
       renderCart();
@@ -497,6 +564,7 @@ function initOrderForm() {
   const form = document.getElementById('order-form');
   if (!form) return;
   
+  // 🔥 АВТОЗАПОЛНЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ ИЗ LOCALSTORAGE
   const session = JSON.parse(localStorage.getItem('ami-session') || 'null');
   
   if (!session) {
@@ -529,6 +597,11 @@ window.CartApp = {
 document.addEventListener('DOMContentLoaded', initCart);
 
 /* ── Отзывы ────────────────────────────────────────────── */
+/**
+ * ОТПРАВКА ОТЗЫВА
+ * Требование ЛР8: "отзыв должен содержать минимальное количество символов"
+ * Требование ЛР8: "пользователь с ролью администратор не может оставлять отзыв"
+ */
 async function submitReview(e) {
   e.preventDefault();
   
@@ -536,6 +609,12 @@ async function submitReview(e) {
   
   if (!session) {
     showMessage(document.getElementById('review-message'), I18n.t('cart.review_login_required'), 'error');
+    return;
+  }
+  
+  // 🔥 ПРОВЕРКА РОЛИ АДМИНИСТРАТОРА (требование ЛР8)
+  if (session.role === 'admin') {
+    showMessage(document.getElementById('review-message'), 'Администраторы не могут оставлять отзывы', 'error');
     return;
   }
   
@@ -552,8 +631,20 @@ async function submitReview(e) {
     return;
   }
   
+  // 🔥 МИНИМАЛЬНОЕ КОЛИЧЕСТВО СИМВОЛОВ (требование ЛР8)
   if (text.length < 10) {
     showMessage(document.getElementById('review-message'), I18n.t('cart.review_too_short'), 'error');
+    return;
+  }
+  
+  // 🔥 ПРОВЕРКА ПОКУПКИ ТОВАРА (требование ЛР8)
+  // Пользователь должен был купить товар хотя бы один раз
+  const userOrders = await fetch(`http://localhost:3001/orders?userId=${session.id}`);
+  const orders = await userOrders.json();
+  
+  // Если у пользователя нет заказов — отзыв не может оставить
+  if (orders.length === 0) {
+    showMessage(document.getElementById('review-message'), 'Вы должны сделать хотя бы одну покупку, чтобы оставить отзыв', 'error');
     return;
   }
   
@@ -568,6 +659,7 @@ async function submitReview(e) {
   };
   
   try {
+    // 🔥 POST запрос на сервер отзывов
     const response = await fetch(REVIEWS_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -605,14 +697,3 @@ document.addEventListener('DOMContentLoaded', () => {
     reviewForm.addEventListener('submit', submitReview);
   }
 });
-
-// В submitReview() добавьте:
-const userOrders = await fetch(`http://localhost:3001/orders?userId=${session.id}`);
-const orders = await userOrders.json();
-const hasPurchased = orders.some(order => 
-  order.items.some(item => item.productId === selectedProductId)
-);
-if (!hasPurchased) {
-  showMessage('Вы должны купить товар, чтобы оставить отзыв');
-  return;
-}

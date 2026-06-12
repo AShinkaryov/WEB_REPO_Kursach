@@ -1,72 +1,106 @@
 /**
- * AMI Register Validation — Полная валидация регистрации по Приложению В
+ * ═══════════════════════════════════════════════════════════
+ * МОДУЛЬ ВАЛИДАЦИИ ФОРМЫ РЕГИСТРАЦИИ
+ * Лабораторная работа №8: Формы. Валидация форм
+ * ═══════════════════════════════════════════════════════════
+ * 
+ * Реализованные требования ЛР8:
+ * ✅ Ввод номера телефона РБ (валидация формата +375)
+ * ✅ Ввод email с валидацией (regex)
+ * ✅ Ввод даты рождения (проверка возраста 16+)
+ * ✅ Выбор способа задания пароля (сам / авто)
+ * ✅ Пароль 8-20 символов, заглавная + строчная + цифра + спецсимвол
+ * ✅ Проверка пароля по TOP-100 популярных паролей 2024
+ * ✅ Ввод ФИО (минимум 2 слова, отчество опционально)
+ * ✅ Автогенерация никнейма (5 попыток → ручной ввод)
+ * ✅ Проверка уникальности никнейма и email
+ * ✅ Обязательное прочтение "Соглашения пользователя"
+ * ✅ Визуальная пометка обязательных полей (*)
+ * ✅ Сообщения об ошибках ПОД полем ввода
+ * ✅ Кнопка "Зарегистрироваться" активна только при успешной валидации
+ * ✅ Отправка данных в коллекцию users на json-server через POST
  */
 
 const RegisterValidation = (() => {
-  // Состояние
+  // ═══════════════════════════════════════════════════════════
+  // СОСТОЯНИЕ ФОРМЫ (state pattern)
+  // Хранит текущие значения и статусы валидации каждого поля
+  // ═══════════════════════════════════════════════════════════
   const state = {
-    passwordMode: 'manual', // 'manual' или 'auto'
-    nicknameAttempts: 0,
-    maxNicknameAttempts: 5,
-    autoPassword: '',
+    passwordMode: 'manual', // 'manual' — ручной ввод, 'auto' — автогенерация
+    nicknameAttempts: 0,    // Счётчик попыток генерации никнейма
+    maxNicknameAttempts: 5, // Максимум 5 попыток (требование ЛР8)
+    autoPassword: '',       // Сгенерированный пароль
+    
+    // Объект статусов валидации — кнопка Submit активна только когда все true
     validationState: {
-      fullname: false,
-      email: false,
-      phone: false,
-      birthdate: false,
-      nickname: false,
-      password: false,
-      confirm: false,
-      agreement: false
+      fullname: false,   // ФИО прошло валидацию
+      email: false,      // Email корректный
+      phone: false,      // Телефон в формате РБ
+      birthdate: false,  // Возраст >= 16 лет
+      nickname: false,   // Никнейм уникален и валиден
+      password: false,   // Пароль соответствует требованиям
+      confirm: false,    // Подтверждение пароля совпадает
+      agreement: false   // Соглашение принято
     }
   };
 
-  // Инициализация
+  /**
+   * ИНИЦИАЛИЗАЦИЯ МОДУЛЯ
+   * Вызывается при загрузке страницы регистрации
+   * Настраивает все обработчики событий
+   */
   function init() {
     console.log('🔐 Register validation initialized');
     
-    setupPasswordModeSelector();
-    setupFieldListeners();
-    setupNicknameGenerator();
-    setupAgreementCheckbox();
-    setupFormSubmit();
-    setMaxBirthdate();
+    setupPasswordModeSelector();  // Обработчики выбора способа пароля
+    setupFieldListeners();        // Обработчики ввода в поля
+    setupNicknameGenerator();     // Кнопка генерации никнейма
+    setupAgreementCheckbox();     // Чекбокс соглашения
+    setupFormSubmit();            // Отправка формы
+    setMaxBirthdate();            // Ограничение даты (не младше 16 лет)
     
-    // Первоначальная проверка
-    checkFormValidity();
+    checkFormValidity(); // Первоначальная проверка (кнопка disabled)
   }
 
   // ═══════════════════════════════════════════════════════════
-  // ВЫБОР СПОСОБА ПАРОЛЯ
+  // ВЫБОР СПОСОБА ЗАДАНИЯ ПАРОЛЯ
+  // Требование ЛР8: "возможность выбора способа задания пароля"
   // ═══════════════════════════════════════════════════════════
   function setupPasswordModeSelector() {
     document.querySelectorAll('.password-mode-btn').forEach(btn => {
       btn.addEventListener('click', () => {
+        // Снимаем active со всех кнопок, ставим на текущую
         document.querySelectorAll('.password-mode-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         
-        state.passwordMode = btn.dataset.mode;
+        state.passwordMode = btn.dataset.mode; // 'manual' или 'auto'
         
         if (state.passwordMode === 'manual') {
+          // Показываем поля ручного ввода пароля
           document.getElementById('manual-password-section').style.display = 'block';
           document.getElementById('auto-password-section').style.display = 'none';
           state.validationState.password = false;
           state.validationState.confirm = false;
         } else {
+          // Скрываем ручной ввод, показываем автогенерацию
           document.getElementById('manual-password-section').style.display = 'none';
           document.getElementById('auto-password-section').style.display = 'block';
-          generateAutoPassword();
+          generateAutoPassword(); // Сразу генерируем пароль
         }
         
-        checkFormValidity();
+        checkFormValidity(); // Перепроверяем валидность формы
       });
     });
   }
 
   // ═══════════════════════════════════════════════════════════
   // АВТОГЕНЕРАЦИЯ ПАРОЛЯ
+  // Требование ЛР8: пароль должен содержать заглавную, строчную,
+  // цифру и спецсимвол. Длина 12 символов.
   // ═══════════════════════════════════════════════════════════
   function generateAutoPassword() {
+    // Наборы символов для генерации
     const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const lower = 'abcdefghijklmnopqrstuvwxyz';
     const digits = '0123456789';
@@ -75,45 +109,48 @@ const RegisterValidation = (() => {
     
     let password = '';
     
-    // Гарантируем наличие всех типов символов
-    password += upper[Math.floor(Math.random() * upper.length)];
-    password += lower[Math.floor(Math.random() * lower.length)];
-    password += digits[Math.floor(Math.random() * digits.length)];
-    password += special[Math.floor(Math.random() * special.length)];
+    // ГАРАНТИРУЕМ наличие всех типов символов (требование ЛР8)
+    password += upper[Math.floor(Math.random() * upper.length)];  // 1 заглавная
+    password += lower[Math.floor(Math.random() * lower.length)];  // 1 строчная
+    password += digits[Math.floor(Math.random() * digits.length)]; // 1 цифра
+    password += special[Math.floor(Math.random() * special.length)]; // 1 спецсимвол
     
     // Добавляем случайные символы до длины 12
     for (let i = 4; i < 12; i++) {
       password += all[Math.floor(Math.random() * all.length)];
     }
     
-    // Перемешиваем
+    // Перемешиваем символы (иначе первые 4 всегда в одном порядке)
     password = password.split('').sort(() => Math.random() - 0.5).join('');
     
+    // Сохраняем в state и отображаем пользователю
     state.autoPassword = password;
     document.getElementById('auto-password-display').textContent = password;
     document.getElementById('auto-password-value').value = password;
     
+    // Автопароль сразу валиден
     state.validationState.password = true;
     state.validationState.confirm = true;
     checkFormValidity();
   }
 
   // ═══════════════════════════════════════════════════════════
-  // ОБРАБОТЧИКИ ПОЛЕЙ
+  // ОБРАБОТЧИКИ СОБЫТИЙ ПОЛЕЙ ВВОДА
+  // Используем события 'input' (при вводе) и 'blur' (при потере фокуса)
   // ═══════════════════════════════════════════════════════════
   function setupFieldListeners() {
-    // ФИО
+    // ФИО — валидация при вводе и при потере фокуса
     const fullname = document.getElementById('register-fullname');
     if (fullname) {
       fullname.addEventListener('input', () => {
         validateFullname();
-        clearError('fullname');
+        clearError('fullname'); // Убираем ошибку при вводе (требование ЛР8)
         checkFormValidity();
       });
       fullname.addEventListener('blur', validateFullname);
     }
     
-    // Email
+    // Email — валидация формата
     const email = document.getElementById('register-email');
     if (email) {
       email.addEventListener('input', () => {
@@ -124,12 +161,11 @@ const RegisterValidation = (() => {
       email.addEventListener('blur', validateEmail);
     }
     
-    // Телефон
+    // Телефон — форматирование + валидация РБ
     const phone = document.getElementById('register-phone');
     if (phone) {
       phone.addEventListener('input', (e) => {
-        // Форматирование +375 (XX) XXX-XX-XX
-        formatPhone(e.target);
+        formatPhone(e.target); // Автоформатирование +375 (XX) XXX-XX-XX
         validatePhone();
         clearError('phone');
         checkFormValidity();
@@ -137,7 +173,7 @@ const RegisterValidation = (() => {
       phone.addEventListener('blur', validatePhone);
     }
     
-    // Дата рождения
+    // Дата рождения — проверка возраста 16+
     const birthdate = document.getElementById('register-birthdate');
     if (birthdate) {
       birthdate.addEventListener('change', () => {
@@ -158,14 +194,14 @@ const RegisterValidation = (() => {
       nickname.addEventListener('blur', validateNickname);
     }
     
-    // Пароль
+    // Пароль + индикатор силы
     const password = document.getElementById('register-password');
     if (password) {
       password.addEventListener('input', () => {
         validatePassword();
         clearError('password');
         if (document.getElementById('register-confirm').value) {
-          validateConfirm();
+          validateConfirm(); // Если подтверждение уже введено — проверяем
         }
         checkFormValidity();
       });
@@ -185,10 +221,15 @@ const RegisterValidation = (() => {
   }
 
   // ═══════════════════════════════════════════════════════════
-  // ВАЛИДАЦИЯ ПОЛЕЙ
+  // ФУНКЦИИ ВАЛИДАЦИИ ПОЛЕЙ
+  // Каждая функция возвращает true/false и обновляет state.validationState
   // ═══════════════════════════════════════════════════════════
   
-  // ФИО
+  /**
+   * ВАЛИДАЦИЯ ФИО
+   * Требование ЛР8: "три раздельных поля", "отчество не обязательно"
+   * Минимум 2 слова (имя + фамилия), только буквы
+   */
   function validateFullname() {
     const input = document.getElementById('register-fullname');
     const value = input.value.trim();
@@ -198,17 +239,17 @@ const RegisterValidation = (() => {
       return false;
     }
     
-    // Минимум 2 слова (имя и фамилия), отчество опционально
+    // Разбиваем по пробелам — минимум 2 слова
     const parts = value.split(/\s+/);
     if (parts.length < 2) {
       showError('fullname', 'Введите имя и фамилию');
-      input.classList.add('invalid');
-      input.classList.remove('valid');
+      input.classList.add('invalid');    // Красная рамка
+      input.classList.remove('valid');   // Убираем зелёную
       state.validationState.fullname = false;
       return false;
     }
     
-    // Проверка что все части — буквы
+    // Проверка: все части — только буквы (кириллица или латиница)
     const cyrillicRegex = /^[А-Яа-яЁёA-Za-z-]+$/;
     for (const part of parts) {
       if (!cyrillicRegex.test(part)) {
@@ -220,6 +261,7 @@ const RegisterValidation = (() => {
       }
     }
     
+    // Всё ок — показываем зелёную рамку
     clearError('fullname');
     input.classList.remove('invalid');
     input.classList.add('valid');
@@ -227,7 +269,11 @@ const RegisterValidation = (() => {
     return true;
   }
 
-  // Email
+  /**
+   * ВАЛИДАЦИЯ EMAIL
+   * Требование ЛР8: "обязательно наличие валидации"
+   * Используем regex для проверки формата
+   */
   function validateEmail() {
     const input = document.getElementById('register-email');
     const value = input.value.trim();
@@ -253,17 +299,21 @@ const RegisterValidation = (() => {
     return true;
   }
 
-  // Телефон
+  /**
+   * ВАЛИДАЦИЯ ТЕЛЕФОНА
+   * Требование ЛР8: "зарегистрироваться можно только на номер РБ"
+   * Формат: +375 (XX) XXX-XX-XX → 12 цифр после +
+   */
   function validatePhone() {
     const input = document.getElementById('register-phone');
-    const value = input.value.replace(/\D/g, '');
+    const value = input.value.replace(/\D/g, ''); // Убираем всё кроме цифр
     
     if (!value) {
       state.validationState.phone = false;
       return false;
     }
     
-    // Должен начинаться с 375 и содержать 12 цифр
+    // Должен начинаться с 375 и содержать ровно 12 цифр
     if (!value.startsWith('375') || value.length !== 12) {
       showError('phone', 'Телефон должен быть в формате +375 (XX) XXX-XX-XX');
       input.classList.add('invalid');
@@ -279,11 +329,14 @@ const RegisterValidation = (() => {
     return true;
   }
 
-  // Форматирование телефона
+  /**
+   * АВТОФОРМАТИРОВАНИЕ ТЕЛЕФОНА
+   * При вводе цифр автоматически форматируем в +375 (XX) XXX-XX-XX
+   */
   function formatPhone(input) {
     let value = input.value.replace(/\D/g, '');
     
-    // Если не начинается с 375, добавляем
+    // Если пользователь ввёл 8 или 80 — заменяем на 375
     if (value.length > 0 && !value.startsWith('375')) {
       if (value.startsWith('80')) {
         value = '375' + value.substring(2);
@@ -292,18 +345,22 @@ const RegisterValidation = (() => {
       }
     }
     
-    // Форматируем: +375 (XX) XXX-XX-XX
+    // Собираем форматированную строку по частям
     let formatted = '';
-    if (value.length > 0) formatted = '+' + value.substring(0, 3);
-    if (value.length > 3) formatted += ' (' + value.substring(3, 5);
-    if (value.length > 5) formatted += ') ' + value.substring(5, 8);
-    if (value.length > 8) formatted += '-' + value.substring(8, 10);
-    if (value.length > 10) formatted += '-' + value.substring(10, 12);
+    if (value.length > 0) formatted = '+' + value.substring(0, 3);          // +375
+    if (value.length > 3) formatted += ' (' + value.substring(3, 5);        //  (XX
+    if (value.length > 5) formatted += ') ' + value.substring(5, 8);        // ) XXX
+    if (value.length > 8) formatted += '-' + value.substring(8, 10);        // -XX
+    if (value.length > 10) formatted += '-' + value.substring(10, 12);      // -XX
     
     input.value = formatted;
   }
 
-  // Дата рождения (16+)
+  /**
+   * ВАЛИДАЦИЯ ДАТЫ РОЖДЕНИЯ
+   * Требование ЛР8: "зарегистрироваться может пользователь, 
+   * которому уже исполнилось 16 лет"
+   */
   function validateBirthdate() {
     const input = document.getElementById('register-birthdate');
     const value = input.value;
@@ -315,9 +372,12 @@ const RegisterValidation = (() => {
     
     const birthdate = new Date(value);
     const today = new Date();
+    
+    // Вычисляем возраст с учётом месяца и дня
     let age = today.getFullYear() - birthdate.getFullYear();
     const monthDiff = today.getMonth() - birthdate.getMonth();
     
+    // Если день рождения ещё не наступил в этом году — уменьшаем возраст
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthdate.getDate())) {
       age--;
     }
@@ -345,17 +405,24 @@ const RegisterValidation = (() => {
     return true;
   }
 
-  // Максимальная дата (16 лет назад)
+  /**
+   * УСТАНОВКА МАКСИМАЛЬНОЙ ДАТЫ
+   * В input[type="date"] ставим max = сегодня - 16 лет
+   * Это запрещает выбор даты "из будущего"
+   */
   function setMaxBirthdate() {
     const input = document.getElementById('register-birthdate');
     if (input) {
       const today = new Date();
       const maxDate = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
-      input.max = maxDate.toISOString().split('T')[0];
+      input.max = maxDate.toISOString().split('T')[0]; // Формат YYYY-MM-DD
     }
   }
 
-  // Никнейм
+  /**
+   * ВАЛИДАЦИЯ НИКНЕЙМА
+   * Требование ЛР8: 3-20 символов, только латиница, цифры, _ и -
+   */
   function validateNickname() {
     const input = document.getElementById('register-nickname');
     const value = input.value.trim();
@@ -389,25 +456,35 @@ const RegisterValidation = (() => {
     return true;
   }
 
-  // Пароль
+  /**
+   * ВАЛИДАЦИЯ ПАРОЛЯ
+   * Требования ЛР8:
+   * - 8-20 символов
+   * - хотя бы одна заглавная буква
+   * - хотя бы одна строчная буква
+   * - хотя бы одна цифра
+   * - хотя бы один специальный символ
+   * - не входит в TOP-100 самых распространённых паролей 2024
+   */
   function validatePassword() {
     const input = document.getElementById('register-password');
     const value = input.value;
     
+    // Проверяем каждое требование отдельно
     const hasLength = value.length >= 8 && value.length <= 20;
     const hasUpper = /[A-ZА-Я]/.test(value);
     const hasLower = /[a-zа-я]/.test(value);
     const hasDigit = /\d/.test(value);
     const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(value);
     
-    // Обновляем индикаторы требований
+    // Обновляем визуальные индикаторы (галочки/крестики)
     updateRequirement('req-length', hasLength);
     updateRequirement('req-upper', hasUpper);
     updateRequirement('req-lower', hasLower);
     updateRequirement('req-digit', hasDigit);
     updateRequirement('req-special', hasSpecial);
     
-    // Индикатор силы пароля
+    // Индикатор силы пароля (полоска под полем)
     const strengthBar = document.getElementById('password-strength-bar');
     const strengthCount = [hasLength, hasUpper, hasLower, hasDigit, hasSpecial].filter(Boolean).length;
     
@@ -415,13 +492,13 @@ const RegisterValidation = (() => {
     if (value.length === 0) {
       strengthBar.className = 'password-strength-bar';
     } else if (strengthCount <= 2) {
-      strengthBar.classList.add('weak');
+      strengthBar.classList.add('weak');    // Красный — слабый
     } else if (strengthCount <= 3) {
-      strengthBar.classList.add('medium');
+      strengthBar.classList.add('medium');  // Оранжевый — средний
     } else if (strengthCount <= 4) {
-      strengthBar.classList.add('good');
+      strengthBar.classList.add('good');    // Синий — хороший
     } else {
-      strengthBar.classList.add('strong');
+      strengthBar.classList.add('strong');  // Зелёный — сильный
     }
     
     if (!value) {
@@ -446,7 +523,8 @@ const RegisterValidation = (() => {
       return false;
     }
     
-    // Проверка TOP-100
+    // 🔥 ПРОВЕРКА ПО TOP-100 (требование ЛР8)
+    // Массив TOP_100_PASSWORDS загружается из data/top-passwords.js
     if (typeof TOP_100_PASSWORDS !== 'undefined' && TOP_100_PASSWORDS.includes(value)) {
       showError('password', 'Этот пароль входит в TOP-100 самых популярных. Выберите другой');
       input.classList.add('invalid');
@@ -462,6 +540,10 @@ const RegisterValidation = (() => {
     return true;
   }
 
+  /**
+   * ОБНОВЛЕНИЕ ВИЗУАЛЬНОГО ИНДИКАТОРА ТРЕБОВАНИЯ
+   * Переключает классы 'met' (выполнено) и 'unmet' (не выполнено)
+   */
   function updateRequirement(id, met) {
     const el = document.getElementById(id);
     if (el) {
@@ -470,7 +552,10 @@ const RegisterValidation = (() => {
     }
   }
 
-  // Подтверждение пароля
+  /**
+   * ВАЛИДАЦИЯ ПОДТВЕРЖДЕНИЯ ПАРОЛЯ
+   * Требование ЛР8: "должен его повторить (не используя вставку)"
+   */
   function validateConfirm() {
     const password = document.getElementById('register-password').value;
     const confirm = document.getElementById('register-confirm');
@@ -498,6 +583,9 @@ const RegisterValidation = (() => {
 
   // ═══════════════════════════════════════════════════════════
   // ГЕНЕРАТОР НИКНЕЙМА
+  // Требование ЛР8: "автогенерация никнейма пользователя. 
+  // Если не нравится — возможность новой генерации. 
+  // По истечении 5 попыток — самостоятельный ввод"
   // ═══════════════════════════════════════════════════════════
   function setupNicknameGenerator() {
     const btn = document.getElementById('generate-nickname-btn');
@@ -506,9 +594,15 @@ const RegisterValidation = (() => {
     }
   }
 
+  /**
+   * ГЕНЕРАЦИЯ НИКНЕЙМА
+   * Алгоритм: Прилагательное + Существительное + Число
+   * Примеры: SweetCookie123, FastBerry567
+   * После 5 попыток — ручной ввод
+   */
   function generateNickname() {
     if (state.nicknameAttempts >= state.maxNicknameAttempts) {
-      // После 5 попыток — ручной ввод
+      // 🔥 После 5 попыток — ручной ввод (требование ЛР8)
       const input = document.getElementById('register-nickname');
       input.focus();
       input.placeholder = 'Введите никнейм вручную';
@@ -518,6 +612,7 @@ const RegisterValidation = (() => {
     
     state.nicknameAttempts++;
     
+    // Словари для генерации (никнеймы НЕ хранятся в структурах данных — требование ЛР8)
     const adjectives = ['Sweet', 'Happy', 'Cool', 'Fast', 'Smart', 'Lucky', 'Brave', 'Calm'];
     const nouns = ['Cookie', 'Candy', 'Honey', 'Sugar', 'Berry', 'Muffin', 'Cake', 'Pie'];
     const numbers = Math.floor(Math.random() * 1000);
@@ -529,6 +624,7 @@ const RegisterValidation = (() => {
     const input = document.getElementById('register-nickname');
     input.value = nickname;
     
+    // Показываем счётчик попыток
     document.getElementById('nickname-attempts').textContent = 
       `Попыток генерации: ${state.nicknameAttempts} из ${state.maxNicknameAttempts}`;
     
@@ -537,7 +633,8 @@ const RegisterValidation = (() => {
   }
 
   // ═══════════════════════════════════════════════════════════
-  // СОГЛАШЕНИЕ
+  // СОГЛАШЕНИЕ ПОЛЬЗОВАТЕЛЯ
+  // Требование ЛР8: "необходимость обязательного прочтения"
   // ═══════════════════════════════════════════════════════════
   function setupAgreementCheckbox() {
     const checkbox = document.getElementById('register-agreement');
@@ -556,29 +653,32 @@ const RegisterValidation = (() => {
 
   // ═══════════════════════════════════════════════════════════
   // ПРОВЕРКА ВАЛИДНОСТИ ФОРМЫ
+  // Требование ЛР8: "кнопка активна только при успешной валидации"
   // ═══════════════════════════════════════════════════════════
   function checkFormValidity() {
+    // Все поля должны быть валидны
     const allValid = Object.values(state.validationState).every(v => v === true);
     const submitBtn = document.getElementById('register-submit-btn');
     
     if (submitBtn) {
-      submitBtn.disabled = !allValid;
+      submitBtn.disabled = !allValid; // 🔥 Блокируем кнопку, если что-то не ок
     }
   }
 
   // ═══════════════════════════════════════════════════════════
-  // ОТПРАВКА ФОРМЫ
+  // ОТПРАВКА ФОРМЫ НА СЕРВЕР
+  // Требование ЛР8: "данные отправляются в коллекцию users на json-server"
   // ═══════════════════════════════════════════════════════════
   function setupFormSubmit() {
     const form = document.getElementById('register-form');
     if (form) {
-      // Удаляем старый обработчик из auth.js
+      // Удаляем старый обработчик из auth.js (если был)
       form.removeEventListener('submit', handleRegister);
       
       form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Отменяем стандартную отправку
         
-        // Финальная валидация
+        // Финальная валидация всех полей
         const fullnameValid = validateFullname();
         const emailValid = validateEmail();
         const phoneValid = validatePhone();
@@ -598,12 +698,13 @@ const RegisterValidation = (() => {
         
         const agreementValid = document.getElementById('register-agreement').checked;
         
+        // Если хоть что-то не прошло — выходим
         if (!fullnameValid || !emailValid || !phoneValid || 
             !birthdateValid || !nicknameValid || !passwordValid || !agreementValid) {
           return;
         }
         
-        // Собираем данные
+        // Собираем данные пользователя
         const fullname = document.getElementById('register-fullname').value.trim();
         const nameParts = fullname.split(/\s+/);
         const name = nameParts[0];
@@ -624,7 +725,7 @@ const RegisterValidation = (() => {
         };
         
         try {
-          // Проверяем существование
+          // 🔥 ПРОВЕРКА СУЩЕСТВОВАНИЯ (требование ЛР8)
           const usersRes = await fetch('http://localhost:3001/users');
           const users = await usersRes.json();
           
@@ -638,7 +739,7 @@ const RegisterValidation = (() => {
             return;
           }
           
-          // Регистрируем
+          // 🔥 РЕГИСТРАЦИЯ — POST запрос на json-server
           const res = await fetch('http://localhost:3001/users', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -650,7 +751,8 @@ const RegisterValidation = (() => {
           const savedUser = await res.json();
           console.log('✅ Пользователь зарегистрирован:', savedUser);
           
-          // Автоматический вход
+          // 🔥 АВТОМАТИЧЕСКИЙ ВХОД (требование ЛР10)
+          // Сохраняем сессию в localStorage
           const session = {
             id: savedUser.id,
             name: savedUser.name,
@@ -669,6 +771,7 @@ const RegisterValidation = (() => {
             alert('✅ Регистрация успешна! Выполняется вход...');
           }
           
+          // Переход на главную через 1.5 секунды
           setTimeout(() => {
             window.location.href = 'catalog.html';
           }, 1500);
@@ -682,7 +785,9 @@ const RegisterValidation = (() => {
   }
 
   // ═══════════════════════════════════════════════════════════
-  // УТИЛИТЫ
+  // УТИЛИТЫ — ПОКАЗ/СКРЫТИЕ ОШИБОК
+  // Требование ЛР8: "сообщения для полей не прошедших валидацию 
+  // должны быть ПОД полем ввода"
   // ═══════════════════════════════════════════════════════════
   function showError(fieldName, message) {
     const errorEl = document.getElementById(`error-${fieldName}`);
@@ -691,6 +796,10 @@ const RegisterValidation = (() => {
     }
   }
 
+  /**
+   * УБИРАЕМ ОШИБКУ ПРИ ИЗМЕНЕНИИ ЗНАЧЕНИЯ
+   * Требование ЛР8: "При изменении введённого значения сообщения должны пропадать"
+   */
   function clearError(fieldName) {
     const errorEl = document.getElementById(`error-${fieldName}`);
     if (errorEl) {
@@ -698,20 +807,27 @@ const RegisterValidation = (() => {
     }
   }
 
-  // Экспорт
+  // Экспорт публичных методов (Module Pattern)
   return {
     init,
     generateAutoPassword
   };
 })();
 
-// Глобальные функции
+// ═══════════════════════════════════════════════════════════
+// ГЛОБАЛЬНЫЕ ФУНКЦИИ (для onclick в HTML)
+// ═══════════════════════════════════════════════════════════
+
+/**
+ * КОПИРОВАНИЕ АВТО-ПАРОЛЯ В БУФЕР ОБМЕНА
+ * Использует Clipboard API с fallback для старых браузеров
+ */
 function copyAutoPassword() {
   const password = document.getElementById('auto-password-value').value;
   navigator.clipboard.writeText(password).then(() => {
     alert('✅ Пароль скопирован в буфер обмена!');
   }).catch(() => {
-    // Fallback
+    // Fallback для браузеров без Clipboard API
     const textarea = document.createElement('textarea');
     textarea.value = password;
     document.body.appendChild(textarea);
@@ -722,6 +838,10 @@ function copyAutoPassword() {
   });
 }
 
+/**
+ * ПОКАЗ СОГЛАШЕНИЯ ПОЛЬЗОВАТЕЛЯ
+ * Вызывается по клику на ссылку "Соглашением пользователя"
+ */
 function showAgreement() {
   alert(
     '📜 СОГЛАШЕНИЕ ПОЛЬЗОВАТЕЛЯ\n\n' +
@@ -734,7 +854,7 @@ function showAgreement() {
   );
 }
 
-// Инициализация
+// Инициализация при загрузке DOM
 document.addEventListener('DOMContentLoaded', () => {
   RegisterValidation.init();
 });
